@@ -2,38 +2,38 @@
 description: Start the Development Pipeline guide (9-phase development process)
 arguments:
   - name: project_type
-    description: 프로젝트 유형 (선택사항)
+    description: Project type (optional)
     required: false
 ---
 
-# Pipeline 시작
+# Pipeline Start
 
-Development Pipeline 가이드를 시작합니다.
+Starts the Development Pipeline guide.
 
-## 실행 내용
+## Execution Content
 
-1. **프로젝트 분석**
-   - 현재 프로젝트 레벨 감지 (Starter/Dynamic/Enterprise)
-   - 기존 진행 상태 확인
+1. **Project Analysis**
+   - Detect current project level (Starter/Dynamic/Enterprise)
+   - Check existing progress status
 
-2. **사용자 경험 수준 확인**
-   - 개발 경험이 적으면: 전체 9단계 가이드
-   - 경험이 있으면: 필요한 부분만 가이드
-   - 숙련자면: Pipeline 없이 자유롭게 진행
+2. **Check User Experience Level**
+   - Less development experience: Full 9-phase guide
+   - Experienced: Guide only necessary parts
+   - Expert: Proceed freely without Pipeline
 
-3. **Phase 1부터 시작**
-   - 스키마/용어 정의부터 안내
-   - 각 Phase마다 PDCA 사이클 적용
+3. **Start from Phase 1**
+   - Guide from schema/terminology definition
+   - Apply PDCA cycle at each Phase
 
-## 참조
+## Reference
 
-- `.claude/skills/development-pipeline/`: Pipeline 전체 지식
-- `.claude/agents/pipeline-guide.md`: 가이드 에이전트
-- `.claude/templates/pipeline/`: Phase별 템플릿
+- `.claude/skills/development-pipeline/`: Complete Pipeline knowledge
+- `.claude/agents/pipeline-guide.md`: Guide agent
+- `.claude/templates/pipeline/`: Templates per Phase
 
-## 주의사항
+## Cautions
 
-Pipeline은 **선택적** 가이드입니다.
-- 개발 작업에만 적용
-- 비개발 AI 작업은 Pipeline 없이 PDCA만 적용
-- 숙련자는 자유롭게 건너뛸 수 있음
+Pipeline is an **optional** guide.
+- Only applies to development work
+- Non-development AI tasks apply only PDCA, not Pipeline
+- Experts can freely skip phases

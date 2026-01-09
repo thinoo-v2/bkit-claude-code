@@ -2,66 +2,66 @@
 description: Guide to next Pipeline phase
 ---
 
-# Pipeline 다음 단계
+# Pipeline Next Step
 
-현재 Phase를 분석하고 다음으로 해야 할 작업을 안내합니다.
+Analyzes the current Phase and guides the next task to be done.
 
-## 실행 내용
+## Execution Content
 
-1. **현재 Phase 파악**
-   - 진행 중인 Phase 확인
-   - Phase 내 완료/미완료 항목 확인
+1. **Identify Current Phase**
+   - Check in-progress Phase
+   - Check completed/incomplete items within Phase
 
-2. **다음 작업 결정**
-   - 현재 Phase가 완료되지 않았으면: 남은 작업 안내
-   - 현재 Phase가 완료되었으면: 다음 Phase 안내
+2. **Determine Next Task**
+   - If current Phase is not complete: Guide remaining tasks
+   - If current Phase is complete: Guide next Phase
 
-3. **구체적 가이드 제공**
-   - 다음에 해야 할 구체적인 작업
-   - 관련 템플릿 안내
-   - PDCA 적용 방법
+3. **Provide Specific Guide**
+   - Specific tasks to do next
+   - Related template guidance
+   - How to apply PDCA
 
-## 출력 형식
+## Output Format
 
-### Phase 진행 중일 때
+### When Phase is In Progress
 ```
-🔄 현재: Phase 4 - API 설계/구현
+🔄 Current: Phase 4 - API Design/Implementation
 
-완료한 것:
-- [x] API 명세 작성 (docs/02-design/api-spec.md)
+Completed:
+- [x] API Specification Writing (docs/02-design/api-spec.md)
 
-다음 할 일:
-→ API 구현 시작
+Next Task:
+→ Start API Implementation
 
-가이드:
-1. Phase 1에서 정의한 스키마를 기반으로 API 구현
-2. 컨벤션(Phase 2)을 따라 코드 작성
-3. 완료 후 Zero Script QA 실행
+Guide:
+1. Implement API based on schema defined in Phase 1
+2. Write code following conventions (Phase 2)
+3. Run Zero Script QA after completion
 
-시작할까요?
+Shall we start?
 ```
 
-### Phase 완료 후
+### After Phase Completion
 ```
-✅ Phase 4 완료!
+✅ Phase 4 Complete!
 
-완료한 것:
-- [x] API 명세 작성
-- [x] API 구현
+Completed:
+- [x] API Specification Writing
+- [x] API Implementation
 - [x] Zero Script QA
 
-다음: Phase 5 - 디자인 시스템
+Next: Phase 5 - Design System
 
-Phase 5에서는:
-- shadcn/ui 컴포넌트 설치
-- 디자인 토큰 정의
-- 기본 컴포넌트 구성
+In Phase 5:
+- Install shadcn/ui components
+- Define design tokens
+- Configure basic components
 
-Phase 5를 시작할까요?
+Shall we start Phase 5?
 ```
 
-## 참조
+## Reference
 
-- `.claude/skills/phase-*/`: Phase별 상세 가이드
-- `.claude/templates/pipeline/`: Phase별 템플릿
-- `.claude/agents/pipeline-guide.md`: 가이드 에이전트
+- `.claude/skills/phase-*/`: Detailed guide per Phase
+- `.claude/templates/pipeline/`: Templates per Phase
+- `.claude/agents/pipeline-guide.md`: Guide agent

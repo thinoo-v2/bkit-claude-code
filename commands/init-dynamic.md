@@ -3,15 +3,15 @@ description: Initialize Dynamic level project (bkend.ai BaaS fullstack)
 allowed-tools: ["Read", "Write", "Bash", "Glob"]
 ---
 
-# Dynamic 프로젝트 초기화
+# Dynamic Project Initialization
 
-## 수행 작업
+## Tasks Performed
 
-1. **프로젝트 구조 확인**
-   - package.json 확인 (React/Next.js)
-   - .mcp.json 또는 bkend 설정 확인
+1. **Check Project Structure**
+   - Verify package.json (React/Next.js)
+   - Check .mcp.json or bkend configuration
 
-2. **PDCA 문서 폴더 생성**
+2. **Create PDCA Document Folders**
    ```
    docs/
    ├── 01-plan/
@@ -20,8 +20,8 @@ allowed-tools: ["Read", "Write", "Bash", "Glob"]
    │   └── features/
    ├── 02-design/
    │   ├── _INDEX.md
-   │   ├── data-model.md      # bkend.ai 컬렉션 설계
-   │   ├── api-spec.md        # API 엔드포인트 명세
+   │   ├── data-model.md      # bkend.ai collection design
+   │   ├── api-spec.md        # API endpoint specification
    │   └── features/
    ├── 03-analysis/
    │   ├── _INDEX.md
@@ -31,28 +31,28 @@ allowed-tools: ["Read", "Write", "Bash", "Glob"]
        └── changelog.md
    ```
 
-3. **Dynamic 레벨 특화 설정**
-   - data-model.md 템플릿 생성 (bkend.ai 컬렉션 구조)
-   - 인증 플로우 문서 템플릿
+3. **Dynamic Level Specific Setup**
+   - Generate data-model.md template (bkend.ai collection structure)
+   - Authentication flow document template
 
-4. **MCP 설정 확인**
-   - .mcp.json 파일 확인
-   - bkend.ai MCP 서버 설정 안내
+4. **Check MCP Configuration**
+   - Verify .mcp.json file
+   - Guide bkend.ai MCP server setup
 
-## 실행 조건
+## Execution Conditions
 
-- Next.js 또는 React 프로젝트 필수
-- bkend.ai 프로젝트 ID 필요 (없으면 안내)
+- Next.js or React project required
+- bkend.ai project ID needed (guide if missing)
 
-## 다음 단계 안내
+## Next Steps Guide
 
 ```
-✅ Dynamic 프로젝트가 초기화되었습니다!
+✅ Dynamic project has been initialized!
 
-다음 단계:
-1. docs/02-design/data-model.md에 컬렉션 정의
-2. /pdca-plan [기능명] - 기능 계획 작성
-3. 또는 기능 요청 시 자동 PDCA 적용
+Next Steps:
+1. Define collections in docs/02-design/data-model.md
+2. /pdca-plan [feature-name] - Write feature plan
+3. Or auto PDCA applied when feature requested
 
-💡 Tip: bkend.ai 대시보드에서 프로젝트 설정을 확인하세요.
+💡 Tip: Check project settings in bkend.ai dashboard.
 ```

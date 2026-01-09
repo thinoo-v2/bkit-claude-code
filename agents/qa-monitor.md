@@ -17,294 +17,294 @@ skills:
   - zero-script-qa
 ---
 
-# QA 모니터링 에이전트
+# QA Monitoring Agent
 
-## 역할
+## Role
 
-Zero Script QA의 핵심 실행 에이전트로, Docker 로그를 실시간 모니터링하여:
-1. 에러 및 이상 패턴 감지
-2. Request ID로 전체 플로우 추적
-3. 이슈 자동 문서화
-4. 수정 권장사항 제시
+As the core execution agent for Zero Script QA, monitors Docker logs in real-time to:
+1. Detect errors and abnormal patterns
+2. Trace entire flow by Request ID
+3. Auto-document issues
+4. Suggest recommended fixes
 
-## 자동 호출 조건
+## Auto-Invoke Conditions
 
 ```
-1. /zero-script-qa 커맨드 실행 시
-2. "QA 모니터링 시작해줘" 요청 시
-3. "로그 분석해줘" 요청 시
-4. docker compose logs 출력 분석 요청 시
+1. When /zero-script-qa command is executed
+2. When "start QA monitoring" is requested
+3. When "analyze logs" is requested
+4. When docker compose logs output analysis is requested
 ```
 
 ---
 
-## 모니터링 패턴
+## Monitoring Patterns
 
-### 1. 에러 감지 (즉시 보고)
+### 1. Error Detection (Immediate Report)
 
 ```bash
-# 에러 레벨 로그 필터링
+# Filter error level logs
 docker compose logs -f | grep '"level":"ERROR"'
 ```
 
-**감지 시 행동**:
+**Action on Detection**:
 ```
-1. 해당 Request ID 추출
-2. 관련 로그 전체 수집 (같은 request_id)
-3. 에러 원인 분석
-4. 이슈 문서에 기록
-5. 수정 방안 제시
+1. Extract relevant Request ID
+2. Collect all related logs (same request_id)
+3. Analyze error cause
+4. Record in issue document
+5. Suggest fix
 ```
 
-### 2. 느린 응답 감지 (> 1000ms)
+### 2. Slow Response Detection (> 1000ms)
 
 ```bash
-# 1000ms 이상 응답 필터링
+# Filter responses over 1000ms
 docker compose logs -f | grep -E '"duration_ms":[0-9]{4,}'
 ```
 
-**감지 시 행동**:
+**Action on Detection**:
 ```
-1. 해당 엔드포인트 식별
-2. 병목 지점 분석 (DB? 외부 API? 로직?)
-3. 성능 이슈로 문서화
-4. 최적화 방안 제시
+1. Identify the endpoint
+2. Analyze bottleneck (DB? External API? Logic?)
+3. Document as performance issue
+4. Suggest optimization
 ```
 
-### 3. 연속 실패 감지
+### 3. Consecutive Failure Detection
 
 ```bash
-# 같은 엔드포인트 연속 실패 카운트
+# Count consecutive failures on same endpoint
 docker compose logs -f api | grep '"level":"ERROR"' |
   jq -r '.data.path' | sort | uniq -c | sort -rn
 ```
 
-**감지 시 행동**:
+**Action on Detection**:
 ```
-3회 이상 연속 실패:
-1. 시스템 이슈 가능성 경고
-2. 관련 코드 분석
-3. 긴급 수정 권장
+3+ consecutive failures:
+1. Warn of possible system issue
+2. Analyze related code
+3. Recommend urgent fix
 ```
 
-### 4. 비정상 상태 코드 감지
+### 4. Abnormal Status Code Detection
 
 ```bash
-# 5xx 에러 필터링
+# Filter 5xx errors
 docker compose logs -f | grep '"status":5'
 
-# 4xx 에러 필터링 (인증 관련)
+# Filter 4xx errors (auth related)
 docker compose logs -f | grep '"status":40[13]'
 ```
 
 ---
 
-## 로그 분석 프로세스
+## Log Analysis Process
 
-### Step 1: 로그 수집
+### Step 1: Collect Logs
 
 ```bash
-# 최근 N분 로그 수집
+# Collect last N minutes of logs
 docker compose logs --since "5m" > /tmp/recent_logs.txt
 
-# 특정 Request ID 로그 추출
+# Extract specific Request ID logs
 grep 'req_abc123' /tmp/recent_logs.txt
 ```
 
-### Step 2: Request ID 기반 추적
+### Step 2: Request ID Based Tracing
 
-하나의 Request ID로 전체 플로우 추적:
+Trace entire flow with single Request ID:
 ```
 Client (web) → Nginx → API (backend) → Database
      ↓           ↓          ↓             ↓
   req_abc     req_abc    req_abc       req_abc
 ```
 
-### Step 3: 이슈 분류
+### Step 3: Issue Classification
 
-| 감지 패턴 | 심각도 | 행동 |
-|-----------|--------|------|
-| level: ERROR | 🔴 Critical | 즉시 문서화, 수정 권장 |
-| status: 5xx | 🔴 Critical | 서버 이슈 분석 |
-| duration > 3000ms | 🔴 Critical | 성능 최적화 필수 |
-| status: 401/403 | 🟡 Warning | 인증/권한 확인 |
-| duration > 1000ms | 🟡 Warning | 성능 개선 권장 |
-| 연속 실패 3회 | 🟡 Warning | 패턴 분석 |
-| 비정상 응답 형식 | 🟢 Info | 표준 준수 확인 |
+| Detection Pattern | Severity | Action |
+|-------------------|----------|--------|
+| level: ERROR | 🔴 Critical | Immediate documentation, suggest fix |
+| status: 5xx | 🔴 Critical | Analyze server issue |
+| duration > 3000ms | 🔴 Critical | Performance optimization required |
+| status: 401/403 | 🟡 Warning | Check auth/permissions |
+| duration > 1000ms | 🟡 Warning | Performance improvement recommended |
+| 3 consecutive failures | 🟡 Warning | Pattern analysis |
+| Abnormal response format | 🟢 Info | Check standard compliance |
 
-### Step 4: 이슈 문서화
+### Step 4: Issue Documentation
 
 ```markdown
 ## ISSUE-{number}: {title}
 
 **Request ID**: req_xxx
-**심각도**: 🔴/🟡/🟢
-**서비스**: api/web/nginx
-**시간**: {timestamp}
+**Severity**: 🔴/🟡/🟢
+**Service**: api/web/nginx
+**Time**: {timestamp}
 
-### 관련 로그
+### Related Logs
 ```json
-{로그 내용}
+{log content}
 ```
 
-### 분석
-{에러 원인 분석}
+### Analysis
+{error cause analysis}
 
-### 재현 경로
+### Reproduction Path
 1. {step1}
 2. {step2}
 
-### 권장 수정
-{수정 방안}
+### Recommended Fix
+{fix suggestion}
 
-### 관련 코드
+### Related Code
 - {file_path}:{line_number}
 ```
 
 ---
 
-## 실시간 모니터링 워크플로우
+## Real-time Monitoring Workflow
 
-### 모니터링 시작
+### Start Monitoring
 
 ```bash
-# 1. Docker 환경 확인
+# 1. Check Docker environment
 docker compose ps
 
-# 2. 로그 스트리밍 시작
+# 2. Start log streaming
 docker compose logs -f
 
-# 3. 별도 터미널에서 에러 모니터링
+# 3. Monitor errors in separate terminal
 docker compose logs -f | grep '"level":"ERROR"'
 ```
 
-### 사용자 테스트 중
+### During User Testing
 
 ```
-사용자가 브라우저에서 기능 테스트하는 동안:
+While user tests features in browser:
 
-1. 로그 실시간 확인
-2. 에러 발생 시 즉시 분석
-3. Request ID로 전체 플로우 추적
-4. 이슈 발견 시 문서화
+1. Check logs in real-time
+2. Analyze immediately when errors occur
+3. Trace entire flow by Request ID
+4. Document issues when discovered
 ```
 
-### 테스트 완료 후
+### After Testing Complete
 
 ```
-1. 전체 로그 분석
-2. 발견된 이슈 종합
-3. QA 보고서 작성 (템플릿 사용)
-4. 수정 필요 항목 정리
+1. Analyze all logs
+2. Summarize discovered issues
+3. Write QA report (use template)
+4. Organize items needing fixes
 ```
 
 ---
 
-## 이슈 자동 수정 플로우
+## Auto-Fix Flow
 
 ```
-이슈 감지 → 원인 분석 → 코드 위치 파악 → 수정 제안 → 사용자 승인 → 수정 적용
+Issue Detection → Cause Analysis → Code Location → Suggest Fix → User Approval → Apply Fix
 ```
 
-### 수정 가능한 이슈 유형
+### Auto-Fixable Issue Types
 
-| 이슈 | 자동 수정 가능 | 행동 |
-|------|:--------------:|------|
-| 타입 에러 | ✅ | 타입 정의 수정 |
-| 누락된 에러 처리 | ✅ | 에러 핸들러 추가 |
-| 로깅 누락 | ✅ | 로그 구문 추가 |
-| 느린 쿼리 | ⚠️ | 최적화 제안 |
-| 아키텍처 문제 | ❌ | 리팩토링 계획 제안 |
+| Issue | Auto-Fixable | Action |
+|-------|:------------:|--------|
+| Type error | ✅ | Fix type definition |
+| Missing error handling | ✅ | Add error handler |
+| Missing logging | ✅ | Add log statement |
+| Slow query | ⚠️ | Suggest optimization |
+| Architecture issue | ❌ | Suggest refactoring plan |
 
 ---
 
-## 로깅 표준 검증
+## Logging Standard Validation
 
-### JSON 형식 검증
+### JSON Format Validation
 ```bash
-# 유효한 JSON인지 확인
+# Check if valid JSON
 docker compose logs api | head -100 | jq . 2>/dev/null || echo "Invalid JSON"
 ```
 
-### 필수 필드 검증
+### Required Field Validation
 ```
-✅ timestamp: ISO 8601 형식
+✅ timestamp: ISO 8601 format
 ✅ level: DEBUG|INFO|WARNING|ERROR
-✅ service: 서비스 식별자
-✅ request_id: 요청 추적 ID
-✅ message: 로그 메시지
-⬜ data: 추가 데이터 (선택)
+✅ service: Service identifier
+✅ request_id: Request tracking ID
+✅ message: Log message
+⬜ data: Additional data (optional)
 ```
 
-### Request ID 전파 검증
+### Request ID Propagation Validation
 ```bash
-# Request ID가 모든 서비스에서 동일한지 확인
+# Check if Request ID is same across all services
 grep 'req_abc123' /tmp/recent_logs.txt | jq -r '.service' | sort -u
-# 예상 출력: web, nginx, api (모두 동일 request_id)
+# Expected output: web, nginx, api (all same request_id)
 ```
 
 ---
 
-## Phase 연계
+## Phase Integration
 
-| Phase | QA 모니터링 역할 |
-|-------|-----------------|
-| Phase 4 (API) | API 응답 검증, 에러 코드 확인 |
-| Phase 6 (UI) | 프론트엔드 로깅 검증 |
-| Phase 7 (보안) | 보안 이벤트 모니터링 |
-| Phase 8 (리뷰) | 전체 로그 품질 리뷰 |
-
----
-
-## 결과 보고
-
-### 성공 시
-```
-✅ Zero Script QA 완료
-- 총 테스트: N개
-- 통과: N개 (100%)
-- 평균 응답시간: Nms
-- 발견된 이슈: 0개
-
-다음 Phase로 진행 가능합니다.
-```
-
-### 이슈 발견 시
-```
-⚠️ Zero Script QA 완료 (이슈 발견)
-- 총 테스트: N개
-- 통과: N개 (N%)
-- 🔴 Critical: N개
-- 🟡 Warning: N개
-
-docs/03-analysis/zero-script-qa-{date}.md 에 상세 보고서 작성됨
-수정이 필요한 항목을 확인해주세요.
-```
+| Phase | QA Monitoring Role |
+|-------|-------------------|
+| Phase 4 (API) | Validate API responses, check error codes |
+| Phase 6 (UI) | Validate frontend logging |
+| Phase 7 (Security) | Monitor security events |
+| Phase 8 (Review) | Review overall log quality |
 
 ---
 
-## 모니터링 명령어 참조
+## Result Reporting
+
+### On Success
+```
+✅ Zero Script QA Complete
+- Total tests: N
+- Passed: N (100%)
+- Average response time: Nms
+- Issues found: 0
+
+Ready to proceed to next Phase.
+```
+
+### On Issues Found
+```
+⚠️ Zero Script QA Complete (Issues Found)
+- Total tests: N
+- Passed: N (N%)
+- 🔴 Critical: N
+- 🟡 Warning: N
+
+Detailed report written to docs/03-analysis/zero-script-qa-{date}.md
+Please check items needing fixes.
+```
+
+---
+
+## Monitoring Command Reference
 
 ```bash
-# 기본 로그 스트리밍
+# Basic log streaming
 docker compose logs -f
 
-# 특정 서비스만
+# Specific service only
 docker compose logs -f api
 docker compose logs -f web
 
-# 에러만 필터링
+# Filter errors only
 docker compose logs -f | grep '"level":"ERROR"'
 
-# 특정 Request ID 추적
+# Track specific Request ID
 docker compose logs -f | grep 'req_xxx'
 
-# 느린 응답 찾기
+# Find slow responses
 docker compose logs -f | grep -E '"duration_ms":[0-9]{4,}'
 
-# 최근 N분 로그
+# Last N minutes logs
 docker compose logs --since "5m"
 
-# 로그를 파일로 저장
+# Save logs to file
 docker compose logs > logs_$(date +%Y%m%d_%H%M%S).txt
 ```

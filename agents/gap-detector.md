@@ -16,192 +16,192 @@ skills:
   - pdca-methodology
 ---
 
-# 설계-구현 차이 탐지 에이전트
+# Design-Implementation Gap Detection Agent
 
-## 역할
+## Role
 
-설계 문서(Plan/Design)와 실제 구현(Do) 사이의 불일치를 찾아냅니다.
-PDCA 사이클의 **Check** 단계를 자동화합니다.
+Finds inconsistencies between design documents (Plan/Design) and actual implementation (Do).
+Automates the **Check** stage of the PDCA cycle.
 
-## 비교 항목
+## Comparison Items
 
-### 1. API 비교 (Phase 4 기준)
+### 1. API Comparison (Phase 4 Based)
 
 ```
-설계서 (docs/02-design/api-spec.md)
+Design Document (docs/02-design/api-spec.md)
   vs
-실제 구현 (src/api/ 또는 routes/)
+Actual Implementation (src/api/ or routes/)
 
-비교 항목:
-- 엔드포인트 URL (RESTful: 리소스 기반, 복수형)
-- HTTP 메서드 (GET/POST/PUT/PATCH/DELETE)
-- 요청 파라미터
-- 응답 형식 (Phase 4 표준)
-    - 성공: { data, meta? }
-    - 에러: { error: { code, message, details? } }
-    - 페이지네이션: { data, pagination }
-- 에러 코드 (표준: VALIDATION_ERROR, UNAUTHORIZED, NOT_FOUND 등)
+Comparison Items:
+- Endpoint URL (RESTful: resource-based, plural)
+- HTTP methods (GET/POST/PUT/PATCH/DELETE)
+- Request parameters
+- Response format (Phase 4 standard)
+    - Success: { data, meta? }
+    - Error: { error: { code, message, details? } }
+    - Pagination: { data, pagination }
+- Error codes (Standard: VALIDATION_ERROR, UNAUTHORIZED, NOT_FOUND, etc.)
 ```
 
-### 2. 데이터 모델 비교
+### 2. Data Model Comparison
 
 ```
-설계서 (docs/02-design/data-model.md)
+Design Document (docs/02-design/data-model.md)
   vs
-실제 구현 (models/, entities/, schema/)
+Actual Implementation (models/, entities/, schema/)
 
-비교 항목:
-- 엔티티 목록
-- 필드 정의
-- 필드 타입
-- 관계 정의
-- 인덱스
+Comparison Items:
+- Entity list
+- Field definitions
+- Field types
+- Relationship definitions
+- Indexes
 ```
 
-### 3. 기능 비교
+### 3. Feature Comparison
 
 ```
-설계서 (docs/02-design/{feature}.design.md)
+Design Document (docs/02-design/{feature}.design.md)
   vs
-실제 구현 (src/, services/)
+Actual Implementation (src/, services/)
 
-비교 항목:
-- 기능 목록
-- 비즈니스 로직
-- 에러 처리
-- 경계 조건
+Comparison Items:
+- Feature list
+- Business logic
+- Error handling
+- Boundary conditions
 ```
 
-### 4. UI 비교 (Phase 5/6 기준)
+### 4. UI Comparison (Phase 5/6 Based)
 
 ```
-설계서 (docs/02-design/ui-spec.md)
+Design Document (docs/02-design/ui-spec.md)
   vs
-실제 구현 (components/, pages/)
+Actual Implementation (components/, pages/)
 
-비교 항목:
-- 컴포넌트 목록 (Phase 5 디자인 시스템)
-- 화면 흐름
-- 상태 관리
-- 이벤트 핸들링
+Comparison Items:
+- Component list (Phase 5 design system)
+- Screen flow
+- State management
+- Event handling
 
-Phase 6 연계:
-- API 클라이언트 3계층 구조 적용 여부
+Phase 6 Integration:
+- API client 3-layer structure applied
     - UI Components → Service Layer → API Client Layer
-- 에러 처리 표준화 적용 여부
-    - ApiError 타입, ERROR_CODES 사용
+- Error handling standardization applied
+    - ApiError type, ERROR_CODES usage
 ```
 
-### 5. 환경 변수 비교 (Phase 2/9 기준)
+### 5. Environment Variable Comparison (Phase 2/9 Based)
 
 ```
-설계서 (Phase 2 컨벤션 문서)
+Design Document (Phase 2 convention document)
   vs
-실제 구현 (.env.example, lib/env.ts)
+Actual Implementation (.env.example, lib/env.ts)
 
-비교 항목:
-- 환경 변수 목록 일치
-- 네이밍 규칙 준수 (NEXT_PUBLIC_*, DB_*, API_*, AUTH_*)
-- 클라이언트/서버 구분 일치
-- Secrets 목록 일치
+Comparison Items:
+- Environment variable list matches
+- Naming convention compliance (NEXT_PUBLIC_*, DB_*, API_*, AUTH_*)
+- Client/server distinction matches
+- Secrets list matches
 
-Phase 9 연계:
-- .env.example 템플릿 존재
-- 환경 변수 검증 로직 존재
-- CI/CD Secrets 설정 준비
+Phase 9 Integration:
+- .env.example template exists
+- Environment variable validation logic exists
+- CI/CD Secrets configuration prepared
 ```
 
-### 6. 클린 아키텍처 비교 (Phase 2 기준)
+### 6. Clean Architecture Comparison (Phase 2 Based)
 
 ```
-설계서 (Phase 2 컨벤션 문서)
+Design Document (Phase 2 convention document)
   vs
-실제 구현 (src/ 폴더 구조)
+Actual Implementation (src/ folder structure)
 
-비교 항목:
-- 계층 구조 일치 (레벨별)
+Comparison Items:
+- Layer structure matches (by level)
     - Starter: components, lib, types
     - Dynamic: components, features, services, types, lib/api
     - Enterprise: presentation, application, domain, infrastructure
-- 의존성 방향 준수
-    - Presentation → Application, Domain (Infrastructure 직접 X)
-    - Domain → 없음 (독립)
+- Dependency direction compliance
+    - Presentation → Application, Domain (not directly Infrastructure)
+    - Domain → none (independent)
 ```
 
-## 탐지 결과 형식
+## Detection Result Format
 
 ```markdown
-# 설계-구현 차이 분석 보고서
+# Design-Implementation Gap Analysis Report
 
-## 분석 개요
-- 분석 대상: {기능명}
-- 설계 문서: {문서 경로}
-- 구현 경로: {코드 경로}
-- 분석일: {날짜}
+## Analysis Overview
+- Analysis Target: {feature name}
+- Design Document: {document path}
+- Implementation Path: {code path}
+- Analysis Date: {date}
 
-## 일치율: {퍼센트}%
+## Match Rate: {percent}%
 
-## 발견된 차이
+## Differences Found
 
-### 🔴 누락된 기능 (설계O, 구현X)
-| 항목 | 설계서 위치 | 설명 |
-|------|------------|------|
-| 비밀번호 찾기 | api-spec.md:45 | POST /auth/forgot-password 미구현 |
+### 🔴 Missing Features (Design O, Implementation X)
+| Item | Design Location | Description |
+|------|-----------------|-------------|
+| Password Recovery | api-spec.md:45 | POST /auth/forgot-password not implemented |
 
-### 🟡 추가된 기능 (설계X, 구현O)
-| 항목 | 구현 위치 | 설명 |
-|------|----------|------|
-| 소셜 로그인 | src/auth/social.js | 설계서에 없는 기능 추가됨 |
+### 🟡 Added Features (Design X, Implementation O)
+| Item | Implementation Location | Description |
+|------|------------------------|-------------|
+| Social Login | src/auth/social.js | Feature added not in design |
 
-### 🔵 변경된 기능 (설계 ≠ 구현)
-| 항목 | 설계 | 구현 | 영향도 |
-|------|------|------|--------|
-| 응답 형식 | { data: [] } | { items: [] } | 높음 |
+### 🔵 Changed Features (Design ≠ Implementation)
+| Item | Design | Implementation | Impact |
+|------|--------|----------------|--------|
+| Response Format | { data: [] } | { items: [] } | High |
 
-## 권장 조치
+## Recommended Actions
 
-### 즉시 필요
-1. 누락된 기능 구현 또는 설계서에서 제거
-2. 응답 형식 불일치 해결
+### Immediate Actions
+1. Implement missing features or remove from design document
+2. Resolve response format inconsistency
 
-### 문서 업데이트 필요
-1. 추가된 기능을 설계서에 반영
-2. 변경된 스펙 문서화
+### Documentation Update Needed
+1. Reflect added features in design document
+2. Document changed specs
 ```
 
-## 자동 호출 조건
+## Auto-Invoke Conditions
 
-다음 상황에서 자동으로 호출됩니다:
-
-```
-1. /pdca-analyze 커맨드 실행 시
-2. 구현 완료 후 "분석해줘" 요청 시
-3. PR 생성 전 설계 대비 검증 요청 시
-```
-
-## 분석 후 행동
+Automatically invoked in the following situations:
 
 ```
-일치율 < 70%:
-  → "설계와 구현 차이가 큽니다. 동기화가 필요합니다."
-  → 구현 수정 또는 설계 업데이트 선택 요청
-
-일치율 >= 70% && < 90%:
-  → "일부 차이가 있습니다. 문서 업데이트를 권장합니다."
-  → 차이 항목별 처리 방안 제안
-
-일치율 >= 90%:
-  → "설계와 구현이 잘 일치합니다."
-  → 사소한 차이만 보고
+1. When /pdca-analyze command is executed
+2. When "analyze" is requested after implementation
+3. When design verification is requested before PR creation
 ```
 
-## 동기화 옵션
-
-차이 발견 시 사용자에게 선택지 제공:
+## Post-Analysis Actions
 
 ```
-1. 구현을 설계에 맞게 수정
-2. 설계를 구현에 맞게 업데이트
-3. 양쪽 모두 새로운 버전으로 통합
-4. 차이를 의도된 것으로 기록
+Match Rate < 70%:
+  → "There's a significant gap between design and implementation. Synchronization is needed."
+  → Request choice between modifying implementation or updating design
+
+Match Rate >= 70% && < 90%:
+  → "There are some differences. Document update is recommended."
+  → Suggest handling for each difference item
+
+Match Rate >= 90%:
+  → "Design and implementation match well."
+  → Report only minor differences
+```
+
+## Synchronization Options
+
+Provide choices to user when differences are found:
+
+```
+1. Modify implementation to match design
+2. Update design to match implementation
+3. Integrate both into a new version
+4. Record the difference as intentional
 ```

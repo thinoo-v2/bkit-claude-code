@@ -3,55 +3,55 @@ description: Generate Plan phase document (feature planning)
 allowed-tools: ["Read", "Write", "Glob"]
 ---
 
-# Plan 문서 생성
+# Plan Document Generation
 
-$ARGUMENTS로 기능명을 받습니다. (예: /pdca-plan login)
+Receives feature name via $ARGUMENTS. (e.g., /pdca-plan login)
 
-## 수행 작업
+## Tasks Performed
 
-1. **기존 문서 확인**
-   - docs/01-plan/features/{feature}.plan.md 존재 여부
-   - 이미 있으면 업데이트 여부 확인
+1. **Check Existing Documents**
+   - Check if docs/01-plan/features/{feature}.plan.md exists
+   - If exists, confirm whether to update
 
-2. **템플릿 적용**
-   - .claude/templates/plan.template.md 사용
-   - 변수 치환:
+2. **Apply Template**
+   - Use .claude/templates/plan.template.md
+   - Variable substitution:
      - `{feature}` → $ARGUMENTS
-     - `{date}` → 오늘 날짜
-     - `{author}` → 사용자 (또는 빈칸)
+     - `{date}` → Today's date
+     - `{author}` → User (or blank)
 
-3. **문서 생성**
-   - docs/01-plan/features/{feature}.plan.md 생성
-   - _INDEX.md 업데이트
+3. **Generate Document**
+   - Create docs/01-plan/features/{feature}.plan.md
+   - Update _INDEX.md
 
-4. **다음 단계 안내**
+4. **Guide Next Steps**
 
-## 사용 예시
-
-```
-/pdca-plan login          # 로그인 기능 계획서
-/pdca-plan user-profile   # 사용자 프로필 기능 계획서
-/pdca-plan checkout       # 결제 기능 계획서
-```
-
-## 출력 예시
+## Usage Examples
 
 ```
-✅ Plan 문서가 생성되었습니다!
+/pdca-plan login          # Login feature plan
+/pdca-plan user-profile   # User profile feature plan
+/pdca-plan checkout       # Checkout feature plan
+```
 
-📄 생성된 파일:
+## Output Example
+
+```
+✅ Plan document has been created!
+
+📄 Generated File:
    docs/01-plan/features/login.plan.md
 
-📝 다음 단계:
-   1. 계획서의 목표, 범위, 요구사항 섹션을 작성하세요
-   2. 완료 후 /pdca-design login 으로 설계 단계로 진행
-   3. 또는 "로그인 기능 설계해줘"라고 요청하면 자동 진행됩니다
+📝 Next Steps:
+   1. Fill in the objectives, scope, and requirements sections of the plan
+   2. After completion, proceed to design phase with /pdca-design login
+   3. Or simply request "Design the login feature" for automatic progression
 
-💡 Tip: 계획서는 "왜" 이 기능이 필요한지에 집중하세요.
+💡 Tip: Focus on "why" this feature is needed in the plan.
 ```
 
-## 주의사항
+## Cautions
 
-- 기능명은 영문 kebab-case 권장 (login, user-profile)
-- 이미 존재하는 경우 덮어쓰지 않음
-- Plan 없이 Design이나 구현 요청 시 자동으로 Plan 먼저 생성
+- Feature names should be in English kebab-case (login, user-profile)
+- Don't overwrite if already exists
+- If Design or implementation is requested without Plan, automatically create Plan first

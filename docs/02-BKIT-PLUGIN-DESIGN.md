@@ -1,60 +1,66 @@
-# bkit 바이브코딩 Kit - 플러그인화 설계서
+# bkit Vibecoding Kit - Plugin Design Document
 
-> **목표**: `.claude/` 폴더 전체를 Claude Code 플러그인으로 패키징하여
-> 단일 명령어로 설치 가능하게 만들기
+> **Goal**: Package the entire `.claude/` folder as a Claude Code plugin
+> for single-command installation
+
+> **Verification Status**: ✅ Verified against official documentation (2025-01-09)
+>
+> This document has been verified against Claude Code official plugin documentation.
+> Plugin system is in **Public Beta** since October 9, 2025.
 
 ---
 
-## 1. 플러그인화 가능성 분석
+## 1. Plugin Feasibility Analysis
 
-### 1.1 결론: **플러그인화 가능** (일부 구조 재설계 필요)
+### 1.1 Conclusion: **Plugin Conversion Possible** (Minor restructuring required)
 
-| 현재 컴포넌트 | 개수 | 플러그인 지원 | 마이그레이션 방안 |
-|---------------|------|:------------:|------------------|
-| **commands/** | 17개 | ✅ 완전 지원 | 그대로 이전 |
-| **agents/** | 9개 | ✅ 완전 지원 | 그대로 이전 |
-| **skills/** | 19개 | ✅ 완전 지원 | 그대로 이전 |
-| **hooks** | 6종 | ✅ 지원 | hooks/hooks.json으로 변환 |
-| **instructions/** | 5개 | ⚠️ 미지원 | skills에 통합 |
-| **templates/** | 7개 | ⚠️ 미지원 | skills에 임베드 |
-| **docs/** | 26개 | ⚠️ 미지원 | skills 참조 또는 별도 배포 |
-| **settings.json** | 1개 | ⚠️ 부분 지원 | hooks/permissions만 이전 |
+| Current Component | Count | Plugin Support | Migration Strategy |
+|-------------------|-------|:--------------:|-------------------|
+| **commands/** | 17 | ✅ Full support | Direct migration |
+| **agents/** | 10 | ✅ Full support | Direct migration |
+| **skills/** | 17 | ✅ Full support | Direct migration |
+| **hooks** | 6 types | ✅ Supported | Convert to hooks/hooks.json |
+| **instructions/** | 7 | ⚠️ Not supported | Integrate into skills |
+| **templates/** | 12 | ⚠️ Not supported | Embed in skills |
+| **docs/** | 27 | ⚠️ Not supported | Reference via skills or separate hosting |
+| **settings.json** | 1 | ⚠️ Partial | hooks only (permissions not transferable) |
 
-### 1.2 공식 플러그인 구조 vs 현재 .claude/ 구조
-
-```
-공식 플러그인 구조                 현재 .claude/ 구조
-==================                ===================
-.claude-plugin/                   (신규 생성 필요)
-├── plugin.json    ←────────────  settings.json (변환)
-commands/          ←────────────  commands/ ✅
-agents/            ←────────────  agents/ ✅
-skills/            ←────────────  skills/ ✅
-hooks/                            hooks/
-└── hooks.json     ←────────────  settings.json의 hooks 섹션
-.mcp.json          ←────────────  .mcp.json (프로젝트 루트)
-README.md          ←────────────  docs/CLAUDE-CODE-MASTERY.md
-
-(지원 안 됨)       ←────────────  instructions/ (skills에 통합)
-(지원 안 됨)       ←────────────  templates/ (skills에 임베드)
-(지원 안 됨)       ←────────────  docs/ (별도 처리)
-```
-
-### 1.3 주요 변경점
-
-#### 1.3.1 명령어 네임스페이싱
+### 1.2 Official Plugin Structure vs Current .claude/ Structure
 
 ```
-현재: /learn-claude-code
-플러그인 후: /bkit:learn-claude-code
+Official Plugin Structure          Current .claude/ Structure
+=========================          ==========================
+plugin-name/                       (new directory needed)
+├── .claude-plugin/                (create new)
+│   └── plugin.json  ←──────────── metadata only (NOT settings.json)
+├── commands/        ←──────────── commands/ ✅
+├── agents/          ←──────────── agents/ ✅
+├── skills/          ←──────────── skills/ ✅
+├── hooks/
+│   └── hooks.json   ←──────────── settings.json hooks section
+├── .mcp.json        ←──────────── .mcp.json (project root, optional)
+└── README.md        ←──────────── docs/CLAUDE-CODE-MASTERY.md
 
-현재: /pdca-plan
-플러그인 후: /bkit:pdca-plan
+(Not supported)      ←──────────── instructions/ (integrate into skills)
+(Not supported)      ←──────────── templates/ (embed in skills)
+(Not supported)      ←──────────── docs/ (handle separately)
 ```
 
-#### 1.3.2 Hooks 포맷 변환
+### 1.3 Key Changes
 
-**현재 (settings.json)**:
+#### 1.3.1 Command Namespacing
+
+```
+Current: /learn-claude-code
+After plugin: /bkit:learn-claude-code
+
+Current: /pdca-plan
+After plugin: /bkit:pdca-plan
+```
+
+#### 1.3.2 Hooks Format Conversion
+
+**Current (settings.json)**:
 ```json
 {
   "hooks": {
@@ -63,7 +69,7 @@ README.md          ←────────────  docs/CLAUDE-CODE-MAS
 }
 ```
 
-**플러그인 (hooks/hooks.json)**:
+**Plugin (hooks/hooks.json)**:
 ```json
 {
   "hooks": {
@@ -72,20 +78,20 @@ README.md          ←────────────  docs/CLAUDE-CODE-MAS
 }
 ```
 
-(포맷은 동일, 파일 위치만 변경)
+(Format is identical, only file location changes)
 
 ---
 
-## 2. 플러그인 아키텍처 설계
+## 2. Plugin Architecture Design
 
-### 2.1 플러그인 디렉토리 구조
+### 2.1 Plugin Directory Structure
 
 ```
 bkit/
 ├── .claude-plugin/
-│   └── plugin.json              # 플러그인 매니페스트
+│   └── plugin.json              # Plugin manifest (REQUIRED)
 │
-├── commands/                     # 17개 커맨드
+├── commands/                     # 17 commands (auto-discovered)
 │   ├── learn-claude-code.md
 │   ├── setup-claude-code.md
 │   ├── upgrade-claude-code.md
@@ -104,10 +110,11 @@ bkit/
 │   ├── upgrade-level.md
 │   └── zero-script-qa.md
 │
-├── agents/                       # 9개 에이전트
+├── agents/                       # 10 agents (auto-discovered)
 │   ├── starter-guide.md
 │   ├── pipeline-guide.md
 │   ├── bkend-expert.md
+│   ├── enterprise-expert.md
 │   ├── infra-architect.md
 │   ├── code-analyzer.md
 │   ├── design-validator.md
@@ -115,14 +122,16 @@ bkit/
 │   ├── report-generator.md
 │   └── qa-monitor.md
 │
-├── skills/                       # 19개 + 통합 스킬
+├── skills/                       # 17 + integrated skills
 │   ├── starter/SKILL.md
 │   ├── dynamic/SKILL.md
 │   ├── enterprise/SKILL.md
 │   ├── pdca-methodology/SKILL.md
 │   ├── document-standards/SKILL.md
 │   ├── analysis-patterns/SKILL.md
+│   ├── ai-native-development/SKILL.md
 │   ├── development-pipeline/SKILL.md
+│   ├── monorepo-architecture/SKILL.md
 │   ├── phase-1-schema/SKILL.md
 │   ├── phase-2-convention/SKILL.md
 │   ├── phase-3-mockup/SKILL.md
@@ -136,77 +145,70 @@ bkit/
 │   ├── desktop-app/SKILL.md
 │   ├── zero-script-qa/SKILL.md
 │   │
-│   ├── bkit-rules/SKILL.md       # [신규] instructions/ 통합
-│   └── bkit-templates/SKILL.md   # [신규] templates/ 통합
+│   ├── bkit-rules/SKILL.md       # [NEW] instructions/ integration
+│   └── bkit-templates/SKILL.md   # [NEW] templates/ integration
 │
 ├── hooks/
-│   └── hooks.json                # settings.json 훅 이전
+│   └── hooks.json                # Event hooks configuration
 │
-├── docs/                         # [선택] 문서 포함 시
-│   └── (mastery, pdca, levels...)
-│
-└── README.md                     # 설치/사용 가이드
+└── README.md                     # Installation/usage guide
 ```
 
-### 2.2 plugin.json 설계
+### 2.2 plugin.json Design
+
+> ⚠️ **IMPORTANT**: The `permissions` field is **NOT supported** in plugin.json.
+> Permissions are managed in user's settings.json, not plugin manifest.
 
 ```json
 {
   "name": "bkit",
-  "version": "1.4.0",
-  "description": "바이브코딩 Kit - PDCA 방법론 + Claude Code 마스터리",
+  "version": "1.0.0",
+  "description": "Vibecoding Kit - PDCA methodology + Claude Code mastery for rapid development",
   "author": {
     "name": "Popup Studio",
-    "url": "https://bkamp.ai"
+    "email": "contact@popup.studio",
+    "url": "https://popup.studio"
   },
-  "homepage": "https://github.com/bkit/vibecoding-kit",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bkit/vibecoding-kit.git"
-  },
+  "repository": "https://github.com/popup-studio-ai/bkit-claude-code",
   "license": "MIT",
-  "claude": {
-    "minVersion": "2.1.1"
-  },
   "keywords": [
     "vibecoding",
     "pdca",
     "development-pipeline",
     "baas",
-    "fullstack"
-  ],
-  "permissions": {
-    "allow": [
-      "Read(**)",
-      "Glob(**)",
-      "Grep(**)",
-      "Bash(git *)",
-      "Bash(npm *)",
-      "Bash(pnpm *)",
-      "WebSearch",
-      "WebFetch(domain:docs.anthropic.com)",
-      "WebFetch(domain:code.claude.com)"
-    ],
-    "deny": [
-      "Bash(rm -rf /)",
-      "Bash(sudo *)"
-    ]
-  }
+    "fullstack",
+    "ai-native"
+  ]
 }
 ```
 
-### 2.3 hooks/hooks.json 설계
+**Supported plugin.json fields** (per official documentation):
+| Field | Required | Description |
+|-------|:--------:|-------------|
+| `name` | ✅ | Plugin name (kebab-case, unique) |
+| `version` | ❌ | Semantic version |
+| `description` | ❌ | Plugin description |
+| `author` | ❌ | Author info (name, email, url) |
+| `repository` | ❌ | GitHub repository URL |
+| `license` | ❌ | License type |
+| `keywords` | ❌ | Search keywords |
+
+**NOT supported in plugin.json**:
+- ❌ `permissions` - User manages in their settings.json
+- ❌ `claude.minVersion` - Not documented
+- ❌ `homepage` - Use `repository` instead
+
+### 2.3 hooks/hooks.json Design
 
 ```json
 {
   "hooks": {
     "SessionStart": [
       {
-        "once": true,
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "bkit 바이브코딩 Kit이 활성화되었습니다. /bkit:learn-claude-code로 학습을 시작하거나, 바로 개발을 시작하세요. PDCA가 자동 적용됩니다.",
+            "prompt": "bkit Vibecoding Kit activated. Use /bkit:learn-claude-code to start learning, or begin development directly. PDCA methodology is automatically applied.",
             "timeout": 5000
           }
         ]
@@ -218,7 +220,7 @@ bkit/
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "PDCA 규칙 검증: docs/02-design/ 관련 설계가 있는지 확인하세요. {\"decision\": \"approve\", \"reason\": \"...\"}",
+            "prompt": "PDCA rule check: Verify if related design exists in docs/02-design/. Respond with your assessment.",
             "timeout": 10000
           }
         ]
@@ -229,7 +231,8 @@ bkit/
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "완료 전 확인: 1) 태스크 완료 2) 설계-구현 일치 3) 문서 업데이트. {\"decision\": \"approve\", \"reason\": \"...\"}",
+            "model": "sonnet",
+            "prompt": "Pre-completion check: 1) All tasks completed 2) Design-implementation aligned 3) Documentation updated. Evaluate if Claude should stop.",
             "timeout": 15000
           }
         ]
@@ -239,15 +242,131 @@ bkit/
 }
 ```
 
+**Supported Hook Events** (per official documentation):
+| Event | Can Block | Description |
+|-------|:---------:|-------------|
+| `SessionStart` | ❌ | Session begins |
+| `SessionEnd` | ❌ | Session ends |
+| `PreToolUse` | ✅ | Before tool execution |
+| `PostToolUse` | ❌ | After tool execution |
+| `Stop` | ✅ | When Claude attempts to stop |
+| `SubagentStop` | ✅ | When subagent attempts to stop |
+| `UserPromptSubmit` | ✅ | When user submits prompt |
+| `PreCompact` | ✅ | Before context compaction |
+| `Notification` | ❌ | When notification occurs |
+
+**⚠️ Stop/SubagentStop Hook Caution**:
+- Do NOT request JSON format in Stop hooks
+- Use natural language for evaluation
+- Recommend `model: "sonnet"` (haiku may be unstable)
+
 ---
 
-## 3. instructions/ 통합 전략
+## 3. Component Format Specifications
 
-### 3.1 문제점
+### 3.1 Commands Format (commands/*.md)
 
-플러그인 공식 구조에 `instructions/` 폴더가 없음.
+```yaml
+---
+description: Command description (optional)
+allowed-tools: Read, Grep, Bash(git:*)   # Optional - restrict available tools
+argument-hint: [feature-name]             # Optional - argument placeholder
+model: sonnet                             # Optional - model to use
+---
 
-### 3.2 해결책: bkit-rules 스킬로 통합
+Command instructions in markdown...
+Use $ARGUMENTS for user input.
+Use $1, $2 for positional arguments.
+```
+
+**Supported frontmatter fields**:
+- `description`: string
+- `allowed-tools`: comma-separated tool list
+- `argument-hint`: string
+- `model`: sonnet/opus/haiku
+
+### 3.2 Agents Format (agents/*.md)
+
+```yaml
+---
+name: agent-name
+description: |
+  When this agent should be invoked.
+  Include trigger keywords for semantic matching.
+model: sonnet                    # Optional (sonnet/opus/haiku/inherit)
+tools: Read, Glob, Grep          # Optional - comma-separated or YAML list
+skills: skill1, skill2           # Optional - skills to auto-load
+permissionMode: default          # Optional
+---
+
+Agent system prompt and instructions...
+```
+
+### 3.3 Skills Format (skills/*/SKILL.md)
+
+> ⚠️ **IMPORTANT Constraints**:
+> - `name`: Maximum **64 characters**, lowercase letters/numbers/hyphens only
+> - `description`: Maximum **1024 characters**
+> - SKILL.md body: Recommended **under 500 lines**
+
+```yaml
+---
+name: skill-name
+description: |
+  Brief description of what this skill does.
+  Include trigger keywords for semantic matching.
+
+  Triggers: keyword1, keyword2, 키워드, キーワード
+allowed-tools: Read, Grep, Glob  # Optional - restrict tools
+---
+
+# Skill Content
+
+Detailed instructions and knowledge...
+Keep under 500 lines for optimal performance.
+```
+
+### 3.4 Path Portability
+
+> ⚠️ **CRITICAL**: Always use `${CLAUDE_PLUGIN_ROOT}` for file references within plugins.
+
+```bash
+# ✅ Correct
+${CLAUDE_PLUGIN_ROOT}/scripts/setup.sh
+${CLAUDE_PLUGIN_ROOT}/references/guide.md
+
+# ❌ Incorrect - will break after installation
+/Users/kay/plugins/bkit/scripts/setup.sh
+~/plugins/bkit/scripts/setup.sh
+../shared-utils/helper.js
+```
+
+---
+
+## 4. instructions/ Integration Strategy
+
+### 4.1 Problem
+
+Plugin official structure does not support `instructions/` folder.
+Instructions are "always-on" rules, but plugins cannot inject them.
+
+### 4.2 Solution: Integrate into bkit-rules skill + SessionStart Hook
+
+**Approach 1: SessionStart Hook** (80% coverage)
+```json
+{
+  "hooks": {
+    "SessionStart": [{
+      "hooks": [{
+        "type": "prompt",
+        "prompt": "[BKIT PDCA Core Rules]\n\n**Always apply**:\n- New feature request → Check docs/02-design/ → Design first\n- No guessing → Check docs if unsure → Ask questions\n- SoR: Code > CLAUDE.md > docs/\n- After implementation → Suggest Gap analysis\n\nFollow these rules throughout this session."
+      }]
+    }]
+  }
+}
+```
+
+**Approach 2: bkit-rules Skill** (additional coverage)
 
 **skills/bkit-rules/SKILL.md**:
 
@@ -255,57 +374,59 @@ bkit/
 ---
 name: bkit-rules
 description: |
-  bkit 바이브코딩 Kit 핵심 규칙.
-  모든 작업에 자동 적용되는 PDCA 방법론 및 코드 품질 규칙.
+  bkit Vibecoding Kit core rules. Essential for all development work.
 
-  Trigger keywords:
-  - EN: pdca, vibecoding, development rules, code quality
-  - KO: PDCA, 바이브코딩, 개발 규칙, 코드 품질
+  Triggers: code, develop, implement, build, create, fix, feature, API, UI,
+  코드, 개발, 구현, 만들어, 기능, 버그, エラー, 开发, 实现
 ---
 
-# bkit 핵심 규칙
+# bkit Core Rules
 
-## 자동 적용 규칙 (기존 instructions/ 통합)
+## Auto-Applied Rules (from instructions/)
 
-### 1. PDCA 규칙 (pdca-rules.md)
+### 1. PDCA Rules
+- Feature request → Check docs/02-design/ first → Design before implementation
+- Implementation based on design
+- After completion → Suggest Gap analysis
 
-기능 요청 시:
-1. docs/02-design/ 확인 → 설계 먼저
-2. 설계 기반 구현
-3. 완료 후 Gap 분석 제안
+### 2. Code Quality Rules
+- No security vulnerabilities (OWASP Top 10)
+- No deployment without tests
+- Maintain type safety
 
-### 2. 코드 품질 규칙 (code-quality-rules.md)
-
-- 보안 취약점 금지 (OWASP Top 10)
-- 테스트 없이 배포 금지
-- 타입 안전성 유지
-
-### 3. 레벨 감지 규칙 (level-detection.md)
-
-| 감지 조건 | 레벨 |
-|-----------|------|
-| index.html만 | Starter |
+### 3. Level Detection Rules
+| Detection Criteria | Level |
+|-------------------|-------|
+| index.html only | Starter |
 | Next.js + .mcp.json | Dynamic |
 | services/ + infra/ | Enterprise |
 
-### 4. Zero Script QA 규칙 (zero-script-qa-rules.md)
+### 4. Zero Script QA Rules
+Verify through structured logs instead of test scripts.
 
-테스트 스크립트 대신 구조화된 로그로 검증.
-
-### 5. 타임라인 인식 (timeline-awareness.md)
-
-시간 예측 금지. 구체적 단계만 제시.
+### 5. Timeline Awareness
+No time predictions. Only concrete steps.
 ```
+
+### 4.3 Coverage Analysis
+
+| Feature | Original .claude/ | Plugin |
+|---------|:-----------------:|:------:|
+| Skills auto-reference | ✅ | ✅ Same |
+| Hooks auto-trigger | ✅ | ✅ Same |
+| Agents auto-invoke | ✅ | ✅ Same |
+| Instructions always-on | ✅ | ⚠️ ~90% via Hook |
+| **Total** | 100% | **~95%** |
 
 ---
 
-## 4. templates/ 통합 전략
+## 5. templates/ Integration Strategy
 
-### 4.1 문제점
+### 5.1 Problem
 
-플러그인 공식 구조에 `templates/` 폴더가 없음.
+Plugin official structure does not support `templates/` folder.
 
-### 4.2 해결책: bkit-templates 스킬로 통합
+### 5.2 Solution: Integrate into bkit-templates skill
 
 **skills/bkit-templates/SKILL.md**:
 
@@ -313,611 +434,320 @@ description: |
 ---
 name: bkit-templates
 description: |
-  PDCA 문서 템플릿 모음.
-  계획/설계/분석/보고 문서 작성 시 자동 참조.
+  PDCA document template collection.
+  Auto-referenced when creating plan/design/analysis/report documents.
 
-  Trigger keywords:
-  - EN: template, plan document, design document, report
-  - KO: 템플릿, 계획서, 설계서, 보고서
+  Triggers: template, plan document, design document, report,
+  템플릿, 계획서, 설계서, 보고서
 ---
 
-# bkit 문서 템플릿
+# bkit Document Templates
 
-## Plan 템플릿
+## Plan Template
+Use when: `/bkit:pdca-plan` execution
 
-사용 시점: `/bkit:pdca-plan` 실행 시
+## Design Template
+Use when: `/bkit:pdca-design` execution
 
-```markdown
-# {기능명} 계획서
+## Analysis Template
+Use when: `/bkit:pdca-analyze` execution
 
-## 목표
--
-
-## 범위
-- 포함:
-- 제외:
-
-## 성공 기준
-1.
-```
-
-## Design 템플릿
-
-사용 시점: `/bkit:pdca-design` 실행 시
-
-```markdown
-# {기능명} 설계서
-
-## 데이터 모델
-
-## API 설계
-
-## UI 설계
-
-## 구현 순서
-```
-
-(... 이하 생략)
+(Templates embedded in skill content...)
 ```
 
 ---
 
-## 5. docs/ 처리 전략
+## 6. Installation Commands
 
-### 5.1 옵션 비교
+### 6.1 Official Installation Methods
 
-| 옵션 | 장점 | 단점 |
-|------|------|------|
-| **A. 플러그인에 포함** | 올인원 설치 | 플러그인 크기 증가 |
-| **B. 별도 웹 호스팅** | 가벼운 플러그인 | 두 번 접근 필요 |
-| **C. README.md에 요약** | 간단 | 상세 내용 누락 |
-| **D. skills에 분산** | 컨텍스트 자동 로딩 | 문서 구조 파편화 |
+> ⚠️ **Corrected**: Installation uses `/plugin` command, not `claude plugin`
 
-### 5.2 권장: 하이브리드 (A + B)
-
-```
-플러그인 내 포함:
-- README.md (빠른 시작 가이드)
-- skills/에 핵심 내용 임베드
-
-별도 웹 호스팅:
-- 상세 마스터리 가이드
-- PDCA 상세 문서
-- 레벨별 심화 가이드
-
-연결 방식:
-- skills에서 웹 URL 참조
-- /bkit:learn-claude-code에서 웹으로 안내
+**From GitHub (Direct)**:
+```bash
+# In Claude Code session
+/plugin install popup-studio-ai/bkit-claude-code
 ```
 
----
+**From Marketplace (if registered)**:
+```bash
+# Add marketplace first (if not official)
+/plugin marketplace add popup-studio-ai/bkit-marketplace
 
-## 6. 기존 배포 방식 vs 플러그인 배포 비교
-
-### 6.1 기존 배포 제안서 (docs/04-BKIT-VIBECODING-KIT-배포-제안서.md)
-
-```
-Phase 1: ZIP 다운로드 + 랜딩페이지 (5시간)
-Phase 2: GitHub Template Repository (1주)
-Phase 3: npx 설치 도구 (2주)
-Phase 4: VS Code 확장 (1달)
+# Then install
+/plugin install bkit@popup-studio-ai/bkit-marketplace
 ```
 
-### 6.2 플러그인 배포
-
-```
-설치: claude plugin install bkit
-또는: claude plugin install https://github.com/bkit/vibecoding-kit
-완료!
+**From Official Marketplace (if approved)**:
+```bash
+# Official marketplace is auto-available
+/plugin install bkit@claude-plugins-official
 ```
 
-### 6.3 비교표
-
-| 항목 | ZIP/npx 배포 | 플러그인 배포 |
-|------|-------------|--------------|
-| **설치 복잡도** | 3-5단계 | 1단계 |
-| **업데이트** | 수동 재다운로드 | `claude plugin update bkit` |
-| **충돌 위험** | .claude/ 덮어쓰기 | 네임스페이스 분리 |
-| **버전 관리** | 수동 | 자동 |
-| **팀 배포** | 각자 설치 | Marketplace 중앙 관리 |
-| **기존 설정** | 충돌 가능 | 공존 가능 |
-| **개발 비용** | S3, 랜딩페이지, npx | plugin.json만 |
-
-### 6.4 결론
-
-**플러그인 배포가 압도적으로 유리**.
-
-기존 제안서의 4단계 계획을 **1단계로 단축** 가능:
-
-```
-기존: ZIP → GitHub Template → npx → VS Code 확장
-변경: 플러그인 1개로 끝
-```
-
----
-
-## 7. 구현 계획
-
-### 7.1 Phase 1: 플러그인 구조 생성 (1일)
-
-```
-□ bkit/ 디렉토리 생성
-□ .claude-plugin/plugin.json 작성
-□ commands/ 이전 (17개)
-□ agents/ 이전 (9개)
-□ skills/ 이전 (19개)
-□ hooks/hooks.json 변환
-```
-
-### 7.2 Phase 2: 통합 스킬 생성 (0.5일)
-
-```
-□ skills/bkit-rules/SKILL.md 생성 (instructions 통합)
-□ skills/bkit-templates/SKILL.md 생성 (templates 통합)
-□ skills 간 상호 참조 확인
-```
-
-### 7.3 Phase 3: 로컬 테스트 (0.5일)
+### 6.2 Plugin Management Commands
 
 ```bash
-# 테스트
+# List installed plugins
+/plugin list
+
+# Enable/disable plugin
+/plugin enable bkit
+/plugin disable bkit
+
+# Remove plugin
+/plugin remove bkit
+
+# Update plugin
+/plugin update bkit
+```
+
+### 6.3 Local Development Testing
+
+```bash
+# Test plugin during development
 claude --plugin-dir ./bkit
 
-# 명령어 테스트
+# Then use commands
 /bkit:learn-claude-code
-/bkit:pdca-plan 로그인 기능
-
-# 에이전트 테스트
-# 스킬 자동 활성화 테스트
-```
-
-### 7.4 Phase 4: 문서 및 배포 (0.5일)
-
-```
-□ README.md 작성
-□ GitHub 리포지토리 생성 (bkit/vibecoding-kit)
-□ 릴리즈 태그 (v1.4.0)
-□ Marketplace 등록 (선택)
-```
-
-### 7.5 총 소요 시간
-
-```
-기존 배포 계획: 1달+ (ZIP → npx → VS Code)
-플러그인 배포: 2.5일
-
-시간 절감: 약 90%
+/bkit:pdca-plan login feature
 ```
 
 ---
 
-## 8. 마이그레이션 가이드
+## 7. Migration Guide
 
-### 8.1 기존 .claude/ 사용자
+### 7.1 For Existing .claude/ Users
 
 ```bash
-# 1. 플러그인 설치
-claude plugin install bkit
+# 1. Install plugin
+/plugin install popup-studio-ai/bkit-claude-code
 
-# 2. 기존 .claude/ 백업 (선택)
+# 2. Backup existing .claude/ (optional)
 mv .claude .claude.backup
 
-# 3. 사용
+# 3. Start using
 /bkit:learn-claude-code
 ```
 
-### 8.2 신규 사용자
+### 7.2 For New Users
 
 ```bash
-# 설치 끝
-claude plugin install bkit
+# Install and go
+/plugin install popup-studio-ai/bkit-claude-code
 
-# 시작
+# Start
 /bkit:learn-claude-code
 ```
 
-### 8.3 명령어 매핑
+### 7.3 Command Mapping
 
-| 기존 (직접 설치) | 플러그인 설치 후 |
-|-----------------|-----------------|
+| Before (direct install) | After (plugin) |
+|------------------------|----------------|
 | `/learn-claude-code` | `/bkit:learn-claude-code` |
 | `/pdca-plan` | `/bkit:pdca-plan` |
 | `/pipeline-start` | `/bkit:pipeline-start` |
 | `/init-starter` | `/bkit:init-starter` |
+| `/init-dynamic` | `/bkit:init-dynamic` |
+| `/init-enterprise` | `/bkit:init-enterprise` |
 
 ---
 
-## 9. 제한사항 및 고려사항
+## 8. Multi-language Support Strategy
 
-### 9.1 플러그인 제한사항
+### 8.1 Current Multi-language Approach
 
-```
-⚠️ 네임스페이스 필수 (/bkit:command)
-⚠️ settings.json의 language 설정은 사용자 설정으로 유지
-⚠️ .mcp.json은 프로젝트별 설정 (플러그인에 포함 불가)
-⚠️ 문서 크기가 크면 플러그인 로딩 시간 증가
-```
+Skills and Agents support multi-language trigger keywords in `description`:
 
-### 9.2 해결 방안
-
-```
-✅ 네임스페이스: 사용자에게 안내 (습관화)
-✅ language: 설치 후 안내 또는 별도 설정 파일 생성
-✅ .mcp.json: /bkit:init-* 시 자동 생성
-✅ 문서 크기: 핵심만 포함, 상세는 웹 참조
-```
-
----
-
-## 10. 다국어 대응 전략
-
-### 10.1 현재 다국어 대응 방식
-
-현재 `.claude/skills/`와 `.claude/agents/`에서 다국어 트리거 키워드를 지원:
-
-**Skills (description의 Trigger keywords)**:
+**Skills**:
 ```yaml
-# skills/starter/SKILL.md
 description: |
   Static web development skill for beginners...
 
-  Trigger keywords:
+  Triggers:
   - EN: static website, portfolio, beginner
   - KO: 정적 웹, 포트폴리오, 초보자
   - JA: 静的サイト, ポートフォリオ, 初心者
   - ZH: 静态网站, 作品集, 初学者
-  - ES: sitio web estático, portafolio, principiante
-  - FR: site web statique, portfolio, débutant
-  - DE: statische Webseite, Portfolio, Anfänger
-  - IT: sito web statico, portfolio, principiante
 ```
 
-**Agents (description의 Triggers)**:
-```yaml
-# agents/starter-guide.md
-description: |
-  Friendly guide agent for non-developers...
+### 8.2 Plugin Multi-language Behavior
 
-  Triggers:
-  - EN: beginner, non-developer, first time
-  - KO: 초보자, 비개발자, 처음
-  - JA: 初心者, 非開発者, 初めて
-  ...
-```
+| Feature | Works? | Description |
+|---------|:------:|-------------|
+| **Skill triggers** | ✅ | Semantic matching on description |
+| **Agent triggers** | ✅ | Semantic matching on description |
+| **Command execution** | ✅ | Only namespace changes (/bkit:command) |
+| **Response language** | ⚠️ | User must set in their settings.json |
 
-### 10.2 플러그인에서 다국어 작동 여부
-
-| 항목 | 작동 여부 | 설명 |
-|------|:--------:|------|
-| **Skill 트리거** | ✅ 작동 | description 시맨틱 매칭 그대로 유지 |
-| **Agent 트리거** | ✅ 작동 | description 시맨틱 매칭 그대로 유지 |
-| **Command 실행** | ✅ 작동 | 네임스페이스만 변경 (/bkit:command) |
-| **응답 언어** | ⚠️ 별도 설정 | settings.json language는 사용자 설정 |
-
-### 10.3 트리거 vs 응답 언어
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ 사용자 입력: "정적 웹사이트 만들어줘"                           │
-│                    ↓                                        │
-│ Skills 매칭: "KO: 정적 웹" 키워드 감지 → starter 스킬 활성화 ✅ │
-│                    ↓                                        │
-│ 응답 언어: settings.json의 language 설정에 따름              │
-│            - language: korean → 한국어 응답                 │
-│            - language 없음 → 영어 응답 (기본값)              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 10.4 문제점: language 설정 미포함
-
-```json
-// settings.json (현재)
-{
-  "language": "korean"  // ← 사용자 개인 설정이라 플러그인에 포함 불가
-}
-```
-
-**결과**:
-- 플러그인 설치만 하면: 트리거는 다국어 OK, 응답은 **영어** (기본값)
-- 한국어 응답 원하면: 사용자가 직접 설정 필요
-
-### 10.5 해결 방안
-
-| 옵션 | 방법 | 장단점 |
-|------|------|--------|
-| **A. 설치 후 안내** | SessionStart 훅에서 language 설정 안내 | 사용자 선택권 보장 |
-| **B. init 시 생성** | `/bkit:init-*` 시 settings.json 생성 | 자동화, 덮어쓰기 위험 |
-| **C. README 명시** | 설치 후 설정 방법 문서화 | 가장 안전 |
-| **D. 설치 시 질문** | 설치 중 언어 선택 프롬프트 | UX 좋음, 구현 복잡 |
-
-**권장: A + C 조합**
-
-### 10.6 구현: SessionStart 훅 수정
-
-```json
-// hooks/hooks.json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "once": true,
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "bkit 바이브코딩 Kit이 활성화되었습니다.\n\n💡 한국어 응답을 원하시면 ~/.claude/settings.json에 다음을 추가하세요:\n{\"language\": \"korean\"}\n\n/bkit:learn-claude-code로 학습을 시작하거나 바로 개발을 시작하세요.",
-            "timeout": 5000
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### 10.7 README.md에 언어 설정 가이드 추가
+### 8.3 Language Setting Guide (README.md)
 
 ```markdown
-## 설치 후 언어 설정
+## Language Settings After Installation
 
-### 한국어 응답 설정
+### For Korean Responses
 
-~/.claude/settings.json 파일에 추가:
-
-\`\`\`json
+Add to ~/.claude/settings.json:
+```json
 {
   "language": "korean"
 }
-\`\`\`
-
-### 지원 언어
-
-| 언어 | 설정값 | 트리거 키워드 |
-|------|--------|--------------|
-| 한국어 | korean | 정적 웹, 초보자, API 설계... |
-| 일본어 | japanese | 静的サイト, 初心者... |
-| 중국어 | chinese | 静态网站, 初学者... |
-| 영어 | english (기본) | static website, beginner... |
 ```
 
-### 10.8 다국어 트리거 테스트 체크리스트
+### Supported Languages
 
-```
-□ 한국어 트리거 테스트
-  "정적 웹사이트 만들어줘" → starter 스킬 활성화?
-  "API 설계해줘" → phase-4-api 스킬 활성화?
-
-□ 일본어 트리거 테스트
-  "静的サイトを作って" → starter 스킬 활성화?
-
-□ 영어 트리거 테스트
-  "Create a static website" → starter 스킬 활성화?
-
-□ 응답 언어 테스트
-  language: korean 설정 후 → 한국어 응답?
-  language 미설정 → 영어 응답?
+| Language | Setting | Trigger Keywords |
+|----------|---------|------------------|
+| Korean | korean | 정적 웹, 초보자, API 설계... |
+| Japanese | japanese | 静的サイト, 初心者... |
+| Chinese | chinese | 静态网站, 初学者... |
+| English | english (default) | static website, beginner... |
 ```
 
 ---
 
-## 11. 패시브 자동 활성화 분석 (핵심!)
+## 9. Limitations and Considerations
 
-### 11.1 원래 설계 철학 (docs/03-CLAUDE-TEMPLATE-IMPROVEMENT-PROPOSAL.md)
-
-```
-"자동화 우선, 명령어는 단축키"
-
-| 구성요소 | 역할 | 사용자가 알아야 하나? |
-|----------|------|----------------------|
-| Instructions | Claude가 **항상** 따르는 PDCA 규칙 | ❌ 몰라도 됨 (자동 적용) |
-| Skills | Claude가 **필요시** 참조하는 지식 | ❌ 몰라도 됨 (자동 참조) |
-| Agents | Claude가 **필요시** 호출하는 전문가 | ❌ 몰라도 됨 (자동 호출) |
-| Hooks | 특정 이벤트에 **자동** 트리거 | ❌ 몰라도 됨 (자동 실행) |
-| Commands | **파워유저용** 단축키 | ⚪ 선택사항 (알면 편함) |
-```
-
-### 11.2 플러그인에서 패시브 자동 활성화 가능 여부
-
-| 구성요소 | 활성화 방식 | 패시브 자동 | 플러그인 지원 |
-|----------|------------|:-----------:|:------------:|
-| **Skills** | Model-invoked (Claude가 판단) | ✅ | ✅ |
-| **Hooks** | Event-driven (이벤트 자동 트리거) | ✅ | ✅ |
-| **Agents** | Task tool로 자동 호출 | ✅ | ✅ |
-| **Commands** | 명시적 호출 필요 (/bkit:*) | ❌ | ✅ |
-| **Instructions** | 항상 적용 (always-on) | ✅ | ❌ **미지원!** |
-
-### 11.3 ⚠️ 중대한 제약: Instructions 미지원
-
-**원래 설계의 핵심**:
-```
-Instructions가 핵심 - Claude가 **항상** 따르는 PDCA 규칙
-```
-
-**플러그인 공식 문서**:
-> "There is no documented mechanism for plugins to inject 'always-on' background instructions/rules"
-
-**결과**:
-- 플러그인에 `instructions/` 폴더를 포함해도 **자동 적용되지 않음**
-- 원래 설계의 "항상 PDCA 규칙 적용" 기능이 **약화됨**
-
-### 11.4 Skills vs Instructions 비교
+### 9.1 Plugin Limitations
 
 ```
-Instructions (원래):
-┌──────────────────────────────────────────┐
-│ 항상 Claude 컨텍스트에 포함됨            │
-│ 모든 요청에 PDCA 규칙 자동 적용          │
-│ 사용자가 몰라도 100% 작동               │
-└──────────────────────────────────────────┘
-
-Skills (플러그인):
-┌──────────────────────────────────────────┐
-│ Claude가 "필요하다고 판단할 때" 참조     │
-│ description 시맨틱 매칭에 의존           │
-│ PDCA와 무관한 요청 시 활성화 안 될 수 있음 │
-└──────────────────────────────────────────┘
+⚠️ Namespace required (/bkit:command)
+⚠️ settings.json language setting stays in user settings
+⚠️ .mcp.json is per-project (cannot include in plugin)
+⚠️ Large docs increase plugin loading time
+⚠️ permissions field NOT supported in plugin.json
+⚠️ instructions/ always-on rules need workaround
 ```
 
-### 11.5 우회 방안 (3가지)
-
-#### 방안 1: SessionStart Hook으로 규칙 주입 (권장)
-
-```json
-// hooks/hooks.json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "once": true,
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "[BKIT PDCA 핵심 규칙]\n\n**항상 적용**:\n- 새 기능 요청 → docs/02-design/ 확인 → 설계 먼저\n- 추측 금지 → 모르면 문서 확인 → 질문\n- SoR: 코드 > CLAUDE.md > docs/\n- 구현 완료 → Gap 분석 제안\n\n위 규칙을 이 세션 동안 항상 준수하세요.",
-            "timeout": 5000
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**장점**: 세션 시작 시 규칙이 Claude 컨텍스트에 주입됨
-**단점**: 매 세션 시작 시 메시지 출력, 프롬프트 크기 제한
-
-#### 방안 2: PreToolUse Hook으로 규칙 강제
-
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "prompt",
-            "prompt": "PDCA 규칙 체크:\n1. 이 파일 관련 설계가 docs/02-design/에 있는가?\n2. 없다면 설계 먼저 작성해야 함\n\n{\"decision\": \"approve\"|\"block\", \"reason\": \"...\"}",
-            "timeout": 10000
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**장점**: 파일 작성 시 강제 체크
-**단점**: 매번 검사로 속도 저하
-
-#### 방안 3: 핵심 스킬 description 최적화
-
-```yaml
-# skills/bkit-rules/SKILL.md
-description: |
-  bkit 바이브코딩 Kit 핵심 규칙. **모든 개발 작업에 필수 적용**.
-
-  Trigger keywords (매우 넓은 범위):
-  - EN: code, develop, implement, build, create, make, fix, modify, feature, function, API, UI, component, page, database, deploy, test
-  - KO: 코드, 개발, 구현, 만들어, 생성, 수정, 기능, 함수, API, UI, 컴포넌트, 페이지, 데이터베이스, 배포, 테스트, 버그, 에러
-```
-
-**장점**: 대부분의 개발 요청에 스킬 활성화
-**단점**: 100% 보장은 불가
-
-### 11.6 권장 구현: 하이브리드 (방안 1 + 3)
+### 9.2 Solutions
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│ SessionStart Hook (방안 1)                              │
-│ → 세션 시작 시 핵심 PDCA 규칙 주입                        │
-│ → "항상 적용" 효과의 80% 달성                            │
-└─────────────────────────────────────────────────────────┘
-                         +
-┌─────────────────────────────────────────────────────────┐
-│ bkit-rules 스킬 (방안 3)                                │
-│ → 넓은 트리거 키워드로 대부분 상황 커버                    │
-│ → 상세 규칙 및 템플릿 제공                               │
-└─────────────────────────────────────────────────────────┘
-                         =
-┌─────────────────────────────────────────────────────────┐
-│ 원래 instructions의 약 90% 기능 복원                     │
-│ (100%는 아니지만, 실용적 수준)                           │
-└─────────────────────────────────────────────────────────┘
+✅ Namespace: Guide users (habit formation)
+✅ language: Guide in README after installation
+✅ .mcp.json: Auto-generate via /bkit:init-* commands
+✅ Doc size: Include essentials only, reference web for details
+✅ permissions: Document recommended settings in README
+✅ instructions: Use SessionStart hook + broad-trigger skills
 ```
 
-### 11.7 결론: 패시브 자동 활성화
+### 9.3 Known Issues (as of 2025-10)
 
-| 기능 | 원래 .claude/ | 플러그인 |
-|------|:------------:|:--------:|
-| Skills 자동 참조 | ✅ | ✅ 동일 |
-| Hooks 자동 트리거 | ✅ | ✅ 동일 |
-| Agents 자동 호출 | ✅ | ✅ 동일 |
-| Instructions 항상 적용 | ✅ | ⚠️ Hook으로 대체 (90%) |
-| **총합** | 100% | **~95%** |
-
-**최종 답변**:
-
-> 플러그인화하더라도 사용자가 명령어를 몰라도 Skills, Agents, Hooks는 **패시브로 자동 작동**합니다.
-> 단, Instructions(항상 적용되는 규칙)는 SessionStart Hook으로 대체해야 하며, 원래의 100%가 아닌 약 95% 수준의 자동화를 달성할 수 있습니다.
+Per community reports:
+- Permission deny rules may have symlink bypass issues
+- Read/Write deny settings may not function completely
+- Recommend not relying heavily on deny rules for security
 
 ---
 
-## 12. 결론 및 권장사항
+## 10. Implementation Checklist
 
-### 12.1 핵심 결론
-
+### Phase 1: Create Plugin Structure
 ```
-.claude/ 전체를 bkit 플러그인으로 변환 가능!
-기존 배포 제안서의 ZIP/npx/VS Code 계획보다 훨씬 효율적.
-```
-
-### 12.2 권장 액션
-
-```
-1. 즉시 플러그인 구조로 전환
-2. 기존 배포 제안서 (Phase 1-4) 폐기
-3. 플러그인 Marketplace 또는 GitHub URL 배포
-4. 랜딩페이지는 플러그인 설치 안내로 단순화
+□ Create bkit/ directory
+□ Create .claude-plugin/plugin.json
+□ Migrate commands/ (17 files)
+□ Migrate agents/ (10 files)
+□ Migrate skills/ (17 directories)
+□ Create hooks/hooks.json
 ```
 
-### 12.3 예상 효과
+### Phase 2: Create Integration Skills
+```
+□ Create skills/bkit-rules/SKILL.md (instructions integration)
+□ Create skills/bkit-templates/SKILL.md (templates integration)
+□ Verify SKILL.md name (≤64 chars) and description (≤1024 chars)
+□ Verify skill inter-references
+```
 
-| 항목 | 기존 계획 | 플러그인 전환 |
-|------|----------|--------------|
-| 개발 시간 | 1달+ | 2.5일 |
-| 설치 복잡도 | 3-5단계 | 1단계 |
-| 유지보수 | S3/npm 관리 | GitHub 릴리즈만 |
-| 사용자 경험 | 수동 다운로드 | 한 줄 명령어 |
+### Phase 3: Local Testing
+```bash
+# Test
+claude --plugin-dir ./bkit
+
+# Command tests
+/bkit:learn-claude-code
+/bkit:pdca-plan login feature
+
+# Agent tests
+# Skill auto-activation tests
+```
+
+### Phase 4: Documentation and Deployment
+```
+□ Write README.md
+□ Create GitHub release (v1.0.0)
+□ Marketplace registration (optional)
+□ Update this design document
+```
 
 ---
 
-## 부록: 빠른 시작 (플러그인 버전)
+## 11. Quick Start (Plugin Version)
 
 ```bash
-# 설치
-claude plugin install bkit
+# Install
+/plugin install popup-studio-ai/bkit-claude-code
 
-# 시작
+# Start learning
 /bkit:learn-claude-code
 
-# 프로젝트 초기화
+# Initialize project
 /bkit:init-dynamic
 
-# 개발 시작
-"로그인 기능 만들어줘"  # PDCA 자동 적용!
+# Start development
+"Create a login feature"  # PDCA auto-applied!
 ```
 
 ---
 
-**작성일**: 2025-01-09
-**작성자**: Claude (with Kay)
-**버전**: v1.0
-**상태**: 설계 완료 → 구현 대기
+**Created**: 2025-01-09
+**Author**: Claude (with Kay)
+**Version**: v1.1.0
+**Status**: Design verified → Implementation ready
 
 ---
 
-## 참고 자료
+## Official Documentation References
 
-- [Claude Code 공식 플러그인 문서](https://code.claude.com/docs/en/plugins)
-- [공식 플러그인 GitHub](https://github.com/anthropics/claude-code/tree/main/plugins)
-- [플러그인 Marketplace](https://github.com/anthropics/claude-plugins-official)
-- [커뮤니티 플러그인 레지스트리](https://claude-plugins.dev/)
+### Primary Sources (Verified 2025-01-09)
+
+| Document | URL | Description |
+|----------|-----|-------------|
+| **Create Plugins** | [code.claude.com/docs/en/plugins](https://code.claude.com/docs/en/plugins) | Main plugin creation guide |
+| **Plugins Reference** | [code.claude.com/docs/en/plugins-reference](https://code.claude.com/docs/en/plugins-reference) | Complete schema reference |
+| **Discover Plugins** | [code.claude.com/docs/en/discover-plugins](https://code.claude.com/docs/en/discover-plugins) | Marketplace and installation |
+| **Agent Skills** | [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills) | SKILL.md format specification |
+| **Subagents** | [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents) | Agent definition format |
+| **Hooks Guide** | [code.claude.com/docs/en/hooks-guide](https://code.claude.com/docs/en/hooks-guide) | Event hooks configuration |
+| **Settings** | [code.claude.com/docs/en/settings](https://code.claude.com/docs/en/settings) | Settings and permissions |
+
+### GitHub Repositories
+
+| Repository | URL | Description |
+|------------|-----|-------------|
+| **Claude Code** | [github.com/anthropics/claude-code](https://github.com/anthropics/claude-code) | Main repository |
+| **Plugins Examples** | [github.com/anthropics/claude-code/tree/main/plugins](https://github.com/anthropics/claude-code/tree/main/plugins) | Official plugin examples |
+| **Official Marketplace** | [github.com/anthropics/claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | Anthropic-curated plugins |
+| **Skills Repository** | [github.com/anthropics/skills](https://github.com/anthropics/skills) | Official skills examples |
+
+### Community Resources
+
+| Resource | URL | Description |
+|----------|-----|-------------|
+| **Community Registry** | [claude-plugins.dev](https://claude-plugins.dev/) | Community plugin discovery |
+| **Plugin Structure Skill** | [claude-plugins.dev/skills/@anthropics/claude-plugins-official/plugin-structure](https://claude-plugins.dev/skills/@anthropics/claude-plugins-official/plugin-structure) | Detailed structure guide |
+
+---
+
+## Changelog
+
+### v1.1.0 (2025-01-09)
+- ✅ Verified against official Claude Code documentation
+- ❌ Removed unsupported `permissions` field from plugin.json
+- 🔄 Updated installation commands to use `/plugin install`
+- 📝 Added SKILL.md constraints (name: 64 chars, description: 1024 chars)
+- 📝 Added ${CLAUDE_PLUGIN_ROOT} path requirement
+- 📝 Added comprehensive official documentation references
+- 📝 Updated agents count from 9 to 10
+
+### v1.0.0 (2025-01-09)
+- Initial design document

@@ -2,48 +2,48 @@
 description: Claude Code learning guide
 ---
 
-# Claude Code 학습 가이드
+# Claude Code Learning Guide
 
-사용자에게 Claude Code 설정 방법을 교육합니다. **어떤 프로젝트, 어떤 언어에서든** 동일하게 작동합니다.
+Educates users on how to configure Claude Code. Works **across any project, any language**.
 
-## 사용법
-
-```
-/learn-claude-code [레벨]
-```
-
-- 레벨 생략 시: 현재 설정 분석 후 적합한 레벨 추천
-- 레벨 지정: 1 (기초), 2 (자동화), 3 (전문화), 4 (팀 최적화)
-
-## 왜 이 커맨드가 필요한가?
+## Usage
 
 ```
-문제: 새 세션마다 Claude Code 사용법을 다시 설명해야 함
-해결: 이 커맨드로 일관된 교육 제공
+/learn-claude-code [level]
 ```
 
-## 수행 작업
+- If level is omitted: Analyzes current settings and recommends appropriate level
+- If level specified: 1 (basics), 2 (automation), 3 (specialization), 4 (team optimization)
 
-### 1단계: 마스터 가이드 참조
-
-**반드시** 다음 문서를 먼저 읽어야 합니다:
+## Why This Command?
 
 ```
-.claude/docs/CLAUDE-CODE-MASTERY.md          # 목차 및 핵심 개념
-.claude/docs/mastery/04-curriculum.md        # 교육 커리큘럼
-.claude/docs/mastery/02-language-templates.md # 언어별 템플릿
-.claude/docs/mastery/03-project-structures.md # 프로젝트 구조별 가이드
+Problem: Need to re-explain Claude Code usage every new session
+Solution: Provide consistent education through this command
 ```
 
-필요한 내용에 따라 해당 파일을 참조합니다.
+## Tasks Performed
 
-### 2단계: 현재 설정 분석
+### Step 1: Reference Master Guide
 
-프로젝트의 Claude Code 설정 현황을 분석합니다:
+**Must** read the following documents first:
+
+```
+.claude/docs/CLAUDE-CODE-MASTERY.md          # Table of contents and core concepts
+.claude/docs/mastery/04-curriculum.md        # Education curriculum
+.claude/docs/mastery/02-language-templates.md # Language-specific templates
+.claude/docs/mastery/03-project-structures.md # Project structure guides
+```
+
+Reference appropriate files based on needed content.
+
+### Step 2: Analyze Current Settings
+
+Analyze the project's Claude Code configuration status:
 
 ```bash
-# 확인할 파일/폴더
-- CLAUDE.md (루트)
+# Files/folders to check
+- CLAUDE.md (root)
 - .claude/settings.local.json
 - .claude/commands/
 - .claude/agents/
@@ -52,88 +52,88 @@ description: Claude Code learning guide
 - .github/workflows/claude-docs-update.yml
 ```
 
-#### 기본 제공 파일 제외 (중요!)
+#### Exclude Default Provided Files (Important!)
 
-다음 파일/폴더는 **이 학습 시스템의 기본 제공 파일**이므로 레벨 판단 시 **제외**해야 합니다:
+The following files/folders are **default files of this learning system** and should be **excluded** when determining level:
 
 ```bash
-# 제외할 파일/폴더 (사용자 설정으로 카운트하지 않음)
-- .claude/commands/learn-claude-code.md      # 학습 커맨드
-- .claude/commands/setup-claude-code.md      # 설정 생성 커맨드
-- .claude/commands/upgrade-claude-code.md    # 업그레이드 커맨드
-- .claude/docs/                              # 마스터 가이드 문서 전체
+# Files/folders to exclude (not counted as user settings)
+- .claude/commands/learn-claude-code.md      # Learning command
+- .claude/commands/setup-claude-code.md      # Setup generation command
+- .claude/commands/upgrade-claude-code.md    # Upgrade command
+- .claude/docs/                              # Entire master guide documents
 ```
 
-**예시**:
-- `.claude/commands/`에 위 3개 파일만 있으면 → "Commands 없음"으로 판단
-- `.claude/commands/commit.md`가 추가로 있으면 → "Commands 있음"으로 판단
+**Examples**:
+- If `.claude/commands/` only has the above 3 files → Determine as "No Commands"
+- If `.claude/commands/commit.md` is additionally present → Determine as "Commands exist"
 
-### 3단계: 사용자 레벨 결정
+### Step 3: Determine User Level
 
-| 레벨 | 조건 | 학습 내용 |
-|------|------|----------|
-| 1 | CLAUDE.md 없음 | 기초: CLAUDE.md 작성법, Plan Mode |
-| 2 | CLAUDE.md만 있음 | 자동화: Commands, Hooks, 권한 관리 |
-| 3 | Commands/Hooks 있음 | 전문화: Agents, Skills, MCP |
-| 4 | 대부분 설정 완료 | 팀 최적화: GitHub Action, 팀 규칙 |
+| Level | Condition | Learning Content |
+|-------|-----------|------------------|
+| 1 | No CLAUDE.md | Basics: How to write CLAUDE.md, Plan Mode |
+| 2 | Only CLAUDE.md | Automation: Commands, Hooks, Permission management |
+| 3 | Commands/Hooks exist | Specialization: Agents, Skills, MCP |
+| 4 | Most settings complete | Team Optimization: GitHub Action, Team rules |
 
-### 4단계: 교육 콘텐츠 제공
+### Step 4: Provide Educational Content
 
-선택된 레벨에 맞는 교육을 제공합니다:
+Provide education matching the selected level:
 
-#### 레벨 1: 기초 (15분)
+#### Level 1: Basics (15 min)
 
 ```markdown
-## CLAUDE.md란?
+## What is CLAUDE.md?
 
-팀의 공용 지식 저장소입니다. Claude가 실수할 때마다 규칙을 추가하면,
-같은 실수를 반복하지 않습니다.
+It's your team's shared knowledge repository. When Claude makes mistakes,
+add rules so the same mistakes aren't repeated.
 
-## 작성 예시
+## Example
 
 # Development Workflow
 
-## 패키지 관리
-- **항상 `pnpm` 사용** (`npm`, `yarn` 금지)
+## Package Management
+- **Always use `pnpm`** (`npm`, `yarn` prohibited)
 
-## 코딩 컨벤션
-- `type` 선호, `interface` 자제
-- **`enum` 절대 금지** → 문자열 리터럴 유니온 사용
+## Coding Conventions
+- Prefer `type`, avoid `interface`
+- **Never use `enum`** → Use string literal unions
 
-## 금지 사항
-- ❌ console.log 사용 (logger 사용)
-- ❌ any 타입
+## Prohibited
+- ❌ No console.log (use logger)
+- ❌ No any type
 
-## 실습
+## Practice
 
-지금 바로 CLAUDE.md를 생성해보세요!
+Create CLAUDE.md right now!
 ```
 
-#### 레벨 2: 자동화 (30분)
+#### Level 2: Automation (30 min)
 
 ```markdown
-## 슬래시 커맨드란?
+## What are Slash Commands?
 
-매일 반복하는 작업을 `/command-name`으로 실행할 수 있습니다.
+Execute repetitive daily tasks with `/command-name`.
 
-## 커맨드 생성 위치
+## Command Location
 
 .claude/commands/{command-name}.md
 
-## 예시: /commit-push-pr
+## Example: /commit-push-pr
 
-# 커밋, 푸시, PR 생성
+# Commit, Push, Create PR
 
-## 수행 작업
-1. git status 확인
+## Tasks
+1. Check git status
 2. git add -A
-3. 커밋 메시지 생성 (conventional commits)
+3. Generate commit message (conventional commits)
 4. git push
 5. gh pr create
 
-## PostToolUse 훅
+## PostToolUse Hook
 
-코드 수정 후 자동으로 포맷팅을 실행합니다.
+Automatically run formatting after code modifications.
 
 // .claude/settings.local.json
 {
@@ -149,134 +149,134 @@ description: Claude Code learning guide
 }
 ```
 
-#### 레벨 3: 전문화 (45분)
+#### Level 3: Specialization (45 min)
 
 ```markdown
-## 서브 에이전트란?
+## What are Sub-agents?
 
-특정 작업에 전문화된 AI 에이전트입니다.
+AI agents specialized for specific tasks.
 
-## 예시: build-validator.md
+## Example: build-validator.md
 
-# 빌드 검증 에이전트
+# Build Validation Agent
 
-빌드가 성공적으로 완료되었는지 검증합니다.
+Validates that builds completed successfully.
 
-## 수행 작업
-1. pnpm -r build 실행
-2. 빌드 에러 확인
+## Tasks
+1. Run pnpm -r build
+2. Check for build errors
 
-## 성공 기준
-- 모든 모듈 빌드 성공
-- dist/ 폴더 생성 확인
+## Success Criteria
+- All modules build successfully
+- dist/ folder creation confirmed
 
-## Skills란?
+## What are Skills?
 
-도메인별 전문 컨텍스트입니다. Claude가 해당 영역 작업 시 자동 참조합니다.
+Domain-specific expert contexts. Claude automatically references them for related work.
 
-## 스킬 생성 방식 (하이브리드)
+## Skill Creation (Hybrid Approach)
 
-1단계: 공통 스킬 (자동 생성)
-- {project}-architecture: 전체 아키텍처
-- {project}-testing: 테스트 패턴
+Step 1: Common Skills (Auto-generated)
+- {project}-architecture: Overall architecture
+- {project}-testing: Test patterns
 
-2단계: 프로젝트 유형 감지
+Step 2: Detect Project Type
 - modules/ → Hexagonal/DDD
 - packages/ → Monorepo
 - components/ → Frontend
 
-3단계: 유형별 스킬 제안 (사용자 확인)
+Step 3: Type-specific Skill Suggestions (User confirmation)
 
-## MCP 연결
+## MCP Connection
 
-.mcp.json으로 외부 도구(Slack, GitHub, Jira 등)를 연결합니다.
+Connect external tools (Slack, GitHub, Jira, etc.) via .mcp.json.
 ```
 
-#### 레벨 4: 팀 최적화 (1시간)
+#### Level 4: Team Optimization (1 hour)
 
 ```markdown
-## GitHub Action으로 PR 자동화
+## Automate PRs with GitHub Action
 
-PR 코멘트에 @claude를 멘션하면 자동으로 문서를 업데이트합니다.
+Mention @claude in PR comments to automatically update documentation.
 
-## 예시
+## Example
 
-bcherny: @claude CLAUDE.md에 enum 금지 규칙 추가해줘
+bcherny: @claude Add enum prohibition rule to CLAUDE.md
 
-claude (봇): CLAUDE.md에 enum 가이드라인 추가 완료!
+claude (bot): Added enum guidelines to CLAUDE.md!
 
-## 설정 파일
+## Configuration File
 
 .github/workflows/claude-docs-update.yml
 
-## 팀 규칙 표준화
+## Team Rule Standardization
 
-1. CLAUDE.md를 Git으로 관리
-2. PR 리뷰 시 규칙 추가
-3. 점진적으로 팀 지식 축적
+1. Manage CLAUDE.md with Git
+2. Add rules during PR reviews
+3. Gradually accumulate team knowledge
 ```
 
-### 5단계: 다음 레벨 안내
+### Step 5: Guide to Next Level
 
-현재 레벨 완료 후 다음 레벨로 진행하도록 안내합니다.
+After completing current level, guide to proceed to next level.
 
-## 결과 출력
+## Output
 
 ```
-📚 Claude Code 학습 완료!
+📚 Claude Code Learning Complete!
 
-**현재 레벨**: {레벨}
-**학습 내용**: {요약}
+**Current Level**: {level}
+**Learned**: {summary}
 
-🎯 다음 단계:
-- /learn-claude-code {다음레벨} 로 계속 학습
-- /setup-claude-code 로 설정 자동 생성
-- /upgrade-claude-code 로 최신 트렌드 확인
+🎯 Next Steps:
+- Continue learning with /learn-claude-code {next_level}
+- Auto-generate settings with /setup-claude-code
+- Check latest trends with /upgrade-claude-code
 ```
 
-## 레벨 5: PDCA 방법론 (선택)
+## Level 5: PDCA Methodology (Optional)
 
 ```markdown
-## PDCA란?
+## What is PDCA?
 
-문서 기반 개발 방법론입니다. Claude가 자동으로 적용합니다.
+A document-driven development methodology. Claude applies it automatically.
 
-Plan (계획) → Do (설계/구현) → Check (분석) → Act (개선)
+Plan → Do (Design/Implement) → Check (Analyze) → Act (Improve)
 
-## 핵심 원칙
+## Core Principles
 
-사용자: "로그인 기능 만들어줘"
-Claude: 1. docs/02-design/ 확인 → 설계 먼저
-        2. 템플릿 기반 설계 문서 생성
-        3. 설계 승인 후 구현
-        4. 완료 후 Gap 분석 제안
+User: "Create a login feature"
+Claude: 1. Check docs/02-design/ → Design first
+        2. Generate design document from template
+        3. Implement after design approval
+        4. Suggest Gap analysis after completion
 
-## 폴더 구조
+## Folder Structure
 
 docs/
-├── 01-plan/      # 계획
-├── 02-design/    # 설계
-├── 03-analysis/  # 분석
-└── 04-report/    # 보고
+├── 01-plan/      # Planning
+├── 02-design/    # Design
+├── 03-analysis/  # Analysis
+└── 04-report/    # Reports
 
-## 상세 학습
+## Detailed Learning
 
 - .claude/docs/pdca/overview.md
-- .claude/docs/prompts/ (프롬프트 예시)
+- .claude/docs/prompts/ (Prompt examples)
 ```
 
-## 참고 문서
+## Reference Documents
 
-### Claude Code 마스터리
+### Claude Code Mastery
 - .claude/docs/CLAUDE-CODE-MASTERY.md
 
-### PDCA 방법론
+### PDCA Methodology
 - .claude/docs/pdca/overview.md
 - .claude/docs/pdca/plan-guide.md
 - .claude/docs/pdca/design-guide.md
 - .claude/docs/pdca/check-act-guide.md
 
-### 레벨별 가이드
+### Level Guides
 - .claude/docs/levels/starter-guide.md
 - .claude/docs/levels/dynamic-guide.md
 - .claude/docs/levels/enterprise-guide.md

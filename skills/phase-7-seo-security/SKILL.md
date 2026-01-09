@@ -15,165 +15,165 @@ allowed-tools:
 user-invocable: false
 ---
 
-# Phase 7: SEO/보안
+# Phase 7: SEO/Security
 
-> 검색 최적화 및 보안 강화
+> Search optimization and security enhancement
 
-## 목적
+## Purpose
 
-사용자가 검색으로 찾을 수 있게 하고, 보안 취약점을 방어합니다.
+Make the application discoverable through search and defend against security vulnerabilities.
 
-## 이 Phase에서 하는 것
+## What to Do in This Phase
 
-1. **SEO 최적화**: 메타태그, 구조화된 데이터, 사이트맵
-2. **성능 최적화**: Core Web Vitals 개선
-3. **보안 강화**: 인증, 인가, 취약점 방어
+1. **SEO Optimization**: Meta tags, structured data, sitemap
+2. **Performance Optimization**: Core Web Vitals improvement
+3. **Security Enhancement**: Authentication, authorization, vulnerability defense
 
-## 산출물
+## Deliverables
 
 ```
 docs/02-design/
-├── seo-spec.md             # SEO 명세
-└── security-spec.md        # 보안 명세
+├── seo-spec.md             # SEO specification
+└── security-spec.md        # Security specification
 
 src/
-├── middleware/             # 보안 미들웨어
+├── middleware/             # Security middleware
 └── components/
-    └── seo/                # SEO 컴포넌트
+    └── seo/                # SEO components
 ```
 
-## PDCA 적용
+## PDCA Application
 
-- **Plan**: SEO/보안 요구사항 정의
-- **Design**: 메타태그, 보안 정책 설계
-- **Do**: SEO/보안 구현
-- **Check**: 점검 및 검증
-- **Act**: 개선 후 Phase 8로
+- **Plan**: Define SEO/security requirements
+- **Design**: Meta tags, security policy design
+- **Do**: SEO/security implementation
+- **Check**: Inspection and verification
+- **Act**: Improve and proceed to Phase 8
 
-## 레벨별 적용
+## Level-wise Application
 
-| 레벨 | 적용 방식 |
-|------|----------|
-| Starter | SEO만 (보안은 최소) |
-| Dynamic | SEO + 기본 보안 |
-| Enterprise | SEO + 고급 보안 |
+| Level | Application Method |
+|-------|-------------------|
+| Starter | SEO only (minimal security) |
+| Dynamic | SEO + basic security |
+| Enterprise | SEO + advanced security |
 
-## SEO 체크리스트
+## SEO Checklist
 
-### 기본
-- [ ] 페이지별 title, description
-- [ ] Open Graph 메타태그
-- [ ] 정규 URL (canonical)
+### Basic
+- [ ] Per-page title, description
+- [ ] Open Graph meta tags
+- [ ] Canonical URL
 - [ ] sitemap.xml
 - [ ] robots.txt
 
-### 구조화된 데이터
-- [ ] JSON-LD 스키마
-- [ ] 빵 부스러기(Breadcrumb)
-- [ ] 제품/리뷰 스키마 (해당 시)
+### Structured Data
+- [ ] JSON-LD schema
+- [ ] Breadcrumb
+- [ ] Product/Review schema (if applicable)
 
-### 성능
-- [ ] 이미지 최적화 (next/image)
-- [ ] 폰트 최적화
-- [ ] 코드 스플리팅
+### Performance
+- [ ] Image optimization (next/image)
+- [ ] Font optimization
+- [ ] Code splitting
 
-## 보안 체크리스트
+## Security Checklist
 
-### 인증/인가
-- [ ] 안전한 세션 관리
-- [ ] CSRF 방어
-- [ ] 적절한 권한 검사
+### Authentication/Authorization
+- [ ] Secure session management
+- [ ] CSRF protection
+- [ ] Proper permission checks
 
-### 데이터 보호
-- [ ] 입력 검증
-- [ ] SQL 인젝션 방어
-- [ ] XSS 방어
+### Data Protection
+- [ ] Input validation
+- [ ] SQL injection defense
+- [ ] XSS defense
 
-### 통신 보안
-- [ ] HTTPS 강제
-- [ ] 보안 헤더 설정
-- [ ] CORS 정책
+### Communication Security
+- [ ] HTTPS enforcement
+- [ ] Security header configuration
+- [ ] CORS policy
 
 ---
 
-## 보안 아키텍처 (Phase 간 연결)
+## Security Architecture (Cross-Phase Connection)
 
-### 보안 레이어 구조
+### Security Layer Structure
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     Client (Browser)                         │
 ├─────────────────────────────────────────────────────────────┤
-│   Phase 6: UI 보안                                           │
-│   - XSS 방어 (입력 이스케이프)                                │
-│   - CSRF 토큰 포함                                           │
-│   - 민감 정보 클라이언트 저장 금지                            │
+│   Phase 6: UI Security                                       │
+│   - XSS defense (input escaping)                            │
+│   - CSRF token inclusion                                     │
+│   - No sensitive info storage on client                      │
 ├─────────────────────────────────────────────────────────────┤
-│   Phase 4/6: API 통신 보안                                   │
-│   - HTTPS 강제                                               │
-│   - Authorization 헤더 (Bearer Token)                        │
-│   - Content-Type 검증                                        │
+│   Phase 4/6: API Communication Security                      │
+│   - HTTPS enforcement                                        │
+│   - Authorization header (Bearer Token)                      │
+│   - Content-Type validation                                  │
 ├─────────────────────────────────────────────────────────────┤
-│   Phase 4: API 서버 보안                                     │
-│   - 입력 검증 (Validation)                                   │
+│   Phase 4: API Server Security                               │
+│   - Input validation                                         │
 │   - Rate Limiting                                            │
-│   - 에러 메시지 최소화 (민감 정보 노출 방지)                  │
+│   - Minimal error messages (prevent sensitive info exposure) │
 ├─────────────────────────────────────────────────────────────┤
-│   Phase 2/9: 환경 변수 보안                                  │
-│   - Secrets 관리                                             │
-│   - 환경별 분리                                              │
-│   - 클라이언트 노출 변수 구분                                │
+│   Phase 2/9: Environment Variable Security                   │
+│   - Secrets management                                       │
+│   - Environment separation                                   │
+│   - Client-exposed variable distinction                      │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Phase별 보안 책임
+### Security Responsibilities by Phase
 
-| Phase | 보안 책임 | 검증 항목 |
-|-------|----------|----------|
-| **Phase 2** | 환경 변수 컨벤션 | NEXT_PUBLIC_* 구분, Secrets 목록 |
-| **Phase 4** | API 보안 설계 | 인증 방식, 에러 코드, 입력 검증 |
-| **Phase 6** | 클라이언트 보안 | XSS 방어, 토큰 관리, 민감 정보 |
-| **Phase 7** | 보안 구현/점검 | 전체 보안 체크리스트 |
-| **Phase 9** | 배포 보안 | Secrets 주입, HTTPS, 보안 헤더 |
+| Phase | Security Responsibility | Verification Items |
+|-------|------------------------|-------------------|
+| **Phase 2** | Environment variable convention | NEXT_PUBLIC_* distinction, Secrets list |
+| **Phase 4** | API security design | Auth method, error codes, input validation |
+| **Phase 6** | Client security | XSS defense, token management, sensitive info |
+| **Phase 7** | Security implementation/inspection | Full security checklist |
+| **Phase 9** | Deployment security | Secrets injection, HTTPS, security headers |
 
 ---
 
-## 클라이언트 보안 (Phase 6 연계)
+## Client Security (Phase 6 Connection)
 
-### XSS 방어 원칙
+### XSS Defense Principles
 
 ```
-⚠️ XSS (Cross-Site Scripting) 방어
+⚠️ XSS (Cross-Site Scripting) Defense
 
-1. innerHTML 직접 사용 금지
-2. 사용자 입력을 HTML로 렌더링 시 반드시 sanitize
-3. React의 자동 이스케이프 활용
-4. 필요 시 DOMPurify 라이브러리 사용
+1. Never use innerHTML directly
+2. Always sanitize user input when rendering as HTML
+3. Leverage React's automatic escaping
+4. Use DOMPurify library when needed
 ```
 
-### 민감 정보 저장 금지
+### No Sensitive Information Storage
 
 ```typescript
-// ❌ 금지: localStorage에 민감 정보
+// ❌ Forbidden: Sensitive info in localStorage
 localStorage.setItem('password', password);
 localStorage.setItem('creditCard', cardNumber);
 
-// ✅ 허용: 토큰만 저장 (httpOnly 쿠키 권장)
+// ✅ Allowed: Store only tokens (httpOnly cookies recommended)
 localStorage.setItem('auth_token', token);
 
-// ✅ 더 안전: httpOnly 쿠키 (서버에서 설정)
+// ✅ More secure: httpOnly cookie (set by server)
 // Set-Cookie: token=xxx; HttpOnly; Secure; SameSite=Strict
 ```
 
-### CSRF 방어
+### CSRF Defense
 
 ```typescript
-// API 클라이언트에서 CSRF 토큰 포함
+// Include CSRF token in API client
 // lib/api/client.ts
 private async request<T>(endpoint: string, config: RequestConfig = {}) {
   const headers = new Headers(config.headers);
 
-  // CSRF 토큰 추가
+  // Add CSRF token
   const csrfToken = this.getCsrfToken();
   if (csrfToken) {
     headers.set('X-CSRF-Token', csrfToken);
@@ -184,12 +184,12 @@ private async request<T>(endpoint: string, config: RequestConfig = {}) {
 
 ---
 
-## API 보안 (Phase 4 연계)
+## API Security (Phase 4 Connection)
 
-### 입력 검증 (서버 측)
+### Input Validation (Server-side)
 
 ```typescript
-// 모든 입력은 서버에서 다시 검증
+// All input must be validated on the server
 import { z } from 'zod';
 
 const CreateUserSchema = z.object({
@@ -198,7 +198,7 @@ const CreateUserSchema = z.object({
   name: z.string().min(1).max(50),
 });
 
-// API Route에서 사용
+// Usage in API Route
 export async function POST(req: Request) {
   const body = await req.json();
 
@@ -207,7 +207,7 @@ export async function POST(req: Request) {
     return Response.json({
       error: {
         code: 'VALIDATION_ERROR',
-        message: '입력값이 올바르지 않습니다.',
+        message: 'Input is invalid.',
         details: result.error.flatten().fieldErrors,
       }
     }, { status: 400 });
@@ -217,22 +217,22 @@ export async function POST(req: Request) {
 }
 ```
 
-### 에러 메시지 보안
+### Error Message Security
 
 ```typescript
-// ❌ 위험: 상세한 에러 정보 노출
+// ❌ Dangerous: Detailed error info exposure
 {
   message: 'User with email test@test.com not found',
-  stack: error.stack,  // 스택 트레이스 노출!
+  stack: error.stack,  // Stack trace exposed!
 }
 
-// ✅ 안전: 최소한의 정보만
+// ✅ Safe: Minimal information only
 {
   code: 'NOT_FOUND',
-  message: '사용자를 찾을 수 없습니다.',
+  message: 'User not found.',
 }
 
-// 상세 로그는 서버에서만
+// Detailed logs only on server
 console.error(`User not found: ${email}`, error);
 ```
 
@@ -259,19 +259,19 @@ export async function middleware(request: NextRequest) {
 
 ---
 
-## 환경 변수 보안 (Phase 2/9 연계)
+## Environment Variable Security (Phase 2/9 Connection)
 
-### 클라이언트 노출 점검
+### Client Exposure Check
 
 ```typescript
 // lib/env.ts
 const serverEnvSchema = z.object({
-  DATABASE_URL: z.string(),      // 서버 전용
-  AUTH_SECRET: z.string(),       // 서버 전용
+  DATABASE_URL: z.string(),      // Server only
+  AUTH_SECRET: z.string(),       // Server only
 });
 
 const clientEnvSchema = z.object({
-  NEXT_PUBLIC_APP_URL: z.string(),   // 클라이언트 노출 가능
+  NEXT_PUBLIC_APP_URL: z.string(),   // Can be exposed to client
 });
 
 export const serverEnv = serverEnvSchema.parse(process.env);
@@ -280,7 +280,7 @@ export const clientEnv = clientEnvSchema.parse({
 });
 ```
 
-### 보안 헤더 설정
+### Security Header Configuration
 
 ```javascript
 // next.config.js
@@ -300,49 +300,49 @@ module.exports = {
 
 ---
 
-## 보안 검증 체크리스트 (Phase 8 연계)
+## Security Verification Checklist (Phase 8 Connection)
 
-### 필수 (모든 레벨)
-- [ ] HTTPS 강제
-- [ ] 민감 정보 클라이언트 노출 없음
-- [ ] 입력 검증 (서버 측)
-- [ ] XSS 방어
-- [ ] 에러 메시지에 민감 정보 없음
+### Required (All Levels)
+- [ ] HTTPS enforcement
+- [ ] No sensitive info exposed to client
+- [ ] Input validation (server-side)
+- [ ] XSS defense
+- [ ] No sensitive info in error messages
 
-### 권장 (Dynamic 이상)
-- [ ] CSRF 토큰 적용
-- [ ] Rate Limiting 적용
-- [ ] 보안 헤더 설정
-- [ ] httpOnly 쿠키 (인증 토큰)
+### Recommended (Dynamic and above)
+- [ ] CSRF token applied
+- [ ] Rate Limiting applied
+- [ ] Security headers configured
+- [ ] httpOnly cookies (auth token)
 
-### 고급 (Enterprise)
+### Advanced (Enterprise)
 - [ ] Content Security Policy (CSP)
-- [ ] 보안 감사 로그
-- [ ] 정기적 보안 스캔
+- [ ] Security audit logs
+- [ ] Regular security scans
 
-## Next.js SEO 예시
+## Next.js SEO Example
 
 ```tsx
 // app/layout.tsx
 export const metadata: Metadata = {
   title: {
-    default: '사이트 이름',
-    template: '%s | 사이트 이름',
+    default: 'Site Name',
+    template: '%s | Site Name',
   },
-  description: '사이트 설명',
+  description: 'Site description',
   openGraph: {
     type: 'website',
-    locale: 'ko_KR',
+    locale: 'en_US',
     url: 'https://example.com',
-    siteName: '사이트 이름',
+    siteName: 'Site Name',
   },
 };
 ```
 
-## 템플릿
+## Template
 
-`templates/pipeline/phase-7-seo-security.template.md` 참조
+See `templates/pipeline/phase-7-seo-security.template.md`
 
-## 다음 Phase
+## Next Phase
 
-Phase 8: 리뷰 → 최적화 후 전체 코드 품질 검증
+Phase 8: Review → After optimization, verify overall code quality

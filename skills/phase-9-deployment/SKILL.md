@@ -16,74 +16,74 @@ allowed-tools:
 user-invocable: false
 ---
 
-# Phase 9: 배포
+# Phase 9: Deployment
 
-> 프로덕션 배포
+> Production deployment
 
-## 목적
+## Purpose
 
-완성된 애플리케이션을 사용자에게 전달합니다.
+Deliver the completed application to users.
 
-## 이 Phase에서 하는 것
+## What to Do in This Phase
 
-1. **배포 환경 준비**: 인프라 설정
-2. **빌드**: 프로덕션 빌드 생성
-3. **배포 실행**: 실제 배포
-4. **검증**: 배포 후 동작 확인
+1. **Prepare Deployment Environment**: Infrastructure setup
+2. **Build**: Create production build
+3. **Execute Deployment**: Actual deployment
+4. **Verification**: Post-deployment operation check
 
-## 산출물
+## Deliverables
 
 ```
 docs/02-design/
-└── deployment-spec.md          # 배포 명세
+└── deployment-spec.md          # Deployment specification
 
 docs/04-report/
-└── deployment-report.md        # 배포 보고서
+└── deployment-report.md        # Deployment report
 
-(인프라 설정 파일들)
-├── vercel.json                 # Vercel 설정
-├── Dockerfile                  # Docker 설정
-└── k8s/                        # Kubernetes 설정
+(Infrastructure config files)
+├── vercel.json                 # Vercel configuration
+├── Dockerfile                  # Docker configuration
+└── k8s/                        # Kubernetes configuration
 ```
 
-## PDCA 적용
+## PDCA Application
 
-- **Plan**: 배포 계획 수립
-- **Design**: 배포 구성 설계
-- **Do**: 배포 실행
-- **Check**: 배포 검증
-- **Act**: 문제 해결 및 완료 보고
+- **Plan**: Establish deployment plan
+- **Design**: Design deployment configuration
+- **Do**: Execute deployment
+- **Check**: Verify deployment
+- **Act**: Problem resolution and completion report
 
-## 레벨별 적용
+## Level-wise Application
 
-| 레벨 | 배포 방식 |
-|------|----------|
-| Starter | 정적 호스팅 (Netlify, GitHub Pages) |
-| Dynamic | Vercel, Railway 등 |
-| Enterprise | Kubernetes, AWS ECS 등 |
+| Level | Deployment Method |
+|-------|-------------------|
+| Starter | Static hosting (Netlify, GitHub Pages) |
+| Dynamic | Vercel, Railway, etc. |
+| Enterprise | Kubernetes, AWS ECS, etc. |
 
-## Starter 배포 (정적 호스팅)
+## Starter Deployment (Static Hosting)
 
 ```bash
 # GitHub Pages
 npm run build
-# dist/ 폴더를 gh-pages 브랜치에 배포
+# Deploy dist/ folder to gh-pages branch
 
 # Netlify
-# netlify.toml 설정 후 Git 연결
+# Configure netlify.toml then connect Git
 ```
 
-## Dynamic 배포 (Vercel)
+## Dynamic Deployment (Vercel)
 
 ```bash
 # Vercel CLI
 npm i -g vercel
 vercel
 
-# 또는 Git 연결로 자동 배포
+# Or auto-deploy via Git connection
 ```
 
-## Enterprise 배포 (Kubernetes)
+## Enterprise Deployment (Kubernetes)
 
 ```yaml
 # k8s/deployment.yaml
@@ -102,39 +102,39 @@ spec:
 
 ---
 
-## 환경 변수 관리 (Environment Management)
+## Environment Management
 
-### 환경별 구성 개요
+### Environment Configuration Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     환경별 변수 흐름                          │
+│                     Environment Variable Flow                 │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
-│   개발 (Development)                                         │
-│   └── .env.local → 개발자 로컬 머신                          │
+│   Development                                                │
+│   └── .env.local → Developer local machine                  │
 │                                                              │
-│   스테이징 (Staging)                                         │
-│   └── CI/CD Secrets → Preview/Staging 환경                  │
+│   Staging                                                    │
+│   └── CI/CD Secrets → Preview/Staging environment           │
 │                                                              │
-│   프로덕션 (Production)                                      │
-│   └── CI/CD Secrets → Production 환경                       │
+│   Production                                                 │
+│   └── CI/CD Secrets → Production environment                │
 │       └── Vault/Secrets Manager (Enterprise)                │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 환경 분류
+### Environment Classification
 
-| 환경 | 용도 | 데이터 | 변수 소스 |
-|------|------|--------|----------|
-| **Development** | 로컬 개발 | 테스트 데이터 | `.env.local` |
-| **Staging** | 배포 전 검증 | 테스트 데이터 | CI/CD Secrets |
-| **Production** | 실제 서비스 | 실제 데이터 | CI/CD Secrets + Vault |
+| Environment | Purpose | Data | Variable Source |
+|-------------|---------|------|-----------------|
+| **Development** | Local development | Test data | `.env.local` |
+| **Staging** | Pre-deployment verification | Test data | CI/CD Secrets |
+| **Production** | Live service | Real data | CI/CD Secrets + Vault |
 
 ---
 
-## CI/CD 환경 변수 설정
+## CI/CD Environment Variable Configuration
 
 ### GitHub Actions
 
@@ -162,11 +162,11 @@ jobs:
 
       - name: Build
         env:
-          # 일반 환경 변수 (노출 가능)
+          # General environment variables (can be exposed)
           NEXT_PUBLIC_APP_URL: ${{ vars.APP_URL }}
           NEXT_PUBLIC_API_URL: ${{ vars.API_URL }}
 
-          # Secrets (민감 정보)
+          # Secrets (sensitive info)
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
           API_STRIPE_SECRET: ${{ secrets.API_STRIPE_SECRET }}
@@ -179,32 +179,32 @@ jobs:
           npx vercel --prod --token=$VERCEL_TOKEN
 ```
 
-### GitHub Secrets 설정 가이드
+### GitHub Secrets Configuration Guide
 
 ```
 Repository Settings → Secrets and variables → Actions
 
-1. Repository secrets (민감 정보)
+1. Repository secrets (sensitive info)
    ├── DATABASE_URL
    ├── AUTH_SECRET
    ├── API_STRIPE_SECRET
    └── VERCEL_TOKEN
 
-2. Repository variables (일반 설정)
+2. Repository variables (general settings)
    ├── APP_URL
    ├── API_URL
    └── NODE_ENV
 
 3. Environment-specific secrets
    ├── production/
-   │   ├── DATABASE_URL (프로덕션 DB)
-   │   └── API_STRIPE_SECRET (라이브 키)
+   │   ├── DATABASE_URL (production DB)
+   │   └── API_STRIPE_SECRET (live key)
    └── staging/
-       ├── DATABASE_URL (스테이징 DB)
-       └── API_STRIPE_SECRET (테스트 키)
+       ├── DATABASE_URL (staging DB)
+       └── API_STRIPE_SECRET (test key)
 ```
 
-### Vercel 환경 변수 설정
+### Vercel Environment Variable Configuration
 
 ```
 Project Settings → Environment Variables
@@ -217,29 +217,29 @@ Project Settings → Environment Variables
 │ API_STRIPE_*    │ test key    │ test key    │ live key    │
 └─────────────────┴─────────────┴─────────────┴─────────────┘
 
-설정 방법:
+Configuration steps:
 1. Project Settings → Environment Variables
 2. Add New Variable
-3. 환경 선택 (Development / Preview / Production)
-4. Sensitive 체크 (민감 정보인 경우)
+3. Select environment (Development / Preview / Production)
+4. Check Sensitive (if sensitive info)
 ```
 
 ---
 
-## Secrets 관리 전략
+## Secrets Management Strategy
 
-### 레벨별 Secrets 관리
+### Level-wise Secrets Management
 
-| 레벨 | Secrets 관리 방식 | 도구 |
-|------|------------------|------|
-| **Starter** | CI/CD 플랫폼 Secrets | GitHub Secrets, Vercel |
-| **Dynamic** | CI/CD + 환경 분리 | GitHub Environments |
-| **Enterprise** | 전용 Secrets Manager | Vault, AWS Secrets Manager |
+| Level | Secrets Management Method | Tools |
+|-------|--------------------------|-------|
+| **Starter** | CI/CD platform Secrets | GitHub Secrets, Vercel |
+| **Dynamic** | CI/CD + environment separation | GitHub Environments |
+| **Enterprise** | Dedicated Secrets Manager | Vault, AWS Secrets Manager |
 
 ### Starter/Dynamic: CI/CD Secrets
 
 ```yaml
-# GitHub Actions에서 사용
+# Usage in GitHub Actions
 - name: Deploy
   env:
     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -248,7 +248,7 @@ Project Settings → Environment Variables
 ### Enterprise: HashiCorp Vault
 
 ```yaml
-# Vault에서 Secrets 가져오기
+# Fetch Secrets from Vault
 - name: Import Secrets from Vault
   uses: hashicorp/vault-action@v2
   with:
@@ -277,27 +277,27 @@ export async function getSecret(secretName: string): Promise<Record<string, stri
   throw new Error(`Secret ${secretName} not found`);
 }
 
-// 사용
+// Usage
 const dbSecrets = await getSecret("myapp/production/database");
 // { host: "...", password: "...", ... }
 ```
 
 ---
 
-## 환경별 빌드 설정
+## Environment-specific Build Configuration
 
-### Next.js 환경별 설정
+### Next.js Environment Configuration
 
 ```javascript
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 환경별 설정
+  // Environment-specific settings
   env: {
     NEXT_PUBLIC_ENV: process.env.NODE_ENV,
   },
 
-  // 환경별 리다이렉트
+  // Environment-specific redirects
   async redirects() {
     if (process.env.NODE_ENV === 'production') {
       return [
@@ -311,7 +311,7 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-### 환경별 API 엔드포인트
+### Environment-specific API Endpoints
 
 ```typescript
 // lib/config.ts
@@ -338,9 +338,9 @@ export const appConfig = config[env];
 
 ---
 
-## 환경 변수 검증 (배포 전)
+## Environment Variable Validation (Pre-deployment)
 
-### 필수 변수 체크 스크립트
+### Required Variable Check Script
 
 ```bash
 #!/bin/bash
@@ -369,7 +369,7 @@ fi
 echo "✅ All required environment variables are set"
 ```
 
-### CI/CD에서 검증
+### Validation in CI/CD
 
 ```yaml
 # GitHub Actions
@@ -385,66 +385,66 @@ echo "✅ All required environment variables are set"
 
 ---
 
-## 환경 변수 관리 체크리스트
+## Environment Variable Management Checklist
 
-### 배포 전
+### Pre-deployment
 
-- [ ] **Secrets 등록**
-  - [ ] DATABASE_URL (환경별)
-  - [ ] AUTH_SECRET (환경별)
-  - [ ] 외부 API 키 (환경별)
+- [ ] **Secrets Registration**
+  - [ ] DATABASE_URL (per environment)
+  - [ ] AUTH_SECRET (per environment)
+  - [ ] External API keys (per environment)
 
-- [ ] **환경 분리**
-  - [ ] Development / Staging / Production 구분
-  - [ ] 환경별 데이터베이스 분리
-  - [ ] 환경별 외부 서비스 키 분리 (테스트/라이브)
+- [ ] **Environment Separation**
+  - [ ] Development / Staging / Production distinction
+  - [ ] Per-environment database separation
+  - [ ] Per-environment external service key separation (test/live)
 
-- [ ] **검증**
-  - [ ] 필수 변수 체크 스크립트 실행
-  - [ ] 빌드 테스트
+- [ ] **Validation**
+  - [ ] Run required variable check script
+  - [ ] Build test
 
-### 배포 후
+### Post-deployment
 
-- [ ] **동작 확인**
-  - [ ] 환경 변수 올바르게 주입됐는지 확인
-  - [ ] 외부 서비스 연동 테스트
+- [ ] **Operation Check**
+  - [ ] Verify environment variables are injected correctly
+  - [ ] External service integration test
 
-- [ ] **보안 점검**
-  - [ ] 민감 정보 로그 노출 없는지 확인
-  - [ ] 클라이언트에 서버 전용 변수 노출 없는지 확인
+- [ ] **Security Check**
+  - [ ] Verify no sensitive info in logs
+  - [ ] Verify no server-only variables exposed to client
 
 ---
 
-## 배포 체크리스트
+## Deployment Checklist
 
-### 사전 준비
-- [ ] 환경 변수 설정 (위 체크리스트 참조)
-- [ ] 도메인 연결
-- [ ] SSL 인증서
+### Preparation
+- [ ] Environment variable configuration (see checklist above)
+- [ ] Domain connection
+- [ ] SSL certificate
 
-### 배포
-- [ ] 빌드 성공
-- [ ] 배포 완료
-- [ ] 헬스체크 통과
+### Deployment
+- [ ] Build successful
+- [ ] Deployment complete
+- [ ] Health check passed
 
-### 검증
-- [ ] 주요 기능 동작 확인
-- [ ] 에러 로그 확인
-- [ ] 성능 모니터링
+### Verification
+- [ ] Major feature operation check
+- [ ] Error log review
+- [ ] Performance monitoring
 
-## 롤백 계획
+## Rollback Plan
 
 ```
-문제 발생 시:
-1. 즉시 이전 버전으로 롤백
-2. 원인 분석
-3. 수정 후 재배포
+If problems occur:
+1. Immediately rollback to previous version
+2. Analyze root cause
+3. Fix and redeploy
 ```
 
-## 템플릿
+## Template
 
-`templates/pipeline/phase-9-deployment.template.md` 참조
+See `templates/pipeline/phase-9-deployment.template.md`
 
-## 완료 후
+## After Completion
 
-프로젝트 완료! 필요 시 Phase 1부터 새 기능 개발 사이클 시작
+Project complete! Start new feature development cycle from Phase 1 as needed

@@ -16,86 +16,86 @@ allowed-tools:
 user-invocable: false
 ---
 
-# 중급 (Dynamic) 스킬
+# Intermediate (Dynamic) Skill
 
-## 대상
+## Target Audience
 
-- 프론트엔드 개발자
-- 1인 창업자
-- 풀스택 서비스를 빠르게 만들고 싶은 분
+- Frontend developers
+- Solo entrepreneurs
+- Those who want to build fullstack services quickly
 
-## 기술 스택
+## Tech Stack
 
 ```
 Frontend:
 - React / Next.js 14+
 - TypeScript
 - Tailwind CSS
-- TanStack Query (데이터 페칭)
-- Zustand (상태 관리)
+- TanStack Query (data fetching)
+- Zustand (state management)
 
 Backend (BaaS):
 - bkend.ai
-  - 자동 REST API
-  - MongoDB 데이터베이스
-  - 내장 인증 (JWT)
-  - 실시간 기능 (WebSocket)
+  - Auto REST API
+  - MongoDB database
+  - Built-in authentication (JWT)
+  - Real-time features (WebSocket)
 
 Deployment:
-- Vercel (프론트엔드)
-- bkend.ai (백엔드)
+- Vercel (frontend)
+- bkend.ai (backend)
 ```
 
-## 프로젝트 구조
+## Project Structure
 
 ```
-프로젝트/
+project/
 ├── src/
 │   ├── app/                    # Next.js App Router
-│   │   ├── (auth)/            # 인증 관련 라우트
+│   │   ├── (auth)/            # Auth-related routes
 │   │   │   ├── login/
 │   │   │   └── register/
-│   │   ├── (main)/            # 메인 라우트
+│   │   ├── (main)/            # Main routes
 │   │   │   ├── dashboard/
 │   │   │   └── settings/
 │   │   ├── layout.tsx
 │   │   └── page.tsx
 │   │
-│   ├── components/             # UI 컴포넌트
-│   │   ├── ui/                # 기본 UI (Button, Input...)
-│   │   └── features/          # 기능별 컴포넌트
+│   ├── components/             # UI components
+│   │   ├── ui/                # Basic UI (Button, Input...)
+│   │   └── features/          # Feature-specific components
 │   │
-│   ├── hooks/                  # 커스텀 훅
+│   ├── hooks/                  # Custom hooks
 │   │   ├── useAuth.ts
 │   │   └── useQuery.ts
 │   │
-│   ├── lib/                    # 유틸리티
-│   │   ├── bkend.ts           # bkend.ai 클라이언트
+│   ├── lib/                    # Utilities
+│   │   ├── bkend.ts           # bkend.ai client
 │   │   └── utils.ts
 │   │
-│   ├── stores/                 # 상태 관리 (Zustand)
+│   ├── stores/                 # State management (Zustand)
 │   │   └── auth-store.ts
 │   │
-│   └── types/                  # TypeScript 타입
+│   └── types/                  # TypeScript types
 │       └── index.ts
 │
-├── docs/                       # PDCA 문서
+├── docs/                       # PDCA documents
 │   ├── 01-plan/
 │   ├── 02-design/
-│   │   ├── data-model.md      # 데이터 모델
-│   │   └── api-spec.md        # API 명세
+│   │   ├── data-model.md      # Data model
+│   │   └── api-spec.md        # API specification
 │   ├── 03-analysis/
 │   └── 04-report/
 │
-├── .mcp.json                   # bkend.ai MCP 설정
-├── .env.local                  # 환경변수
+├── .mcp.json                   # bkend.ai MCP config
+├── .env.local                  # Environment variables
 ├── package.json
 └── README.md
 ```
 
-## 핵심 패턴
+## Core Patterns
 
-### bkend.ai 클라이언트 설정
+### bkend.ai Client Setup
 
 ```typescript
 // lib/bkend.ts
@@ -107,7 +107,7 @@ export const bkend = createClient({
 });
 ```
 
-### 인증 훅
+### Authentication Hook
 
 ```typescript
 // hooks/useAuth.ts
@@ -144,23 +144,23 @@ export const useAuth = create<AuthState>()(
 );
 ```
 
-### 데이터 페칭 (TanStack Query)
+### Data Fetching (TanStack Query)
 
 ```typescript
-// 목록 조회
+// List query
 const { data, isLoading, error } = useQuery({
   queryKey: ['items', filters],
   queryFn: () => bkend.collection('items').find(filters),
 });
 
-// 단일 조회
+// Single item query
 const { data: item } = useQuery({
   queryKey: ['items', id],
   queryFn: () => bkend.collection('items').findById(id),
   enabled: !!id,
 });
 
-// 생성/수정 (Mutation)
+// Create/Update (Mutation)
 const mutation = useMutation({
   mutationFn: (newItem) => bkend.collection('items').create(newItem),
   onSuccess: () => {
@@ -169,7 +169,7 @@ const mutation = useMutation({
 });
 ```
 
-### 보호된 라우트
+### Protected Route
 
 ```typescript
 // components/ProtectedRoute.tsx
@@ -188,30 +188,30 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 ```
 
-## 데이터 모델 설계 원칙
+## Data Model Design Principles
 
 ```typescript
-// 기본 필드 (자동 생성)
+// Base fields (auto-generated)
 interface BaseDocument {
   _id: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-// 사용자 참조
+// User reference
 interface Post extends BaseDocument {
-  userId: string;        // 작성자 ID (참조)
+  userId: string;        // Author ID (reference)
   title: string;
   content: string;
-  tags: string[];        // 배열 필드
-  metadata: {            // 임베딩된 객체
+  tags: string[];        // Array field
+  metadata: {            // Embedded object
     viewCount: number;
     likeCount: number;
   };
 }
 ```
 
-## MCP 연동 (.mcp.json)
+## MCP Integration (.mcp.json)
 
 ```json
 {
@@ -228,31 +228,31 @@ interface Post extends BaseDocument {
 }
 ```
 
-## 제한사항
+## Limitations
 
 ```
-❌ 복잡한 백엔드 로직 (서버리스 함수 제한)
-❌ 대규모 트래픽 (BaaS 한도 내)
-❌ 커스텀 인프라 제어
-❌ 마이크로서비스 아키텍처
+❌ Complex backend logic (serverless function limits)
+❌ Large-scale traffic (within BaaS limits)
+❌ Custom infrastructure control
+❌ Microservices architecture
 ```
 
-## 업그레이드 시점
+## When to Upgrade
 
-다음이 필요하면 **Enterprise 레벨**로:
+Move to **Enterprise Level** if you need:
 
 ```
-→ "트래픽이 많아질 것 같아요"
-→ "마이크로서비스로 분리하고 싶어요"
-→ "자체 서버/인프라가 필요해요"
-→ "복잡한 백엔드 로직이 필요해요"
+→ "Traffic will increase significantly"
+→ "I want to split into microservices"
+→ "I need my own server/infrastructure"
+→ "I need complex backend logic"
 ```
 
-## 자주 하는 실수
+## Common Mistakes
 
-| 실수 | 해결책 |
-|------|--------|
-| CORS 에러 | bkend.ai 콘솔에서 도메인 등록 |
-| 401 Unauthorized | 토큰 만료, 재로그인 또는 토큰 갱신 |
-| 데이터 안 보임 | 컬렉션 이름, 쿼리 조건 확인 |
-| 타입 에러 | TypeScript 타입 정의와 스키마 동기화 |
+| Mistake | Solution |
+|---------|----------|
+| CORS error | Register domain in bkend.ai console |
+| 401 Unauthorized | Token expired, re-login or refresh token |
+| Data not showing | Check collection name, query conditions |
+| Type error | Sync TypeScript type definitions with schema |

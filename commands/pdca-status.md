@@ -3,64 +3,64 @@ description: Check current PDCA progress status
 allowed-tools: ["Read", "Glob", "Grep"]
 ---
 
-# PDCA 상태 확인
+# PDCA Status Check
 
-## 수행 작업
+## Tasks Performed
 
-1. **문서 폴더 스캔**
-   - docs/01-plan/ (또는 00-requirement/)
-   - docs/02-design/ (또는 01-development/)
-   - docs/03-analysis/ (또는 03-refactoring/)
-   - docs/04-report/ (또는 04-operation/)
+1. **Scan Document Folders**
+   - docs/01-plan/ (or 00-requirement/)
+   - docs/02-design/ (or 01-development/)
+   - docs/03-analysis/ (or 03-refactoring/)
+   - docs/04-report/ (or 04-operation/)
 
-2. **각 폴더별 상태 확인**
-   - 문서 수 카운트
-   - 각 문서의 상태 (확정/진행중/보류)
-   - 최종 수정일
+2. **Check Status per Folder**
+   - Count documents
+   - Status of each document (Approved/In Progress/On Hold)
+   - Last modified date
 
-3. **PDCA 현황 요약 출력**
+3. **Output PDCA Status Summary**
 
-## 출력 형식
+## Output Format
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    PDCA 상태 현황                        │
+│                    PDCA Status Overview                  │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
-│  현재 레벨: Dynamic                                      │
-│  프로젝트: {project_name}                                │
+│  Current Level: Dynamic                                 │
+│  Project: {project_name}                                │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
-│  단계          │ 문서 수 │ 확정 │ 진행중 │ 최근 수정     │
-├────────────────┼─────────┼──────┼────────┼──────────────┤
-│  📋 Plan       │    3    │  2   │   1    │ 2024-12-10  │
-│  📐 Design     │    5    │  3   │   2    │ 2024-12-12  │
-│  🔍 Analysis   │    2    │  1   │   1    │ 2024-12-11  │
-│  📊 Report     │    1    │  1   │   0    │ 2024-12-08  │
+│  Phase          │ Docs  │ Approved │ In Progress │ Last Modified │
+├────────────────┼───────┼──────────┼─────────────┼──────────────┤
+│  📋 Plan       │   3   │    2     │      1      │ 2024-12-10   │
+│  📐 Design     │   5   │    3     │      2      │ 2024-12-12   │
+│  🔍 Analysis   │   2   │    1     │      1      │ 2024-12-11   │
+│  📊 Report     │   1   │    1     │      0      │ 2024-12-08   │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
-│  현재 활성 사이클:                                        │
-│  - login 기능: Design 단계 (진행중)                      │
-│  - signup 기능: Check 단계 (분석 필요)                   │
+│  Current Active Cycles:                                 │
+│  - login feature: Design phase (In Progress)           │
+│  - signup feature: Check phase (Analysis needed)       │
 │                                                         │
 ├─────────────────────────────────────────────────────────┤
-│  권장 다음 작업:                                         │
-│  1. login.design.md 완료                                │
-│  2. signup 기능 Gap 분석 실행 (/pdca-analyze signup)    │
+│  Recommended Next Actions:                              │
+│  1. Complete login.design.md                           │
+│  2. Run Gap analysis for signup (/pdca-analyze signup) │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
-## 상태 판단 기준
+## Status Determination Criteria
 
-- **확정**: frontmatter에 `status: Approved` 또는 상태 이모지 ✅
-- **진행중**: `status: Draft` 또는 🔄
-- **보류**: `status: On Hold` 또는 ⏸️
+- **Approved**: frontmatter has `status: Approved` or status emoji ✅
+- **In Progress**: `status: Draft` or 🔄
+- **On Hold**: `status: On Hold` or ⏸️
 
-## 다음 단계 제안
+## Next Step Suggestions
 
-문서 상태에 따라 적절한 다음 작업 제안:
-- Plan만 있음 → Design 작성 권장
-- Design만 있음 → 구현 또는 Check 권장
-- 구현 완료 → Check (Gap 분석) 권장
-- Check 완료 → Act (보고서) 권장
+Suggest appropriate next actions based on document status:
+- Only Plan exists → Recommend writing Design
+- Only Design exists → Recommend implementation or Check
+- Implementation complete → Recommend Check (Gap analysis)
+- Check complete → Recommend Act (report)

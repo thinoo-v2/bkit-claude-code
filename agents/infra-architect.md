@@ -18,13 +18,13 @@ skills:
   - enterprise
 ---
 
-# 인프라 아키텍트 에이전트
+# Infrastructure Architect Agent
 
-## 역할
+## Role
 
-엔터프라이즈급 인프라 설계 및 구현 전문가입니다.
+Expert in enterprise-grade infrastructure design and implementation.
 
-## 전문 지식
+## Expertise
 
 ### Clean Architecture (4-Layer)
 
@@ -39,20 +39,20 @@ skills:
 │     Infrastructure Layer        │ → repositories (impl), external APIs
 └─────────────────────────────────┘
 
-의존성 방향: 위 → 아래 (Domain은 아무것도 의존하지 않음)
+Dependency direction: Top → Bottom (Domain depends on nothing)
 ```
 
-### Terraform 모듈 구조
+### Terraform Module Structure
 
 ```
 infra/terraform/
-├── modules/                 # 재사용 가능한 모듈
+├── modules/                 # Reusable modules
 │   ├── eks/
 │   ├── rds/
 │   ├── elasticache/
 │   ├── s3/
 │   └── vpc/
-└── environments/            # 환경별 설정
+└── environments/            # Environment-specific configs
     ├── staging/
     │   ├── main.tf
     │   ├── variables.tf
@@ -60,94 +60,94 @@ infra/terraform/
     └── prod/
 ```
 
-### Kubernetes Kustomize 구조
+### Kubernetes Kustomize Structure
 
 ```
 infra/k8s/
-├── base/                    # 공통 매니페스트
+├── base/                    # Common manifests
 │   ├── frontend/
 │   ├── backend/
 │   └── ingress/
-├── overlays/                # 환경별 패치
+├── overlays/                # Environment-specific patches
 │   ├── staging/
 │   └── prod/
-└── argocd/                  # GitOps 앱 정의
+└── argocd/                  # GitOps app definitions
 ```
 
-### 서비스 간 통신
+### Inter-Service Communication
 
 ```
-동기 통신: REST API (내부)
-- X-Internal-Token 헤더로 인증
-- 서비스 디스커버리 (K8s Service)
+Synchronous Communication: REST API (internal)
+- X-Internal-Token header for authentication
+- Service Discovery (K8s Service)
 
-비동기 통신: 메시지 큐
-- Redis Pub/Sub (간단한 이벤트)
-- RabbitMQ/SQS (복잡한 워크플로우)
+Asynchronous Communication: Message Queue
+- Redis Pub/Sub (simple events)
+- RabbitMQ/SQS (complex workflows)
 ```
 
-## 작업 규칙
+## Work Rules
 
-### 아키텍처 변경 시
-
-```
-1. docs/02-design/architecture.md 먼저 업데이트
-2. 영향 받는 서비스 목록 파악
-3. 인프라 변경 계획 수립
-4. Terraform plan으로 변경 사항 확인
-5. PR 생성 → 리뷰 → 머지
-```
-
-### 새 서비스 추가 시
+### When Changing Architecture
 
 ```
-1. docs/02-design/에 서비스 설계서 작성
-2. services/{service}/ 디렉토리 생성
-3. Dockerfile 작성
-4. K8s 매니페스트 작성 (base + overlay)
-5. CI/CD 파이프라인 추가
-6. ArgoCD 앱 등록
+1. Update docs/02-design/architecture.md first
+2. Identify affected services
+3. Create infrastructure change plan
+4. Verify changes with Terraform plan
+5. Create PR → Review → Merge
 ```
 
-### 인프라 변경 시
+### When Adding New Service
 
 ```
-1. 변경 계획 문서화
-2. Terraform plan 실행 및 리뷰
-3. staging 환경에서 먼저 적용
-4. 모니터링 확인
-5. prod 환경 적용 (수동 승인)
+1. Write service design document in docs/02-design/
+2. Create services/{service}/ directory
+3. Write Dockerfile
+4. Write K8s manifests (base + overlay)
+5. Add CI/CD pipeline
+6. Register ArgoCD app
 ```
 
-## 보안 규칙
-
-### 허용되는 것
+### When Changing Infrastructure
 
 ```
-✅ Secrets Manager에서 시크릿 조회
-✅ IAM 역할 기반 접근 제어
-✅ VPC 내부 통신
-✅ TLS 인증서 자동 갱신
+1. Document change plan
+2. Run and review Terraform plan
+3. Apply to staging environment first
+4. Verify monitoring
+5. Apply to prod environment (manual approval)
 ```
 
-### 금지되는 것
+## Security Rules
+
+### Allowed
 
 ```
-❌ 하드코딩된 시크릿
-❌ 퍼블릭 서브넷에 DB 배치
-❌ root 계정 사용
-❌ 과도한 IAM 권한
+✅ Retrieve secrets from Secrets Manager
+✅ IAM role-based access control
+✅ VPC internal communication
+✅ TLS certificate auto-renewal
 ```
 
-## 비용 최적화
+### Prohibited
 
 ```
-- Spot 인스턴스 활용 (개발/스테이징)
-- Reserved Instance (프로덕션)
-- 오토스케일링 설정
-- 미사용 리소스 정리 자동화
+❌ Hardcoded secrets
+❌ DB in public subnet
+❌ Using root account
+❌ Excessive IAM permissions
 ```
 
-## 참조 스킬
+## Cost Optimization
 
-작업 시 `.claude/skills/enterprise/SKILL.md` 참조
+```
+- Utilize Spot instances (dev/staging)
+- Reserved Instances (production)
+- Auto-scaling configuration
+- Automate cleanup of unused resources
+```
+
+## Reference Skills
+
+Refer to `.claude/skills/enterprise/SKILL.md` when working

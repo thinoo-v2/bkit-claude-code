@@ -14,123 +14,123 @@ allowed-tools:
 user-invocable: false
 ---
 
-# Phase 1: 스키마/용어 정의
+# Phase 1: Schema/Terminology Definition
 
-> 프로젝트 전체에서 사용할 용어와 데이터 구조 정의
+> Define terminology and data structures used throughout the project
 
-## 목적
+## Purpose
 
-프로젝트의 언어를 통일합니다. 모든 팀원(또는 AI)이 같은 용어로 소통하고, 데이터 구조를 명확히 이해합니다.
+Unify the language of the project. Ensure all team members (or AI) communicate using the same terms and clearly understand data structures.
 
-## 이 Phase에서 하는 것
+## What to Do in This Phase
 
-1. **용어 사전 구축**: 비즈니스 용어 + 글로벌 표준 매핑
-2. **엔티티 식별**: 어떤 "것들"이 있는지 파악
-3. **관계 정의**: 엔티티 간의 관계
-4. **스키마 설계**: 데이터 구조 정의
+1. **Build Glossary**: Map business terms + global standards
+2. **Identify Entities**: Determine what "things" exist
+3. **Define Relationships**: Relationships between entities
+4. **Design Schema**: Define data structures
 
-## 용어 사전 (Glossary)
+## Glossary
 
-### 왜 필요한가?
+### Why is it Needed?
 
-Claude Code에게 **매번 비즈니스 용어를 설명하는 것은 번거롭습니다**.
-용어 사전을 만들어두면:
-- Claude가 자동으로 참조하여 컨텍스트 이해
-- 팀 내 소통 일관성 확보
-- 신규 팀원/AI 온보딩 시간 단축
+**Explaining business terms to Claude Code every time is tedious**.
+Creating a glossary allows:
+- Claude to automatically reference for context understanding
+- Team communication consistency
+- Reduced onboarding time for new team members/AI
 
-### 용어 분류
+### Term Categories
 
-| 분류 | 설명 | 예시 |
-|------|------|------|
-| **비즈니스 용어** | 내부에서만 사용하는 고유 용어 | "캐디" (골프 예약 도우미) |
-| **글로벌 표준** | 업계 공통 또는 기술 표준 용어 | "OAuth", "REST API" |
-| **매핑** | 비즈니스 ↔ 글로벌 대응 | "회원" = User, "결제" = Payment |
+| Category | Description | Example |
+|----------|-------------|---------|
+| **Business Terms** | Internal proprietary terms | "Caddy" (golf booking assistant) |
+| **Global Standards** | Industry common or technical standard terms | "OAuth", "REST API" |
+| **Mapping** | Business ↔ Global correspondence | "Member" = User, "Payment" = Payment |
 
-### 용어 사전 템플릿
+### Glossary Template
 
 ```markdown
-## 비즈니스 용어 (Internal Terms)
+## Business Terms (Internal Terms)
 
-| 용어 | 영문 | 정의 | 글로벌 표준 매핑 |
-|------|------|------|-----------------|
-| 캐디 | Caddy | 골프 라운드 예약을 도와주는 AI 어시스턴트 | Booking Assistant |
-| 라운드 | Round | 18홀 골프 플레이 1회 | Session, Booking |
-| 그린피 | Green Fee | 골프장 이용 요금 | Usage Fee |
+| Term | English | Definition | Global Standard Mapping |
+|------|---------|------------|------------------------|
+| Caddy | Caddy | AI assistant that helps book golf rounds | Booking Assistant |
+| Round | Round | One 18-hole golf play | Session, Booking |
+| Green Fee | Green Fee | Golf course usage fee | Usage Fee |
 
-## 글로벌 표준 (Global Standards)
+## Global Standards
 
-| 용어 | 정의 | 참조 |
-|------|------|------|
-| OAuth 2.0 | 인증 프로토콜 | RFC 6749 |
-| REST | API 아키텍처 스타일 | - |
-| UUID | 범용 고유 식별자 | RFC 4122 |
+| Term | Definition | Reference |
+|------|------------|-----------|
+| OAuth 2.0 | Authentication protocol | RFC 6749 |
+| REST | API architecture style | - |
+| UUID | Universal Unique Identifier | RFC 4122 |
 
-## 용어 사용 규칙
+## Term Usage Rules
 
-1. 코드에서는 **영문** 사용 (`Caddy`, `Round`)
-2. UI/문서에서는 **한글** 사용 (캐디, 라운드)
-3. API 응답은 **글로벌 표준** 우선 (`booking_assistant`)
+1. Use **English** in code (`Caddy`, `Round`)
+2. Use **local language** in UI/docs (Caddy, Round)
+3. API responses prioritize **global standards** (`booking_assistant`)
 ```
 
-### Claude Code 자동 참조 설정
+### Claude Code Auto-Reference Setup
 
-용어 사전을 Claude가 자동 참조하도록 하려면:
+To have Claude automatically reference the glossary:
 
-**방법 1**: CLAUDE.md에 포함
+**Method 1**: Include in CLAUDE.md
 ```markdown
-## 용어 참조
-이 프로젝트의 용어 정의는 `docs/01-plan/glossary.md`를 참조하세요.
+## Term Reference
+For this project's term definitions, see `docs/01-plan/glossary.md`.
 ```
 
-**방법 2**: .claude/rules/에 용어 규칙 추가
+**Method 2**: Add term rules to .claude/rules/
 ```markdown
 <!-- .claude/rules/terminology.md -->
-프로젝트 용어는 docs/01-plan/glossary.md에 정의되어 있습니다.
-비즈니스 용어 사용 시 반드시 참조하세요.
+Project terms are defined in docs/01-plan/glossary.md.
+Always reference when using business terms.
 ```
 
-## 산출물
+## Deliverables
 
 ```
 docs/01-plan/
-├── glossary.md         # 용어 사전 (신규 권장)
-│   ├── 비즈니스 용어
-│   ├── 글로벌 표준
-│   └── 매핑 테이블
-├── schema.md           # 데이터 스키마
-├── terminology.md      # (기존) → glossary.md로 통합 권장
-└── domain-model.md     # 도메인 모델
+├── glossary.md         # Glossary (recommended new)
+│   ├── Business Terms
+│   ├── Global Standards
+│   └── Mapping Table
+├── schema.md           # Data schema
+├── terminology.md      # (existing) → recommend merging into glossary.md
+└── domain-model.md     # Domain model
 ```
 
-## PDCA 적용
+## PDCA Application
 
-- **Plan**: 어떤 엔티티/용어가 필요한지 파악
-- **Design**: 스키마 구조, 관계 설계
-- **Do**: 문서 작성
-- **Check**: 누락/모순 검토
-- **Act**: 확정 후 Phase 2로
+- **Plan**: Identify what entities/terms are needed
+- **Design**: Design schema structure, relationships
+- **Do**: Write documentation
+- **Check**: Review for omissions/contradictions
+- **Act**: Finalize and proceed to Phase 2
 
-## 레벨별 적용
+## Level-wise Application
 
-| 레벨 | 적용 수준 |
-|------|----------|
-| Starter | 간단 (핵심 용어만) |
-| Dynamic | 상세 (전체 엔티티) |
-| Enterprise | 상세 (마이크로서비스별) |
+| Level | Application Level |
+|-------|------------------|
+| Starter | Simple (core terms only) |
+| Dynamic | Detailed (all entities) |
+| Enterprise | Detailed (per microservice) |
 
-## 예시 질문
+## Example Questions
 
 ```
-"이 프로젝트에서 다루는 핵심 '것'들이 뭐예요?"
-"사용자, 상품, 주문... 이런 것들 사이의 관계는?"
-"'회원'과 '사용자'는 같은 건가요 다른 건가요?"
+"What are the core 'things' this project deals with?"
+"What are the relationships between users, products, orders...?"
+"Are 'member' and 'user' the same or different?"
 ```
 
-## 템플릿
+## Template
 
-`templates/pipeline/phase-1-schema.template.md` 참조
+See `templates/pipeline/phase-1-schema.template.md`
 
-## 다음 Phase
+## Next Phase
 
-Phase 2: 코딩 컨벤션 → 용어가 정해졌으니 코드 규칙 정의
+Phase 2: Coding Convention → Now that terms are defined, define code rules

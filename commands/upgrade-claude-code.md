@@ -2,116 +2,116 @@
 description: Claude Code settings upgrade
 ---
 
-# Claude Code 설정 업그레이드
+# Claude Code Settings Upgrade
 
-현재 설정을 분석하고 **최신 트렌드를 반영**하여 업그레이드를 제안합니다.
-**어떤 프로젝트, 어떤 언어에서든** 동일하게 작동합니다.
+Analyzes current settings and suggests upgrades **reflecting the latest trends**.
+Works **across any project, any language**.
 
-## 사용법
+## Usage
 
 ```
 /upgrade-claude-code
 ```
 
-## 왜 이 커맨드가 필요한가?
+## Why This Command?
 
 ```
-문제 1: Claude Code 설정이 구식일 수 있음
-문제 2: 새로운 기능이나 베스트 프랙티스를 놓칠 수 있음
-문제 3: 설정 완성도를 객관적으로 평가하기 어려움
+Problem 1: Claude Code settings may be outdated
+Problem 2: May miss new features or best practices
+Problem 3: Difficult to objectively evaluate settings completeness
 
-해결:
-- 현재 설정 점수화 (100점 만점)
-- WebSearch로 최신 트렌드 조사
-- 구체적인 개선 제안
+Solution:
+- Score current settings (out of 100)
+- Research latest trends via WebSearch
+- Provide specific improvement suggestions
 ```
 
-## 수행 작업
+## Tasks Performed
 
-### 1단계: 마스터 가이드 참조
+### Step 1: Reference Master Guide
 
-**반드시** 다음 문서를 먼저 읽습니다:
+**Must** read the following documents first:
 
 ```
-.claude/docs/CLAUDE-CODE-MASTERY.md           # 목차 및 핵심 개념
-.claude/docs/mastery/05-advanced.md           # 최신 트렌드 분석 방법
-.claude/docs/mastery/02-language-templates.md # 언어별 템플릿
-.claude/docs/mastery/01-settings-guide.md     # 설정 요소별 상세 (MCP 추천 포함)
+.claude/docs/CLAUDE-CODE-MASTERY.md           # Table of contents and core concepts
+.claude/docs/mastery/05-advanced.md           # Latest trend analysis methods
+.claude/docs/mastery/02-language-templates.md # Language-specific templates
+.claude/docs/mastery/01-settings-guide.md     # Detailed settings guide (includes MCP recommendations)
 ```
 
-필요한 내용에 따라 해당 파일을 참조합니다.
+Reference appropriate files based on needed content.
 
-### 2단계: 현재 설정 분석
+### Step 2: Analyze Current Settings
 
 ```bash
-# 분석 대상
-1. CLAUDE.md - 규칙 수, 상세도
-2. .claude/settings.local.json - 훅, 권한 설정
-3. .claude/commands/ - 커맨드 수, 품질
-4. .claude/agents/ - 에이전트 수, 전문성
-5. .claude/skills/ - 스킬 수, 도메인 커버리지
-6. .mcp.json - 연결된 외부 도구
-7. .github/workflows/ - CI/CD 자동화
+# Analysis targets
+1. CLAUDE.md - Number of rules, detail level
+2. .claude/settings.local.json - Hooks, permission settings
+3. .claude/commands/ - Number of commands, quality
+4. .claude/agents/ - Number of agents, specialization
+5. .claude/skills/ - Number of skills, domain coverage
+6. .mcp.json - Connected external tools
+7. .github/workflows/ - CI/CD automation
 ```
 
-### 3단계: 설정 점수 산출
+### Step 3: Calculate Settings Score
 
 ```markdown
-## 점수 기준 (총 100점)
+## Scoring Criteria (Total 100 points)
 
-### CLAUDE.md (20점)
-- 0점: 파일 없음
-- 10점: 기본 규칙만 있음
-- 15점: 상세 규칙 + 예시 포함
-- 20점: 팀 지식 축적 + Git 관리
+### CLAUDE.md (20 points)
+- 0 points: No file
+- 10 points: Basic rules only
+- 15 points: Detailed rules + examples included
+- 20 points: Team knowledge accumulated + Git managed
 
-### Commands (15점)
-- 0점: 폴더 없음
-- 5점: 1-2개
-- 10점: 3-5개
-- 15점: 5개+ 및 인라인 Bash 활용
+### Commands (15 points)
+- 0 points: No folder
+- 5 points: 1-2 commands
+- 10 points: 3-5 commands
+- 15 points: 5+ with inline Bash usage
 
-### Agents (15점)
-- 0점: 폴더 없음
-- 5점: 1-2개
-- 10점: 3-4개
-- 15점: 4개+ 및 전문화됨
+### Agents (15 points)
+- 0 points: No folder
+- 5 points: 1-2 agents
+- 10 points: 3-4 agents
+- 15 points: 4+ and specialized
 
-### Skills (15점)
-- 0점: 폴더 없음
-- 5점: 1-2개
-- 10점: 3-4개 (도메인별)
-- 15점: 전체 도메인 커버
+### Skills (15 points)
+- 0 points: No folder
+- 5 points: 1-2 skills
+- 10 points: 3-4 skills (per domain)
+- 15 points: Full domain coverage
 
-### Hooks (10점)
-- 0점: 설정 없음
-- 5점: 기본 포맷팅만
-- 10점: 포맷팅 + 린트 + 추가 자동화
+### Hooks (10 points)
+- 0 points: No settings
+- 5 points: Basic formatting only
+- 10 points: Formatting + lint + additional automation
 
-### Permissions (10점)
-- 0점: 설정 없음 또는 전체 허용
-- 5점: 기본 화이트리스트
-- 10점: 세밀한 화이트리스트
+### Permissions (10 points)
+- 0 points: No settings or allow all
+- 5 points: Basic whitelist
+- 10 points: Fine-grained whitelist
 
-### MCP (10점)
-- 0점: 연결 없음
-- 5점: 1-2개 서버
-- 10점: 3개+ 외부 도구 연결
+### MCP (10 points)
+- 0 points: No connections
+- 5 points: 1-2 servers
+- 10 points: 3+ external tools connected
 
-### GitHub Action (5점)
-- 0점: 없음
-- 5점: PR 자동 문서화 설정됨
+### GitHub Action (5 points)
+- 0 points: None
+- 5 points: PR auto-documentation configured
 
-### PDCA 문서 (보너스 10점)
-- 0점: docs/ 폴더 없음
-- 3점: 일부 폴더만 있음
-- 7점: 전체 구조 (01-plan ~ 04-report)
-- 10점: 전체 구조 + 활발한 문서 작성
+### PDCA Documents (Bonus 10 points)
+- 0 points: No docs/ folder
+- 3 points: Only partial folders
+- 7 points: Full structure (01-plan ~ 04-report)
+- 10 points: Full structure + active documentation
 ```
 
-### 4단계: 최신 트렌드 조사 (WebSearch)
+### Step 4: Research Latest Trends (WebSearch)
 
-다음 검색어로 최신 정보를 수집합니다:
+Collect latest information with the following search queries:
 
 ```
 - "Claude Code best practices 2026"
@@ -121,118 +121,118 @@ description: Claude Code settings upgrade
 - "Boris Cherny Claude Code tips"
 ```
 
-### 5단계: 개선점 식별
+### Step 5: Identify Improvements
 
 ```markdown
-## 개선점 우선순위
+## Improvement Priority
 
-### 높음 (점수 향상 5점+)
-- [x] CLAUDE.md 규칙 상세화
-- [x] Skills 폴더 추가
-- [x] 누락된 Agents 추가
+### High (5+ point improvement)
+- [x] Detail CLAUDE.md rules
+- [x] Add Skills folder
+- [x] Add missing Agents
 
-### 중간 (점수 향상 3-5점)
-- [ ] 새로운 MCP 서버 연결
-- [ ] 커맨드 추가
-- [ ] 훅 고도화
+### Medium (3-5 point improvement)
+- [ ] Connect new MCP servers
+- [ ] Add commands
+- [ ] Enhance hooks
 
-### 낮음 (점수 향상 1-2점)
-- [ ] 기존 설정 최적화
-- [ ] 문서 개선
+### Low (1-2 point improvement)
+- [ ] Optimize existing settings
+- [ ] Improve documentation
 ```
 
-### 6단계: 사용자에게 제안
+### Step 6: Suggest to User
 
 ```markdown
-## 업그레이드 제안
+## Upgrade Suggestions
 
-### 현재 점수: XX/100
+### Current Score: XX/100
 
-### 권장 업그레이드
+### Recommended Upgrades
 
-1. **[높음]** Skills 폴더 추가
-   - 예상 점수 향상: +15점
-   - 효과: 도메인별 전문 컨텍스트 제공
+1. **[High]** Add Skills folder
+   - Expected score improvement: +15 points
+   - Effect: Provide domain-specific expert context
 
-2. **[중간]** 새 MCP 서버 연결
-   - 예상 점수 향상: +5점
-   - 효과: Jira/Confluence 연동
+2. **[Medium]** Connect new MCP server
+   - Expected score improvement: +5 points
+   - Effect: Jira/Confluence integration
 
-3. **[낮음]** 커맨드 추가
-   - 예상 점수 향상: +2점
-   - 효과: 추가 자동화
+3. **[Low]** Add commands
+   - Expected score improvement: +2 points
+   - Effect: Additional automation
 
-### 최신 트렌드
+### Latest Trends
 
-🔥 **2026년 트렌드**:
-- {조사된 트렌드 1}
-- {조사된 트렌드 2}
-- {조사된 트렌드 3}
+🔥 **2026 Trends**:
+- {Researched trend 1}
+- {Researched trend 2}
+- {Researched trend 3}
 
-⚡ **새로운 기능**:
-- {새 기능 1}
-- {새 기능 2}
+⚡ **New Features**:
+- {New feature 1}
+- {New feature 2}
 ```
 
-### 7단계: 사용자 승인 대기
+### Step 7: Wait for User Approval
 
 ```
-업그레이드를 적용하시겠습니까?
+Would you like to apply the upgrades?
 
-1. 전체 적용
-2. 선택적 적용 (번호 선택)
-3. 취소
+1. Apply all
+2. Selective apply (choose numbers)
+3. Cancel
 ```
 
-### 8단계: 업그레이드 적용
+### Step 8: Apply Upgrades
 
-사용자 승인 시:
-1. 백업 생성 (기존 파일)
-2. 새 설정 적용
-3. 변경 사항 요약
+Upon user approval:
+1. Create backup (existing files)
+2. Apply new settings
+3. Summarize changes
 
-## 결과 출력
+## Output
 
 ```
-🚀 Claude Code 업그레이드 완료!
+🚀 Claude Code Upgrade Complete!
 
-📊 점수 변화: XX/100 → YY/100 (+ZZ점)
+📊 Score Change: XX/100 → YY/100 (+ZZ points)
 
-📝 적용된 변경:
-- Skills 폴더 생성 (4개)
-- 새 MCP 서버 연결 (Jira)
-- CLAUDE.md 규칙 추가
+📝 Applied Changes:
+- Skills folder created (4 files)
+- New MCP server connected (Jira)
+- CLAUDE.md rules added
 
-🔥 반영된 최신 트렌드:
-- {트렌드 1}
-- {트렌드 2}
+🔥 Latest Trends Applied:
+- {Trend 1}
+- {Trend 2}
 
-🎯 다음 단계:
-- 새로운 설정 테스트
-- 팀원과 공유
-- /learn-claude-code 로 새 기능 학습
+🎯 Next Steps:
+- Test new settings
+- Share with team
+- Learn new features with /learn-claude-code
 ```
 
-## 롤백 방법
+## Rollback Method
 
 ```bash
-# 백업에서 복원
+# Restore from backup
 git checkout HEAD~1 -- .claude/
 git checkout HEAD~1 -- CLAUDE.md
 git checkout HEAD~1 -- .mcp.json
 ```
 
-## 참고 문서
+## Reference Documents
 
-### Claude Code 마스터리
+### Claude Code Mastery
 - .claude/docs/CLAUDE-CODE-MASTERY.md
-- .claude/docs/mastery/05-advanced.md (트렌드 분석)
-- .claude/docs/mastery/01-settings-guide.md (MCP 추천 전략 포함)
+- .claude/docs/mastery/05-advanced.md (Trend analysis)
+- .claude/docs/mastery/01-settings-guide.md (includes MCP recommendation strategy)
 
-### PDCA 방법론
+### PDCA Methodology
 - .claude/docs/pdca/overview.md
-- .claude/docs/levels/upgrade-guide.md (레벨 업그레이드)
+- .claude/docs/levels/upgrade-guide.md (Level upgrade)
 
-### 분석 도구
-- .claude/agents/gap-detector.md (Gap 분석)
-- .claude/skills/analysis-patterns/ (분석 패턴)
+### Analysis Tools
+- .claude/agents/gap-detector.md (Gap analysis)
+- .claude/skills/analysis-patterns/ (Analysis patterns)

@@ -3,63 +3,63 @@ description: Initialize Enterprise level project (MSA, K8s, Terraform)
 allowed-tools: ["Read", "Write", "Bash", "Glob"]
 ---
 
-# Enterprise 프로젝트 초기화
+# Enterprise Project Initialization
 
-## 수행 작업
+## Tasks Performed
 
-1. **프로젝트 구조 분석**
-   - 모노레포 구조 확인 (turbo.json, pnpm-workspace.yaml)
-   - 백엔드 서비스 구조 확인 (services/)
-   - 인프라 코드 확인 (infra/)
+1. **Analyze Project Structure**
+   - Check monorepo structure (turbo.json, pnpm-workspace.yaml)
+   - Check backend service structure (services/)
+   - Check infrastructure code (infra/)
 
-2. **PDCA 문서 폴더 생성**
+2. **Create PDCA Document Folders**
    ```
    docs/
-   ├── 00-requirement/           # 요구사항 원문
+   ├── 00-requirement/           # Original requirements
    │   └── _INDEX.md
-   ├── 01-development/           # 설계 문서 (다수)
+   ├── 01-development/           # Design documents (multiple)
    │   ├── _INDEX.md
    │   ├── 01_architecture.md
    │   ├── 02_data-model.md
    │   ├── 03_api-spec.md
    │   └── features/
-   ├── 02-scenario/              # 시나리오, 유스케이스
+   ├── 02-scenario/              # Scenarios, use cases
    │   └── _INDEX.md
-   ├── 03-refactoring/           # 분석 및 리팩토링
+   ├── 03-refactoring/           # Analysis and refactoring
    │   ├── _INDEX.md
    │   ├── gap-analysis/
    │   └── issues/
-   └── 04-operation/             # 운영 문서
+   └── 04-operation/             # Operations documents
        ├── _INDEX.md
        ├── runbook.md
        └── changelog.md
    ```
 
-3. **도메인별 CLAUDE.md 생성**
-   - services/CLAUDE.md (백엔드 컨벤션)
-   - frontend/CLAUDE.md (프론트엔드 컨벤션)
-   - infra/CLAUDE.md (인프라 컨벤션)
+3. **Generate Domain-specific CLAUDE.md**
+   - services/CLAUDE.md (backend conventions)
+   - frontend/CLAUDE.md (frontend conventions)
+   - infra/CLAUDE.md (infrastructure conventions)
 
-4. **CI/CD 확인**
-   - .github/workflows/ 확인
-   - ArgoCD 설정 확인 (해당 시)
+4. **Check CI/CD**
+   - Verify .github/workflows/
+   - Check ArgoCD configuration (if applicable)
 
-## 실행 조건
+## Execution Conditions
 
-- 마이크로서비스 또는 모노레포 구조
-- Kubernetes 또는 Docker 필수
-- Terraform 권장
+- Microservices or monorepo structure
+- Kubernetes or Docker required
+- Terraform recommended
 
-## 다음 단계 안내
+## Next Steps Guide
 
 ```
-✅ Enterprise 프로젝트가 초기화되었습니다!
+✅ Enterprise project has been initialized!
 
-다음 단계:
-1. docs/01-development/01_architecture.md 검토
-2. services/CLAUDE.md에 백엔드 컨벤션 정의
-3. /pdca-plan [서비스명] - 서비스 계획 작성
+Next Steps:
+1. Review docs/01-development/01_architecture.md
+2. Define backend conventions in services/CLAUDE.md
+3. /pdca-plan [service-name] - Write service plan
 
-⚠️ SoR 우선순위: 코드 > CLAUDE.md > 설계 문서
-   항상 코드베이스를 먼저 확인하세요.
+⚠️ SoR Priority: Code > CLAUDE.md > Design Documents
+   Always check the codebase first.
 ```

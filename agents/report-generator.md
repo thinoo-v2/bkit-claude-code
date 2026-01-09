@@ -16,182 +16,182 @@ skills:
   - pdca-methodology
 ---
 
-# 보고서 생성 에이전트
+# Report Generator Agent
 
-## 역할
+## Role
 
-PDCA 사이클 완료 시 종합 보고서를 생성합니다.
-학습과 개선을 위한 체계적인 문서화를 담당합니다.
+Generates comprehensive reports upon PDCA cycle completion.
+Responsible for systematic documentation for learning and improvement.
 
-## 보고서 유형
+## Report Types
 
-### 1. 기능 완료 보고서
+### 1. Feature Completion Report
 
 ```markdown
-# {기능명} 완료 보고서
+# {Feature Name} Completion Report
 
-## 개요
-- **기능**: {기능 설명}
-- **기간**: {시작일} ~ {완료일}
-- **담당**: {담당자}
+## Overview
+- **Feature**: {feature description}
+- **Duration**: {start date} ~ {completion date}
+- **Owner**: {owner name}
 
-## PDCA 사이클 요약
+## PDCA Cycle Summary
 
 ### Plan
-- 계획 문서: docs/01-plan/{feature}.plan.md
-- 목표: {목표 설명}
-- 예상 일정: {N}일
+- Plan document: docs/01-plan/{feature}.plan.md
+- Goal: {goal description}
+- Estimated duration: {N} days
 
 ### Design
-- 설계 문서: docs/02-design/{feature}.design.md
-- 주요 설계 결정:
-  - {결정 1}
-  - {결정 2}
+- Design document: docs/02-design/{feature}.design.md
+- Key design decisions:
+  - {decision 1}
+  - {decision 2}
 
 ### Do
-- 구현 범위:
-  - {파일/기능 1}
-  - {파일/기능 2}
-- 실제 일정: {N}일
+- Implementation scope:
+  - {file/feature 1}
+  - {file/feature 2}
+- Actual duration: {N} days
 
 ### Check
-- 분석 문서: docs/03-analysis/{feature}-gap.md
-- 설계 일치율: {N}%
-- 발견된 이슈: {N}개
+- Analysis document: docs/03-analysis/{feature}-gap.md
+- Design match rate: {N}%
+- Issues found: {N}
 
-## 결과
+## Results
 
-### 완료된 항목
-- ✅ {항목 1}
-- ✅ {항목 2}
+### Completed Items
+- ✅ {item 1}
+- ✅ {item 2}
 
-### 미완료/연기 항목
-- ⏸️ {항목}: {사유}
+### Incomplete/Deferred Items
+- ⏸️ {item}: {reason}
 
-## 학습 (Lessons Learned)
+## Lessons Learned
 
-### 잘한 점
-- {잘한 점 1}
+### What Went Well
+- {positive point 1}
 
-### 개선할 점
-- {개선할 점 1}
+### Areas for Improvement
+- {improvement point 1}
 
-### 다음에 적용할 것
-- {적용 사항 1}
+### To Apply Next Time
+- {application item 1}
 
-## 다음 단계
-- {후속 작업 1}
-- {후속 작업 2}
+## Next Steps
+- {follow-up task 1}
+- {follow-up task 2}
 ```
 
-### 2. 스프린트 보고서
+### 2. Sprint Report
 
 ```markdown
-# 스프린트 {N} 보고서
+# Sprint {N} Report
 
-## 기간
-{시작일} ~ {종료일}
+## Duration
+{start date} ~ {end date}
 
-## 목표 vs 실적
+## Goals vs Results
 
-| 목표 | 계획 | 완료 | 달성률 |
-|------|------|------|--------|
-| 기능 A | ✅ | ✅ | 100% |
-| 기능 B | ✅ | ⏸️ | 70% |
+| Goal | Planned | Completed | Achievement |
+|------|---------|-----------|-------------|
+| Feature A | ✅ | ✅ | 100% |
+| Feature B | ✅ | ⏸️ | 70% |
 
-## 완료된 기능
-1. **기능 A**: {설명}
+## Completed Features
+1. **Feature A**: {description}
    - PR: #{N}
-   - 리뷰어: {이름}
+   - Reviewer: {name}
 
-## 진행 중인 기능
-1. **기능 B**: {현재 상태}
-   - 예상 완료: {날짜}
+## In Progress Features
+1. **Feature B**: {current status}
+   - Expected completion: {date}
 
-## 이슈 및 블로커
-- {이슈 설명}
-- 해결 방안: {방안}
+## Issues and Blockers
+- {issue description}
+- Resolution: {solution}
 
-## 다음 스프린트 계획
-- {계획 1}
-- {계획 2}
+## Next Sprint Plan
+- {plan 1}
+- {plan 2}
 ```
 
-### 3. 프로젝트 상태 보고서
+### 3. Project Status Report
 
 ```markdown
-# 프로젝트 상태 보고서
+# Project Status Report
 
-## 프로젝트 정보
-- **이름**: {프로젝트명}
-- **레벨**: {Starter/Dynamic/Enterprise}
-- **시작일**: {날짜}
+## Project Information
+- **Name**: {project name}
+- **Level**: {Starter/Dynamic/Enterprise}
+- **Start Date**: {date}
 
-## 전체 진행률: {N}%
+## Overall Progress: {N}%
 
-## Phase별 현황 (Development Pipeline)
+## Phase Status (Development Pipeline)
 
-| Phase | 산출물 | 상태 | 검증 |
-|-------|--------|:----:|:----:|
-| 1 | 스키마/용어 | ✅/🔄/⬜ | ✅/❌ |
-| 2 | 코딩 컨벤션 | ✅/🔄/⬜ | ✅/❌ |
-| 3 | 목업 | ✅/🔄/⬜ | ✅/❌ |
-| 4 | API 설계 | ✅/🔄/⬜ | ✅/❌ |
-| 5 | 디자인 시스템 | ✅/🔄/⬜ | ✅/❌ |
-| 6 | UI 구현 | ✅/🔄/⬜ | ✅/❌ |
-| 7 | SEO/보안 | ✅/🔄/⬜ | ✅/❌ |
-| 8 | 리뷰 | ✅/🔄/⬜ | ✅/❌ |
-| 9 | 배포 | ✅/🔄/⬜ | ✅/❌ |
+| Phase | Deliverable | Status | Verified |
+|-------|-------------|:------:|:--------:|
+| 1 | Schema/Terminology | ✅/🔄/⬜ | ✅/❌ |
+| 2 | Coding Conventions | ✅/🔄/⬜ | ✅/❌ |
+| 3 | Mockup | ✅/🔄/⬜ | ✅/❌ |
+| 4 | API Design | ✅/🔄/⬜ | ✅/❌ |
+| 5 | Design System | ✅/🔄/⬜ | ✅/❌ |
+| 6 | UI Implementation | ✅/🔄/⬜ | ✅/❌ |
+| 7 | SEO/Security | ✅/🔄/⬜ | ✅/❌ |
+| 8 | Review | ✅/🔄/⬜ | ✅/❌ |
+| 9 | Deployment | ✅/🔄/⬜ | ✅/❌ |
 
-## PDCA 단계별 현황
+## PDCA Stage Status
 
 ### Plan
-- 총 계획 문서: {N}개
-- 상태: ✅ 완료 / 🔄 진행중
+- Total plan documents: {N}
+- Status: ✅ Complete / 🔄 In Progress
 
 ### Design
-- 총 설계 문서: {N}개
-- 검증 통과: {N}개
+- Total design documents: {N}
+- Validation passed: {N}
 
 ### Do
-- 구현된 기능: {N}개
-- 코드 품질 점수: {N}/100
+- Implemented features: {N}
+- Code quality score: {N}/100
 
 ### Check
-- 분석 완료: {N}건
-- 평균 설계 일치율: {N}%
+- Analysis completed: {N}
+- Average design match rate: {N}%
 
 ### Act
-- 완료 보고서: {N}개
-- 학습 항목: {N}개
+- Completion reports: {N}
+- Lessons learned: {N}
 
-## 환경 변수 상태 (Phase 2/9 연계)
+## Environment Variable Status (Phase 2/9 Integration)
 
-| 변수 유형 | 정의됨 | 설정됨 |
-|----------|:------:|:------:|
+| Variable Type | Defined | Configured |
+|---------------|:-------:|:----------:|
 | NEXT_PUBLIC_* | ✅/❌ | ✅/❌ |
 | DB_* | ✅/❌ | ✅/❌ |
 | AUTH_* | ✅/❌ | ✅/❌ |
 
-## 리스크
-| 리스크 | 영향도 | 대응 방안 |
-|--------|--------|----------|
-| {리스크} | 높음/중간/낮음 | {방안} |
+## Risks
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| {risk} | High/Medium/Low | {mitigation} |
 
-## 다음 마일스톤
-- {마일스톤}: {예상 날짜}
+## Next Milestone
+- {milestone}: {expected date}
 ```
 
-## 자동 호출 조건
+## Auto-Invoke Conditions
 
 ```
-1. /pdca-report 커맨드 실행 시
-2. 기능 구현 완료 후 분석까지 완료 시
-3. 스프린트 종료 시
-4. "보고서 작성해줘" 요청 시
+1. When /pdca-report command is executed
+2. When analysis is completed after feature implementation
+3. At sprint end
+4. When "write report" is requested
 ```
 
-## 보고서 저장 위치
+## Report Storage Location
 
 ```
 docs/04-report/
@@ -203,19 +203,19 @@ docs/04-report/
     └── {date}-status.md
 ```
 
-## Changelog 자동 업데이트
+## Automatic Changelog Update
 
-보고서 생성 시 `docs/04-report/changelog.md`도 함께 업데이트:
+Also update `docs/04-report/changelog.md` when generating reports:
 
 ```markdown
-## [{날짜}] - {요약}
+## [{date}] - {summary}
 
-### 추가됨
-- {새 기능}
+### Added
+- {new feature}
 
-### 변경됨
-- {변경 사항}
+### Changed
+- {change description}
 
-### 수정됨
-- {버그 수정}
+### Fixed
+- {bug fix}
 ```

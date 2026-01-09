@@ -3,121 +3,121 @@ description: Guide to next PDCA step (based on current status)
 allowed-tools: ["Read", "Glob"]
 ---
 
-# PDCA 다음 단계 안내
+# PDCA Next Step Guide
 
-현재 프로젝트 상태를 분석하여 다음에 해야 할 작업을 안내합니다.
+Analyzes current project status and guides the next task to be done.
 
-## 수행 작업
+## Tasks Performed
 
-1. **현재 상태 분석**
-   - 문서 폴더 스캔
-   - 각 기능별 PDCA 단계 확인
-   - 미완료 작업 식별
+1. **Analyze Current Status**
+   - Scan document folders
+   - Check PDCA stage for each feature
+   - Identify incomplete tasks
 
-2. **우선순위 결정**
-   - 진행중인 작업 우선
-   - 오래된 미완료 작업
-   - 새 기능 시작 가능 여부
+2. **Determine Priority**
+   - Prioritize in-progress work
+   - Old incomplete tasks
+   - Possibility to start new features
 
-3. **맞춤형 안내 제공**
+3. **Provide Customized Guidance**
 
-## 상황별 안내
+## Situational Guidance
 
-### 아무것도 없을 때
+### When Nothing Exists
 ```
-💡 PDCA 시작하기
+💡 Getting Started with PDCA
 
-프로젝트에 PDCA 문서가 없습니다.
+No PDCA documents in the project.
 
-추천 시작 방법:
-1. /init-starter (또는 dynamic/enterprise) 로 초기화
-2. 첫 번째 기능을 요청하면 자동으로 PDCA가 적용됩니다
-   예: "로그인 기능을 만들어줘"
+Recommended Start:
+1. Initialize with /init-starter (or dynamic/enterprise)
+2. PDCA will be automatically applied when you request a feature
+   e.g., "Create a login feature"
 
-📚 PDCA란?
-Plan(계획) → Do(실행) → Check(분석) → Act(개선)
-문서화 기반 개발로 품질과 일관성을 높이는 방법론입니다.
-```
-
-### Plan만 있을 때
-```
-📋 현재 단계: Plan 완료
-
-{feature} 기능의 계획서가 작성되었습니다.
-
-다음 단계:
-1. 설계서 작성: /pdca-design {feature}
-2. 또는 "{feature} 설계해줘"라고 요청
-
-💡 Tip: 설계 없이 바로 구현도 가능하지만,
-        설계서가 있으면 나중에 Gap 분석이 가능합니다.
+📚 What is PDCA?
+Plan → Do → Check → Act
+A methodology for improving quality and consistency through document-driven development.
 ```
 
-### Design까지 있을 때
+### When Only Plan Exists
 ```
-📐 현재 단계: Design 완료
+📋 Current Stage: Plan Complete
 
-{feature} 기능의 설계가 완료되었습니다.
+The plan document for {feature} has been created.
 
-다음 단계:
-1. 구현 시작: "{feature} 구현해줘"
-2. 설계 수정이 필요하면 말씀해주세요
+Next Steps:
+1. Write design document: /pdca-design {feature}
+2. Or request "{feature} design"
 
-⚠️ 주의: 구현 중 설계와 다르게 해야 하면
-         먼저 설계 문서를 업데이트하세요.
-```
-
-### 구현 완료 후
-```
-✅ 현재 단계: Do 완료 (구현 완료)
-
-{feature} 기능이 구현되었습니다.
-
-다음 단계:
-1. Gap 분석: /pdca-analyze {feature}
-2. 또는 "{feature} 분석해줘"
-
-📊 분석을 통해:
-- 설계와 구현의 일치율 확인
-- 코드 품질 이슈 발견
-- 개선 포인트 식별
+💡 Tip: Implementation without design is possible,
+        but having a design document enables Gap analysis later.
 ```
 
-### 분석 완료 후
+### When Design is Complete
 ```
-🔍 현재 단계: Check 완료 (분석 완료)
+📐 Current Stage: Design Complete
 
-{feature} 기능의 분석이 완료되었습니다.
-일치율: {percentage}%
+The design for {feature} is complete.
 
-다음 단계:
-1. 발견된 이슈 수정 (있다면)
-2. 완료 보고서: /pdca-report {feature}
+Next Steps:
+1. Start implementation: "Implement {feature}"
+2. Let me know if design modifications are needed
 
-🎯 이슈 요약:
-- Critical: {count}개
-- Warning: {count}개
+⚠️ Note: If implementation needs to differ from design,
+         update the design document first.
 ```
 
-### 보고서 완료 후
+### After Implementation
 ```
-🎉 PDCA 사이클 완료!
+✅ Current Stage: Do Complete (Implementation Complete)
 
-{feature} 기능의 전체 PDCA 사이클이 완료되었습니다.
+{feature} has been implemented.
 
-옵션:
-1. 새 기능 시작: /pdca-plan [새 기능명]
-2. 기존 기능 개선: 2차 사이클 시작
-3. 다른 작업 진행
+Next Steps:
+1. Gap analysis: /pdca-analyze {feature}
+2. Or request "Analyze {feature}"
 
-📈 프로젝트 현황:
-- 완료된 기능: {count}개
-- 진행중: {count}개
+📊 Through analysis:
+- Check design-implementation match rate
+- Discover code quality issues
+- Identify improvement points
 ```
 
-## 사용 예시
+### After Analysis
+```
+🔍 Current Stage: Check Complete (Analysis Complete)
+
+Analysis for {feature} is complete.
+Match Rate: {percentage}%
+
+Next Steps:
+1. Fix discovered issues (if any)
+2. Completion report: /pdca-report {feature}
+
+🎯 Issue Summary:
+- Critical: {count}
+- Warning: {count}
+```
+
+### After Report
+```
+🎉 PDCA Cycle Complete!
+
+The entire PDCA cycle for {feature} is complete.
+
+Options:
+1. Start new feature: /pdca-plan [new-feature-name]
+2. Improve existing feature: Start 2nd cycle
+3. Proceed with other work
+
+📈 Project Status:
+- Completed features: {count}
+- In progress: {count}
+```
+
+## Usage Examples
 
 ```
-/pdca-next              # 전체 프로젝트 기준 다음 단계
-/pdca-next login        # 특정 기능 기준 다음 단계
+/pdca-next              # Next step based on entire project
+/pdca-next login        # Next step for specific feature
 ```

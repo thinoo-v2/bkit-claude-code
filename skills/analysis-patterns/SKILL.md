@@ -14,236 +14,236 @@ allowed-tools:
   - LSP
 ---
 
-# 분석 패턴 스킬
+# Analysis Patterns Skill
 
-## 분석 유형
+## Analysis Types
 
-### 1. Gap 분석 (설계-구현 차이)
+### 1. Gap Analysis (Design-Implementation Differences)
 
-설계 문서와 실제 구현의 차이를 찾아내는 분석
+Analysis that identifies differences between design documents and actual implementation
 
 ```markdown
-# Gap 분석 보고서
+# Gap Analysis Report
 
-## 분석 대상
-- 설계 문서: docs/02-design/login.design.md
-- 구현 경로: src/features/auth/
+## Analysis Target
+- Design document: docs/02-design/login.design.md
+- Implementation path: src/features/auth/
 
-## 분석 항목별 결과
+## Results by Analysis Item
 
-### API 엔드포인트
-| 설계 | 구현 | 상태 |
-|------|------|------|
-| POST /auth/login | POST /auth/login | ✅ 일치 |
-| POST /auth/register | - | ❌ 미구현 |
-| - | POST /auth/social | ⚠️ 설계 누락 |
+### API Endpoints
+| Design | Implementation | Status |
+|--------|----------------|--------|
+| POST /auth/login | POST /auth/login | ✅ Match |
+| POST /auth/register | - | ❌ Not implemented |
+| - | POST /auth/social | ⚠️ Missing from design |
 
-### 데이터 모델
-| 필드 | 설계 | 구현 | 상태 |
-|------|------|------|------|
+### Data Model
+| Field | Design | Implementation | Status |
+|-------|--------|----------------|--------|
 | email | string | string | ✅ |
 | password | string | string | ✅ |
-| createdAt | - | Date | ⚠️ 설계 누락 |
+| createdAt | - | Date | ⚠️ Missing from design |
 
-## 일치율: 75%
+## Match Rate: 75%
 
-## 권장 조치
-1. POST /auth/register 구현 필요
-2. 소셜 로그인 설계 문서 추가
-3. createdAt 필드 설계에 반영
+## Recommended Actions
+1. Implement POST /auth/register
+2. Add social login to design document
+3. Reflect createdAt field in design
 ```
 
-### 2. 코드 품질 분석
+### 2. Code Quality Analysis
 
-코드의 품질, 보안, 성능 이슈를 분석
+Analysis of code quality, security, and performance issues
 
 ```markdown
-# 코드 품질 분석 보고서
+# Code Quality Analysis Report
 
-## 분석 범위
-- 경로: src/
-- 파일 수: 45개
-- 총 라인: 3,500줄
+## Analysis Scope
+- Path: src/
+- File count: 45
+- Total lines: 3,500
 
-## 품질 메트릭
+## Quality Metrics
 
-### 복잡도
-| 파일 | 함수 | 복잡도 | 상태 |
-|------|------|--------|------|
-| UserService.ts | processUser | 15 | ⚠️ 높음 |
-| utils.ts | formatDate | 3 | ✅ 적정 |
+### Complexity
+| File | Function | Complexity | Status |
+|------|----------|------------|--------|
+| UserService.ts | processUser | 15 | ⚠️ High |
+| utils.ts | formatDate | 3 | ✅ Acceptable |
 
-### 코드 스멜
-| 유형 | 파일 | 라인 | 설명 |
-|------|------|------|------|
-| 긴 함수 | api.ts | 45-120 | 75줄 (권장: 50줄 이하) |
-| 중복 코드 | helpers.ts | 10, 45 | 동일 로직 반복 |
+### Code Smells
+| Type | File | Line | Description |
+|------|------|------|-------------|
+| Long function | api.ts | 45-120 | 75 lines (recommended: ≤50) |
+| Duplicate code | helpers.ts | 10, 45 | Same logic repeated |
 
-### 보안 이슈
-| 심각도 | 파일 | 이슈 |
-|--------|------|------|
-| 🔴 High | auth.ts | 하드코딩된 시크릿 |
-| 🟡 Medium | api.ts | 입력값 검증 누락 |
+### Security Issues
+| Severity | File | Issue |
+|----------|------|-------|
+| 🔴 High | auth.ts | Hardcoded secret |
+| 🟡 Medium | api.ts | Missing input validation |
 
-## 점수: 72/100
+## Score: 72/100
 
-## 개선 권장사항
-1. [High] auth.ts의 시크릿을 환경변수로 이동
-2. processUser 함수 분리 (SRP 위반)
-3. 중복 코드 유틸리티로 추출
+## Improvement Recommendations
+1. [High] Move auth.ts secret to environment variable
+2. Split processUser function (SRP violation)
+3. Extract duplicate code to utility
 ```
 
-### 3. 성능 분석
+### 3. Performance Analysis
 
-성능 병목 및 최적화 기회 분석
+Analysis of performance bottlenecks and optimization opportunities
 
 ```markdown
-# 성능 분석 보고서
+# Performance Analysis Report
 
-## 분석 대상
-- 기능: 상품 목록 조회
-- 엔드포인트: GET /api/products
+## Analysis Target
+- Feature: Product list query
+- Endpoint: GET /api/products
 
-## 측정 결과
+## Measurement Results
 
-### 응답 시간
-| 케이스 | 응답 시간 | 목표 | 상태 |
-|--------|----------|------|------|
-| 10개 조회 | 50ms | 100ms | ✅ |
-| 100개 조회 | 450ms | 200ms | ❌ |
-| 1000개 조회 | 4.5s | 500ms | ❌ |
+### Response Time
+| Case | Response Time | Target | Status |
+|------|---------------|--------|--------|
+| 10 items | 50ms | 100ms | ✅ |
+| 100 items | 450ms | 200ms | ❌ |
+| 1000 items | 4.5s | 500ms | ❌ |
 
-### 병목 분석
-1. N+1 쿼리 문제
-   - 위치: ProductRepository.findAll()
-   - 영향: 상품당 1개 추가 쿼리
+### Bottleneck Analysis
+1. N+1 query problem
+   - Location: ProductRepository.findAll()
+   - Impact: 1 additional query per product
 
-2. 인덱스 누락
-   - 테이블: products
-   - 컬럼: category_id
+2. Missing index
+   - Table: products
+   - Column: category_id
 
-## 최적화 권장사항
-1. Eager Loading으로 N+1 해결
-2. category_id에 인덱스 추가
-3. 페이지네이션 필수 적용
+## Optimization Recommendations
+1. Solve N+1 with Eager Loading
+2. Add index on category_id
+3. Apply pagination as required
 ```
 
-## 분석 체크리스트
+## Analysis Checklists
 
-### 설계 검증 체크리스트
-
-```
-□ 필수 섹션 존재 여부
-  □ 개요
-  □ 아키텍처
-  □ 데이터 모델
-  □ API 명세
-  □ 에러 처리
-
-□ 일관성
-  □ 용어 통일
-  □ 네이밍 규칙 준수
-  □ 데이터 타입 일관성
-
-□ 완성도
-  □ 모든 엔드포인트 정의
-  □ 모든 엔티티 정의
-  □ 에러 케이스 정의
-```
-
-### 코드 분석 체크리스트
+### Design Verification Checklist
 
 ```
-□ 구조
-  □ 아키텍처 패턴 준수
-  □ 의존성 방향 올바름
-  □ 모듈 분리 적절
+□ Required sections exist
+  □ Overview
+  □ Architecture
+  □ Data model
+  □ API specification
+  □ Error handling
 
-□ 품질
-  □ 함수 길이 적절 (< 50줄)
-  □ 중복 코드 없음
-  □ 명명 규칙 준수
+□ Consistency
+  □ Unified terminology
+  □ Naming convention compliance
+  □ Data type consistency
 
-□ 보안
-  □ 입력값 검증
-  □ 하드코딩된 시크릿 없음
-  □ SQL Injection 방지
-  □ XSS 방지
-
-□ 성능
-  □ N+1 쿼리 없음
-  □ 적절한 인덱스
-  □ 불필요한 리렌더링 없음
+□ Completeness
+  □ All endpoints defined
+  □ All entities defined
+  □ Error cases defined
 ```
 
-## 보고서 작성 패턴
-
-### 이슈 분류 기준
+### Code Analysis Checklist
 
 ```
-🔴 Critical (즉시 수정)
-- 보안 취약점
-- 데이터 손실 가능성
-- 서비스 중단 가능성
+□ Structure
+  □ Architecture pattern compliance
+  □ Correct dependency direction
+  □ Appropriate module separation
 
-🟡 Warning (개선 권장)
-- 성능 저하
-- 유지보수 어려움
-- 코드 스멜
+□ Quality
+  □ Appropriate function length (< 50 lines)
+  □ No duplicate code
+  □ Naming convention compliance
 
-🟢 Info (참고)
-- 스타일 개선
-- 문서화 부족
-- 테스트 부족
+□ Security
+  □ Input validation
+  □ No hardcoded secrets
+  □ SQL injection prevention
+  □ XSS prevention
+
+□ Performance
+  □ No N+1 queries
+  □ Appropriate indexes
+  □ No unnecessary re-renders
 ```
 
-### 권장 조치 형식
+## Report Writing Patterns
+
+### Issue Classification Criteria
+
+```
+🔴 Critical (Fix immediately)
+- Security vulnerabilities
+- Potential data loss
+- Potential service disruption
+
+🟡 Warning (Improvement recommended)
+- Performance degradation
+- Maintenance difficulty
+- Code smells
+
+🟢 Info (Reference)
+- Style improvements
+- Insufficient documentation
+- Insufficient tests
+```
+
+### Recommended Action Format
 
 ```markdown
-## 권장 조치
+## Recommended Actions
 
-### 즉시 필요 (24시간 내)
-1. **[Critical] 보안 취약점 수정**
-   - 파일: src/auth.ts:42
-   - 내용: API 키를 환경변수로 이동
-   - 담당: @developer
+### Immediate (Within 24 hours)
+1. **[Critical] Fix security vulnerability**
+   - File: src/auth.ts:42
+   - Content: Move API key to environment variable
+   - Owner: @developer
 
-### 단기 (1주일 내)
-1. **[Warning] 성능 최적화**
-   - 파일: src/api/products.ts
-   - 내용: N+1 쿼리 해결
-   - 예상 효과: 응답 시간 80% 감소
+### Short-term (Within 1 week)
+1. **[Warning] Performance optimization**
+   - File: src/api/products.ts
+   - Content: Solve N+1 query
+   - Expected effect: 80% response time reduction
 
-### 장기 (백로그)
-1. **[Info] 리팩토링**
-   - 파일: src/utils/
-   - 내용: 유틸리티 함수 정리
+### Long-term (Backlog)
+1. **[Info] Refactoring**
+   - File: src/utils/
+   - Content: Organize utility functions
 ```
 
-## 분석 도구 활용
+## Analysis Tool Usage
 
-### Claude Code 도구
-
-```
-Read      → 파일 내용 읽기
-Glob      → 파일 패턴 검색
-Grep      → 코드 내 패턴 검색
-LSP       → 정의/참조 추적
-Task      → 병렬 분석 실행
-```
-
-### 분석 쿼리 예시
+### Claude Code Tools
 
 ```
-# 설계 문서 찾기
+Read      → Read file contents
+Glob      → Search file patterns
+Grep      → Search patterns in code
+LSP       → Track definitions/references
+Task      → Execute parallel analysis
+```
+
+### Analysis Query Examples
+
+```
+# Find design documents
 Glob: docs/**/*.design.md
 
-# 특정 패턴 찾기
+# Find specific patterns
 Grep: "TODO|FIXME|HACK"
 
-# 하드코딩된 시크릿 찾기
+# Find hardcoded secrets
 Grep: "api[_-]?key|secret|password"
 
-# 긴 함수 찾기
+# Find long functions
 Grep: "function.*\{" -A 100
 ```

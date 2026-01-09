@@ -14,128 +14,128 @@ allowed-tools:
 user-invocable: false
 ---
 
-# 문서 작성 표준
+# Document Writing Standards
 
-## 파일명 규칙
+## File Naming Rules
 
-### 기본 형식
+### Basic Format
 
 ```
-{순번}_{영문명}.md
-{순번}-{영문명}.md
+{number}_{english_name}.md
+{number}-{english_name}.md
 {feature}.{type}.md
 ```
 
-### 예시
+### Examples
 
 ```
-# Phase 기반 (순서 중요)
+# Phase-based (order matters)
 00-requirement/
 01-development/
 02-scenario/
 
-# 번호 기반 (순서 중요)
-01_시스템_아키텍처_설계서.md
-02_핵심_기능_설계서.md
+# Number-based (order matters)
+01_system_architecture_design.md
+02_core_feature_design.md
 
-# 기능 기반
+# Feature-based
 login.plan.md
 login.design.md
 login.analysis.md
 ```
 
-## 문서 구조 템플릿
+## Document Structure Templates
 
-### 모든 문서 공통 헤더
+### Common Header for All Documents
 
 ```markdown
-# {문서 제목}
+# {Document Title}
 
-> **요약**: {한 줄 설명}
+> **Summary**: {One-line description}
 >
-> **작성자**: {이름}
-> **작성일**: {YYYY-MM-DD}
-> **최종 수정**: {YYYY-MM-DD}
-> **상태**: {Draft | Review | Approved | Deprecated}
+> **Author**: {Name}
+> **Created**: {YYYY-MM-DD}
+> **Last Modified**: {YYYY-MM-DD}
+> **Status**: {Draft | Review | Approved | Deprecated}
 
 ---
 
-## 목차
+## Table of Contents
 
-1. [개요](#1-개요)
+1. [Overview](#1-overview)
 2. ...
 
 ---
 ```
 
-### 계획 문서 구조
+### Plan Document Structure
 
 ```markdown
-# {기능명} 계획서
+# {Feature} Plan
 
-## 1. 개요
+## 1. Overview
 
-### 1.1 목적
-{이 기능의 목적}
+### 1.1 Purpose
+{Purpose of this feature}
 
-### 1.2 배경
-{왜 필요한지}
+### 1.2 Background
+{Why it is needed}
 
-### 1.3 관련 문서
-- [요구사항](../01-plan/requirements.md)
-- [설계서](../02-design/{feature}.design.md)
+### 1.3 Related Documents
+- [Requirements](../01-plan/requirements.md)
+- [Design](../02-design/{feature}.design.md)
 
-## 2. 범위
+## 2. Scope
 
-### 2.1 포함
-- {포함 항목 1}
-- {포함 항목 2}
+### 2.1 Included
+- {Included item 1}
+- {Included item 2}
 
-### 2.2 제외
-- {제외 항목 1}
+### 2.2 Excluded
+- {Excluded item 1}
 
-## 3. 요구사항
+## 3. Requirements
 
-### 3.1 기능 요구사항
-| ID | 요구사항 | 우선순위 |
-|----|---------|---------|
-| FR-01 | {요구사항} | 높음 |
+### 3.1 Functional Requirements
+| ID | Requirement | Priority |
+|----|-------------|----------|
+| FR-01 | {requirement} | High |
 
-### 3.2 비기능 요구사항
-- 성능: {기준}
-- 보안: {기준}
+### 3.2 Non-functional Requirements
+- Performance: {criteria}
+- Security: {criteria}
 
-## 4. 성공 기준
-- [ ] {기준 1}
-- [ ] {기준 2}
+## 4. Success Criteria
+- [ ] {Criterion 1}
+- [ ] {Criterion 2}
 
-## 5. 리스크
-| 리스크 | 영향도 | 대응 방안 |
-|--------|--------|----------|
-| {리스크} | 높음 | {방안} |
+## 5. Risks
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| {risk} | High | {mitigation} |
 ```
 
-### 설계 문서 구조
+### Design Document Structure
 
 ```markdown
-# {기능명} 설계서
+# {Feature} Design Document
 
-## 1. 개요
-{설계 개요}
+## 1. Overview
+{Design overview}
 
-## 2. 아키텍처
+## 2. Architecture
 
-### 2.1 컴포넌트 다이어그램
+### 2.1 Component Diagram
 ```
-[ASCII 다이어그램 또는 이미지 링크]
+[ASCII diagram or image link]
 ```
 
-### 2.2 데이터 흐름
-{데이터가 어떻게 흐르는지}
+### 2.2 Data Flow
+{How data flows}
 
-## 3. 데이터 모델
+## 3. Data Model
 
-### 3.1 엔티티 정의
+### 3.1 Entity Definitions
 ```typescript
 interface User {
   id: string;
@@ -144,17 +144,17 @@ interface User {
 }
 ```
 
-### 3.2 관계
-{엔티티 간 관계 설명}
+### 3.2 Relationships
+{Entity relationship description}
 
-## 4. API 명세
+## 4. API Specification
 
-### 4.1 엔드포인트 목록
-| Method | Path | 설명 |
-|--------|------|------|
-| POST | /api/users | 사용자 생성 |
+### 4.1 Endpoint List
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/users | Create user |
 
-### 4.2 상세 명세
+### 4.2 Detailed Specification
 #### POST /api/users
 **Request:**
 ```json
@@ -171,122 +171,122 @@ interface User {
 }
 ```
 
-## 5. 에러 처리
-| 코드 | 메시지 | 설명 |
-|------|--------|------|
-| 400 | Invalid input | 입력값 오류 |
+## 5. Error Handling
+| Code | Message | Description |
+|------|---------|-------------|
+| 400 | Invalid input | Input validation error |
 
-## 6. 테스트 계획
-- [ ] 단위 테스트
-- [ ] 통합 테스트
-- [ ] E2E 테스트
+## 6. Test Plan
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] E2E tests
 ```
 
-## _INDEX.md 형식
+## _INDEX.md Format
 
-각 폴더의 문서 목록 및 상태 추적:
+Document list and status tracking for each folder:
 
 ```markdown
-# {폴더명} 인덱스
+# {Folder Name} Index
 
-> **최종 업데이트**: {날짜}
+> **Last Updated**: {date}
 
-## 문서 목록
+## Document List
 
-| 문서 | 상태 | 최종 수정 | 담당자 |
-|------|------|----------|--------|
-| [architecture.md](./architecture.md) | ✅ 확정 | 2024-12-01 | Kay |
-| [api-spec.md](./api-spec.md) | 🔄 진행중 | 2024-12-10 | - |
+| Document | Status | Last Modified | Owner |
+|----------|--------|---------------|-------|
+| [architecture.md](./architecture.md) | ✅ Approved | 2024-12-01 | Kay |
+| [api-spec.md](./api-spec.md) | 🔄 In Progress | 2024-12-10 | - |
 
-## 상태 범례
+## Status Legend
 
-| 상태 | 설명 |
-|------|------|
-| ✅ 확정 | 리뷰 완료, 구현 기준 |
-| 🔄 진행중 | 작성 중 |
-| ⏸️ 보류 | 임시 중단 |
-| ❌ 폐기 | 더 이상 유효하지 않음 |
+| Status | Description |
+|--------|-------------|
+| ✅ Approved | Review complete, implementation baseline |
+| 🔄 In Progress | Being written |
+| ⏸️ On Hold | Temporarily paused |
+| ❌ Deprecated | No longer valid |
 
-## PDCA 현황
-
-```
-현재 단계: [Plan] → Design → Do → Check → Act
-```
-```
-
-## 버전 관리 규칙
-
-### 문서 버전 표기
+## PDCA Status
 
 ```
-문서 내 버전 섹션:
-
-## 버전 이력
-
-| 버전 | 날짜 | 변경 내용 | 작성자 |
-|------|------|----------|--------|
-| 1.0 | 2024-12-01 | 초안 작성 | Kay |
-| 1.1 | 2024-12-05 | API 명세 추가 | Kay |
-| 2.0 | 2024-12-10 | 아키텍처 변경 | Kay |
+Current phase: [Plan] → Design → Do → Check → Act
+```
 ```
 
-### 파일명 버전 표기 (선택)
+## Version Control Rules
+
+### Document Version Notation
 
 ```
-# 중요 문서에 버전 명시
+Version section within document:
+
+## Version History
+
+| Version | Date | Changes | Author |
+|---------|------|---------|--------|
+| 1.0 | 2024-12-01 | Initial draft | Kay |
+| 1.1 | 2024-12-05 | Added API spec | Kay |
+| 2.0 | 2024-12-10 | Architecture change | Kay |
+```
+
+### Filename Version Notation (Optional)
+
+```
+# Version in filename for important docs
 architecture-v1.md
 architecture-v2.md
 
-# 날짜 기반
-2024-12-01_초기설계.md
-2024-12-15_개선설계.md
+# Date-based
+2024-12-01_initial_design.md
+2024-12-15_improved_design.md
 ```
 
-## 상호 참조 규칙
+## Cross-Reference Rules
 
-### 문서 간 링크
+### Document Links
 
 ```markdown
-## 관련 문서
-- 계획: [login.plan.md](../01-plan/features/login.plan.md)
-- 설계: [login.design.md](../02-design/features/login.design.md)
-- 분석: [login-gap.md](../03-analysis/gap-analysis/login-gap.md)
+## Related Documents
+- Plan: [login.plan.md](../01-plan/features/login.plan.md)
+- Design: [login.design.md](../02-design/features/login.design.md)
+- Analysis: [login-gap.md](../03-analysis/gap-analysis/login-gap.md)
 ```
 
-### 코드 참조
+### Code References
 
 ```markdown
-## 구현 위치
-- 컴포넌트: `src/components/LoginForm.tsx`
+## Implementation Location
+- Component: `src/components/LoginForm.tsx`
 - API: `src/api/auth.ts`
-- 서비스: `services/auth/app/services/auth_service.py`
+- Service: `services/auth/app/services/auth_service.py`
 ```
 
-## 작성 스타일
+## Writing Style
 
-### 일관성 규칙
-
-```
-✅ 좋은 예:
-- 문장은 "~입니다", "~합니다"로 끝내기
-- 목록은 동사로 시작 ("생성한다", "확인한다")
-- 코드 블록에 언어 명시
-
-❌ 나쁜 예:
-- 문체 혼용 ("~함", "~입니다")
-- 불명확한 대명사 ("이것", "그것")
-- 설명 없는 약어
-```
-
-### 다이어그램
+### Consistency Rules
 
 ```
-# ASCII 다이어그램 (간단한 것)
+✅ Good examples:
+- End sentences consistently (use same style throughout)
+- Start list items with verbs ("Create", "Verify")
+- Specify language in code blocks
+
+❌ Bad examples:
+- Mixed writing styles
+- Unclear pronouns ("this", "that")
+- Unexplained abbreviations
+```
+
+### Diagrams
+
+```
+# ASCII diagrams (for simple ones)
 ┌───────┐     ┌───────┐
 │ Client │────▶│ Server │
 └───────┘     └───────┘
 
-# Mermaid (복잡한 것)
+# Mermaid (for complex ones)
 ```mermaid
 graph LR
     A[Client] --> B[API Gateway]

@@ -143,15 +143,15 @@ AI Native QA:
 │            Prerequisites for AI Native Development            │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  1. Verification (검증 능력)                                 │
+│  1. Verification                                            │
 │     → Can judge if AI output is correct or wrong            │
 │     → Code review skills, bug detection ability             │
 │                                                             │
-│  2. Direction (방향 설정)                                    │
+│  2. Direction                                               │
 │     → Knows what to build clearly                           │
 │     → Requirements analysis, architecture design            │
 │                                                             │
-│  3. Quality Bar (품질 기준)                                  │
+│  3. Quality Bar                                             │
 │     → Defines what "good code" means                        │
 │     → Security, performance, maintainability judgment       │
 │                                                             │
@@ -232,5 +232,5 @@ main (production)
 
 ## Reference
 
-- [bkamp Development Documentation](docs/00-BKAMP_개발과정_문서화.md)
+- [bkamp Development Documentation](docs/00-BKAMP_development_process_documentation.md)
 - [Workshop Curriculum](docs/202601-GPTers-CTO-workshop/)

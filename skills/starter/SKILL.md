@@ -16,108 +16,108 @@ allowed-tools:
 user-invocable: false
 ---
 
-# 초급 (Starter) 스킬
+# Beginner (Starter) Skill
 
-## 대상
+## Target Audience
 
-- 프로그래밍 처음 배우는 분
-- 간단한 웹사이트를 만들고 싶은 분
-- 포트폴리오 사이트가 필요한 분
+- Those learning programming for the first time
+- Those who want to create a simple website
+- Those who need a portfolio site
 
-## 기술 스택
+## Tech Stack
 
-### 옵션 A: 순수 HTML/CSS/JS (완전 초보용)
-
-```
-HTML5        → 웹페이지 구조
-CSS3         → 스타일링
-JavaScript   → 동적 기능 (선택)
-```
-
-### 옵션 B: Next.js (프레임워크 사용)
+### Option A: Pure HTML/CSS/JS (For Complete Beginners)
 
 ```
-Next.js 14+  → React 기반 프레임워크
-Tailwind CSS → 유틸리티 CSS
-TypeScript   → 타입 안정성 (선택)
+HTML5        → Web page structure
+CSS3         → Styling
+JavaScript   → Dynamic features (optional)
 ```
 
-## 프로젝트 구조
-
-### 옵션 A: HTML/CSS/JS
+### Option B: Next.js (Using Framework)
 
 ```
-프로젝트/
-├── index.html          # 메인 페이지
-├── about.html          # 소개 페이지
+Next.js 14+  → React-based framework
+Tailwind CSS → Utility CSS
+TypeScript   → Type safety (optional)
+```
+
+## Project Structure
+
+### Option A: HTML/CSS/JS
+
+```
+project/
+├── index.html          # Main page
+├── about.html          # About page
 ├── css/
-│   └── style.css       # 스타일
+│   └── style.css       # Styles
 ├── js/
 │   └── main.js         # JavaScript
-├── images/             # 이미지 파일
-├── docs/               # PDCA 문서
+├── images/             # Image files
+├── docs/               # PDCA documents
 │   ├── 01-plan/
 │   └── 02-design/
 └── README.md
 ```
 
-### 옵션 B: Next.js
+### Option B: Next.js
 
 ```
-프로젝트/
+project/
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx      # 공통 레이아웃
-│   │   ├── page.tsx        # 메인 페이지
+│   │   ├── layout.tsx      # Common layout
+│   │   ├── page.tsx        # Main page
 │   │   └── about/
-│   │       └── page.tsx    # 소개 페이지
-│   └── components/         # 재사용 컴포넌트
-├── public/                 # 정적 파일
-├── docs/                   # PDCA 문서
+│   │       └── page.tsx    # About page
+│   └── components/         # Reusable components
+├── public/                 # Static files
+├── docs/                   # PDCA documents
 ├── package.json
 ├── tailwind.config.js
 └── README.md
 ```
 
-## 핵심 개념 설명
+## Core Concept Explanations
 
-### HTML (웹페이지의 뼈대)
+### HTML (Web Page Structure)
 
 ```html
-<!-- 기본 구조 -->
+<!-- Basic structure -->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>내 웹사이트</title>
+    <title>My Website</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>머리말</header>
-    <main>본문</main>
-    <footer>꼬리말</footer>
+    <header>Header</header>
+    <main>Main content</main>
+    <footer>Footer</footer>
 </body>
 </html>
 ```
 
-### CSS (웹페이지 꾸미기)
+### CSS (Styling Web Pages)
 
 ```css
-/* 기본 스타일 */
+/* Basic styles */
 body {
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* 가운데 정렬 */
+/* Center alignment */
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* 반응형 (모바일 대응) */
+/* Responsive (mobile support) */
 @media (max-width: 768px) {
     .container {
         padding: 10px;
@@ -125,95 +125,95 @@ body {
 }
 ```
 
-### Next.js App Router (페이지 만들기)
+### Next.js App Router (Creating Pages)
 
 ```tsx
-// app/page.tsx - 메인 페이지
+// app/page.tsx - Main page
 export default function Home() {
   return (
     <main className="container mx-auto p-4">
       <h1 className="text-3xl font-bold">
-        환영합니다!
+        Welcome!
       </h1>
     </main>
   );
 }
 
-// app/about/page.tsx - 소개 페이지
+// app/about/page.tsx - About page
 // URL: /about
 export default function About() {
   return (
     <div className="container mx-auto p-4">
-      <h1>소개</h1>
-      <p>저는 ...</p>
+      <h1>About</h1>
+      <p>I am ...</p>
     </div>
   );
 }
 ```
 
-### Tailwind CSS (빠른 스타일링)
+### Tailwind CSS (Quick Styling)
 
 ```tsx
-// 자주 쓰는 클래스
+// Frequently used classes
 <div className="
-  container    // 가운데 정렬
-  mx-auto      // 좌우 마진 자동
-  p-4          // 패딩 16px
-  text-center  // 글자 가운데
-  text-xl      // 글자 크기 크게
-  font-bold    // 굵은 글씨
-  bg-blue-500  // 파란 배경
-  text-white   // 흰 글씨
-  rounded-lg   // 둥근 모서리
-  hover:bg-blue-600  // 마우스 올리면 색 변경
+  container    // Center alignment
+  mx-auto      // Auto left/right margin
+  p-4          // Padding 16px
+  text-center  // Center text
+  text-xl      // Large text
+  font-bold    // Bold text
+  bg-blue-500  // Blue background
+  text-white   // White text
+  rounded-lg   // Rounded corners
+  hover:bg-blue-600  // Color change on hover
 ">
 ```
 
-## 배포 방법
+## Deployment Methods
 
-### GitHub Pages (무료)
+### GitHub Pages (Free)
 
 ```
-1. GitHub 저장소 생성
-2. 코드 push
+1. Create GitHub repository
+2. Push code
 3. Settings → Pages → Source: main branch
-4. https://username.github.io/repo-name 으로 접속
+4. Access at https://username.github.io/repo-name
 ```
 
-### Vercel (Next.js 권장)
+### Vercel (Recommended for Next.js)
 
 ```
-1. vercel.com 가입 (GitHub 연동)
-2. "New Project" → 저장소 선택
-3. "Deploy" 클릭
-4. 자동으로 URL 생성됨
+1. Sign up at vercel.com (GitHub integration)
+2. "New Project" → Select repository
+3. Click "Deploy"
+4. URL automatically generated
 ```
 
-## 제한사항
+## Limitations
 
 ```
-❌ 로그인/회원가입 (서버 필요)
-❌ 데이터 저장 (데이터베이스 필요)
-❌ 관리자 페이지 (백엔드 필요)
-❌ 결제 기능 (백엔드 필요)
+❌ Login/Registration (requires server)
+❌ Data storage (requires database)
+❌ Admin pages (requires backend)
+❌ Payment features (requires backend)
 ```
 
-## 업그레이드 시점
+## When to Upgrade
 
-다음이 필요하면 **Dynamic 레벨**로:
+Move to **Dynamic Level** if you need:
 
 ```
-→ "로그인 기능이 필요해요"
-→ "데이터를 저장하고 싶어요"
-→ "관리자 페이지가 필요해요"
-→ "회원들끼리 소통하게 하고 싶어요"
+→ "I need login functionality"
+→ "I want to store data"
+→ "I need an admin page"
+→ "I want users to communicate with each other"
 ```
 
-## 자주 하는 실수
+## Common Mistakes
 
-| 실수 | 해결책 |
-|------|--------|
-| 이미지가 안 보임 | 경로 확인 (`./images/photo.jpg`) |
-| CSS가 적용 안 됨 | link 태그 경로 확인 |
-| 페이지 이동이 안 됨 | href 경로 확인 (`./about.html`) |
-| 모바일에서 깨짐 | `<meta name="viewport">` 태그 확인 |
+| Mistake | Solution |
+|---------|----------|
+| Image not showing | Check path (`./images/photo.jpg`) |
+| CSS not applied | Check link tag path |
+| Page navigation not working | Check href path (`./about.html`) |
+| Broken on mobile | Check `<meta name="viewport">` tag |

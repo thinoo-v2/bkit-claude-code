@@ -25,8 +25,14 @@ bkit is a Claude Code plugin that transforms how you build software with AI. It 
 
 ### Option 1: Plugin Installation (Recommended)
 
-```bash
-claude plugin install bkit
+In Claude Code, run:
+```
+/plugin install popup-studio-ai/bkit-claude-code
+```
+
+Or from a specific path:
+```
+/plugin install /path/to/bkit-claude-code
 ```
 
 ### Option 2: Manual Installation
@@ -37,6 +43,20 @@ git clone https://github.com/popup-studio-ai/bkit-claude-code.git
 
 # Copy .claude folder to your project
 cp -r bkit-claude-code/.claude your-project/
+```
+
+### Plugin Structure
+
+```
+bkit-claude-code/
+├── .claude-plugin/
+│   └── plugin.json          # Plugin manifest
+├── commands/                # Slash commands
+├── agents/                  # Specialized AI agents
+├── skills/                  # Domain knowledge
+├── hooks/                   # Event hooks (hooks.json)
+├── templates/               # Document templates
+└── .claude/                 # Source files (also works standalone)
 ```
 
 ---

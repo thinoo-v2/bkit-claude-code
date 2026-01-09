@@ -15,351 +15,351 @@ allowed-tools:
 user-invocable: false
 ---
 
-# Phase 8: 아키텍처/컨벤션 리뷰
+# Phase 8: Architecture/Convention Review
 
-> 전체 코드베이스 품질 검증
+> Overall codebase quality verification
 
-## 목적
+## Purpose
 
-배포 전 전체 코드를 점검합니다. 아키텍처 일관성, 컨벤션 준수, 잠재적 문제를 찾아냅니다.
+Review the entire codebase before deployment. Identify architecture consistency, convention compliance, and potential issues.
 
-## 이 Phase에서 하는 것
+## What to Do in This Phase
 
-1. **아키텍처 리뷰**: 구조 일관성 검토
-2. **컨벤션 리뷰**: 규칙 준수 확인
-3. **코드 품질 리뷰**: 중복, 복잡도, 잠재 버그
-4. **리팩토링**: 발견된 문제 수정
+1. **Architecture Review**: Review structural consistency
+2. **Convention Review**: Verify rule compliance
+3. **Code Quality Review**: Duplication, complexity, potential bugs
+4. **Refactoring**: Fix discovered issues
 
-## 산출물
+## Deliverables
 
 ```
 docs/03-analysis/
-├── architecture-review.md      # 아키텍처 리뷰
-├── convention-review.md        # 컨벤션 리뷰
-└── refactoring-plan.md         # 리팩토링 계획
+├── architecture-review.md      # Architecture review
+├── convention-review.md        # Convention review
+└── refactoring-plan.md         # Refactoring plan
 ```
 
-## PDCA 적용
+## PDCA Application
 
-- **Plan**: 리뷰 범위/기준 정의
-- **Design**: 체크리스트 설계
-- **Do**: 코드 리뷰 실행
-- **Check**: 이슈 분석
-- **Act**: 리팩토링 후 Phase 9로
+- **Plan**: Define review scope/criteria
+- **Design**: Design checklist
+- **Do**: Execute code review
+- **Check**: Analyze issues
+- **Act**: Refactor and proceed to Phase 9
 
-## 레벨별 적용
+## Level-wise Application
 
-| 레벨 | 적용 방식 |
-|------|----------|
-| Starter | 생략 가능 (간단한 프로젝트) |
-| Dynamic | 필수 |
-| Enterprise | 필수 + 보안 리뷰 |
+| Level | Application Method |
+|-------|-------------------|
+| Starter | Can be skipped (simple projects) |
+| Dynamic | Required |
+| Enterprise | Required + security review |
 
 ---
 
-## 전체 Phase 검증 매트릭스
+## Full Phase Verification Matrix
 
-### Phase 간 일관성 검증
+### Cross-Phase Consistency Verification
 
-Phase 8은 **모든 Phase의 산출물과 규칙**이 일관되게 적용됐는지 검증합니다.
+Phase 8 verifies that **all Phase outputs and rules** are consistently applied.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Phase 간 의존성 흐름                          │
+│                    Cross-Phase Dependency Flow                    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│   Phase 1 (스키마/용어)                                          │
-│       ↓ 용어 사전, 엔티티 정의                                    │
-│   Phase 2 (코딩 컨벤션)                                          │
-│       ↓ 네이밍 규칙, 환경 변수 컨벤션                             │
-│   Phase 3 (목업)                                                 │
-│       ↓ 컴포넌트 구조, Props 설계                                │
+│   Phase 1 (Schema/Terminology)                                   │
+│       ↓ Glossary, entity definitions                             │
+│   Phase 2 (Coding Convention)                                    │
+│       ↓ Naming rules, environment variable conventions           │
+│   Phase 3 (Mockup)                                               │
+│       ↓ Component structure, Props design                        │
 │   Phase 4 (API)                                                  │
-│       ↓ RESTful 원칙, 응답 형식, 에러 코드                        │
-│   Phase 5 (디자인 시스템)                                        │
-│       ↓ 디자인 토큰, 컴포넌트 variants                           │
-│   Phase 6 (UI 구현)                                              │
-│       ↓ API 클라이언트, 타입 공유, 에러 핸들링                    │
-│   Phase 7 (SEO/보안)                                             │
-│       ↓ 보안 규칙, 메타데이터                                     │
-│   Phase 8 (리뷰) ← 현재 단계: 전체 검증                           │
+│       ↓ RESTful principles, response format, error codes         │
+│   Phase 5 (Design System)                                        │
+│       ↓ Design tokens, component variants                        │
+│   Phase 6 (UI Implementation)                                    │
+│       ↓ API client, type sharing, error handling                 │
+│   Phase 7 (SEO/Security)                                         │
+│       ↓ Security rules, metadata                                 │
+│   Phase 8 (Review) ← Current stage: Full verification            │
 │       ↓                                                          │
-│   Phase 9 (배포)                                                 │
+│   Phase 9 (Deployment)                                           │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Phase별 검증 체크리스트
+### Phase-specific Verification Checklist
 
-#### Phase 1 → 검증: 용어/스키마 일관성
+#### Phase 1 → Verify: Terminology/Schema Consistency
 ```
-□ glossary.md의 용어가 코드에서 일관되게 사용되는가?
-  - 비즈니스 용어 → 코드 네이밍 매칭
-  - 글로벌 표준 용어 → API 응답 필드명 매칭
-□ 엔티티 정의가 실제 타입과 일치하는가?
-□ 관계 정의가 실제 구현과 일치하는가?
-```
-
-#### Phase 2 → 검증: 컨벤션 준수
-```
-□ 네이밍 규칙 준수 (PascalCase, camelCase, UPPER_SNAKE_CASE)
-□ 폴더 구조 규칙 준수
-□ 환경 변수 네이밍 규칙 준수 (NEXT_PUBLIC_*, DB_*, API_* 등)
-□ .env.example 템플릿 완성
-□ 환경 변수 검증 로직 (lib/env.ts) 존재
+□ Are glossary.md terms consistently used in code?
+  - Business terms → Code naming matching
+  - Global standard terms → API response field names matching
+□ Do entity definitions match actual types?
+□ Do relationship definitions match actual implementation?
 ```
 
-#### Phase 4 → 검증: API 일관성
+#### Phase 2 → Verify: Convention Compliance
 ```
-□ RESTful 원칙 준수
-  - 리소스 기반 URL (명사, 복수형)
-  - HTTP 메서드 올바른 사용
-  - 상태 코드 일관성
-□ 응답 형식 일관성
-  - 성공: { data, meta? }
-  - 에러: { error: { code, message, details? } }
-  - 페이지네이션: { data, pagination }
-□ 에러 코드 표준화 (ERROR_CODES 상수와 일치)
+□ Naming rule compliance (PascalCase, camelCase, UPPER_SNAKE_CASE)
+□ Folder structure rule compliance
+□ Environment variable naming rule compliance (NEXT_PUBLIC_*, DB_*, API_*, etc.)
+□ .env.example template completion
+□ Environment variable validation logic (lib/env.ts) exists
 ```
 
-#### Phase 5 → 검증: 디자인 시스템 일관성
+#### Phase 4 → Verify: API Consistency
 ```
-□ 디자인 토큰이 정의되어 있는가? (CSS Variables / ThemeData)
-□ 컴포넌트가 토큰을 사용하는가? (하드코딩 색상 없음)
-□ 컴포넌트 variants가 일관적인가?
-□ 다크 모드 지원 (정의된 경우)
-```
-
-#### Phase 6 → 검증: UI-API 연동 일관성
-```
-□ API 클라이언트 계층 구조 준수
-  - 컴포넌트 → hooks → services → apiClient
-  - 직접 fetch 호출 없음
-□ 타입 일관성
-  - Phase 4 API 스펙 타입 = Phase 6 클라이언트 타입
-□ 에러 핸들링 일관성
-  - 글로벌 에러 핸들러 사용
-  - 에러 코드별 처리 로직
-□ 상태 관리 패턴 일관성
+□ RESTful principle compliance
+  - Resource-based URLs (nouns, plural)
+  - Correct HTTP method usage
+  - Status code consistency
+□ Response format consistency
+  - Success: { data, meta? }
+  - Error: { error: { code, message, details? } }
+  - Pagination: { data, pagination }
+□ Error code standardization (matches ERROR_CODES constant)
 ```
 
-#### Phase 7 → 검증: 보안/SEO 적용
+#### Phase 5 → Verify: Design System Consistency
 ```
-□ 인증/인가 미들웨어 적용
-□ 입력 검증 (서버 측)
-□ XSS, CSRF 방어
-□ 민감 정보 클라이언트 노출 없음
-□ SEO 메타 태그 적용
+□ Are design tokens defined? (CSS Variables / ThemeData)
+□ Do components use tokens? (no hardcoded colors)
+□ Are component variants consistent?
+□ Dark mode support (if defined)
 ```
 
-#### Phase 9 → 검증: 배포 준비
+#### Phase 6 → Verify: UI-API Integration Consistency
 ```
-□ 환경 변수 Secrets 등록 (Phase 2 목록 기준)
-□ 환경별 분리 (dev/staging/prod)
-□ 빌드 성공
-□ 환경 변수 검증 스크립트 통과
+□ API client layer structure compliance
+  - Components → hooks → services → apiClient
+  - No direct fetch calls
+□ Type consistency
+  - Phase 4 API spec types = Phase 6 client types
+□ Error handling consistency
+  - Global error handler usage
+  - Error code-specific handling logic
+□ State management pattern consistency
+```
+
+#### Phase 7 → Verify: Security/SEO Application
+```
+□ Authentication/authorization middleware applied
+□ Input validation (server-side)
+□ XSS, CSRF defense
+□ No sensitive info exposed to client
+□ SEO meta tags applied
+```
+
+#### Phase 9 → Verify: Deployment Readiness
+```
+□ Environment variable Secrets registered (based on Phase 2 list)
+□ Environment separation (dev/staging/prod)
+□ Build successful
+□ Environment variable validation script passes
 ```
 
 ---
 
-## 클린 아키텍처 검증
+## Clean Architecture Verification
 
-### 계층 분리 원칙
+### Layer Separation Principles
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      Presentation Layer                      │
-│         (pages, components, hooks - UI 관심사)               │
+│         (pages, components, hooks - UI concerns)             │
 ├─────────────────────────────────────────────────────────────┤
 │                      Application Layer                       │
-│         (services, use-cases - 비즈니스 로직)                │
+│         (services, use-cases - business logic)               │
 ├─────────────────────────────────────────────────────────────┤
 │                       Domain Layer                           │
-│         (entities, types - 핵심 도메인 모델)                 │
+│         (entities, types - core domain models)               │
 ├─────────────────────────────────────────────────────────────┤
 │                    Infrastructure Layer                      │
 │         (api client, db, external services)                  │
 └─────────────────────────────────────────────────────────────┘
 
-의존성 방향: 바깥 → 안쪽 (Presentation → Domain)
-안쪽 계층은 바깥 계층을 알면 안 됨
+Dependency direction: Outside → Inside (Presentation → Domain)
+Inner layers must not know about outer layers
 ```
 
-### 계층별 검증 체크리스트
+### Layer-specific Verification Checklist
 
 #### Presentation Layer (UI)
 ```
-□ 비즈니스 로직이 컴포넌트에 없는가?
-□ API 호출이 직접 있지 않은가? (hooks 통해야 함)
-□ 상태 관리가 적절히 분리되어 있는가?
-□ 컴포넌트가 단일 책임을 가지는가?
+□ Is there business logic in components?
+□ Are there direct API calls? (should go through hooks)
+□ Is state management properly separated?
+□ Do components have single responsibility?
 ```
 
 #### Application Layer (Services)
 ```
-□ 도메인 로직과 인프라 로직이 분리되어 있는가?
-□ 외부 의존성이 추상화되어 있는가?
-□ 테스트 가능한 구조인가?
-□ Use case가 명확히 정의되어 있는가?
+□ Are domain logic and infrastructure logic separated?
+□ Are external dependencies abstracted?
+□ Is the structure testable?
+□ Are use cases clearly defined?
 ```
 
 #### Domain Layer (Types/Entities)
 ```
-□ 외부 라이브러리 의존성이 없는가?
-□ 순수한 비즈니스 규칙만 포함하는가?
-□ 타입이 Phase 1 스키마와 일치하는가?
+□ Are there no external library dependencies?
+□ Does it contain only pure business rules?
+□ Do types match Phase 1 schema?
 ```
 
 #### Infrastructure Layer (API Client)
 ```
-□ 외부 서비스 호출이 추상화되어 있는가?
-□ 에러 처리가 일관되게 되어 있는가?
-□ 설정이 환경 변수로 관리되는가?
+□ Are external service calls abstracted?
+□ Is error handling consistent?
+□ Is configuration managed via environment variables?
 ```
 
 ---
 
-## 아키텍처 리뷰 체크리스트
+## Architecture Review Checklist
 
-### 구조
-- [ ] 폴더 구조가 컨벤션과 일치하는가
-- [ ] 관심사 분리가 잘 되어 있는가
-- [ ] 의존성 방향이 올바른가 (바깥→안쪽)
+### Structure
+- [ ] Does folder structure match conventions
+- [ ] Is separation of concerns well done
+- [ ] Is dependency direction correct (outside → inside)
 
-### 패턴
-- [ ] 일관된 패턴을 사용하는가
-- [ ] 불필요한 추상화는 없는가
-- [ ] 적절한 캡슐화가 되어 있는가
+### Patterns
+- [ ] Are consistent patterns used
+- [ ] Is there unnecessary abstraction
+- [ ] Is proper encapsulation done
 
-## 컨벤션 리뷰 체크리스트
+## Convention Review Checklist
 
-### 네이밍
-- [ ] Phase 2에서 정한 규칙을 따르는가
-- [ ] 의미 있는 이름을 사용하는가
-- [ ] 일관성이 있는가
+### Naming
+- [ ] Does it follow Phase 2 defined rules
+- [ ] Are meaningful names used
+- [ ] Is there consistency
 
-### 코드 스타일
-- [ ] 들여쓰기, 따옴표 등 통일
-- [ ] 파일 길이가 적절한가
-- [ ] 함수 길이가 적절한가
+### Code Style
+- [ ] Unified indentation, quotes, etc.
+- [ ] Is file length appropriate
+- [ ] Is function length appropriate
 
-## 코드 품질 체크리스트
+## Code Quality Checklist
 
-- [ ] 중복 코드는 없는가
-- [ ] 복잡도가 높은 함수는 없는가
-- [ ] 에러 처리가 적절한가
-- [ ] 타입 안전성이 확보되어 있는가
+- [ ] Is there duplicate code
+- [ ] Are there highly complex functions
+- [ ] Is error handling appropriate
+- [ ] Is type safety ensured
 
-## AI 활용 리뷰
+## AI-Assisted Review
 
 ```
-Claude에게 코드 리뷰 요청:
+Request code review from Claude:
 
-"이 프로젝트의 코드를 리뷰해줘.
-- CONVENTIONS.md의 규칙을 따르는지
-- 아키텍처 일관성은 있는지
-- 잠재적 버그나 개선점은 없는지"
+"Review this project's code.
+- Does it follow CONVENTIONS.md rules
+- Is there architecture consistency
+- Are there potential bugs or improvements"
 ```
 
-## 템플릿
+## Template
 
-`templates/pipeline/phase-8-review.template.md` 참조
+See `templates/pipeline/phase-8-review.template.md`
 
-## 다음 Phase
+## Next Phase
 
-Phase 9: 배포 → 리뷰 완료 후 프로덕션 배포
+Phase 9: Deployment → After review completion, deploy to production
 
 ---
 
-## 6. 코드 품질 심층 리뷰
+## 6. In-Depth Code Quality Review
 
-### 6.1 중복 코드 탐지
+### 6.1 Duplicate Code Detection
 
-#### 탐지 방법
+#### Detection Methods
 ```bash
-# 1. 유사 함수명 검색
+# 1. Search for similar function names
 grep -r "function.*format" src/
 grep -r "function.*calculate" src/
 grep -r "function.*get.*By" src/
 
-# 2. 유사 패턴 검색
+# 2. Search for similar patterns
 grep -rn "reduce.*sum" src/
 grep -rn "filter.*map" src/
 grep -rn "useState.*useEffect" src/
 ```
 
-#### 중복 유형별 처리
+#### Handling by Duplication Type
 
-| 유형 | 예시 | 해결 방법 |
-|------|------|----------|
-| 완전 동일 | 같은 코드 복붙 | 함수로 추출 |
-| 구조적 유사 | 로직은 같고 데이터만 다름 | 파라미터화 |
-| 개념적 유사 | 비슷한 목적의 다른 구현 | 통합 또는 인터페이스 |
+| Type | Example | Solution |
+|------|---------|----------|
+| Exact duplicate | Same code copy-paste | Extract to function |
+| Structural similarity | Same logic, different data | Parameterize |
+| Conceptual similarity | Different implementations for similar purpose | Integrate or interface |
 
-#### 중복 코드 체크리스트
+#### Duplicate Code Checklist
 ```
-□ 같은 로직이 2곳 이상에 있는가?
-□ 비슷한 이름의 함수가 여러 개 있는가?
-□ 같은 데이터 변환이 반복되는가?
-□ 유사한 UI 패턴이 반복되는가?
-□ 같은 API 호출 패턴이 반복되는가?
-□ 유사한 에러 처리가 반복되는가?
-```
-
-### 6.2 재사용성 평가
-
-#### 평가 기준
-
-| 점수 | 기준 | 설명 |
-|------|------|------|
-| ⭐⭐⭐ | 높음 | 다른 프로젝트에서도 사용 가능 |
-| ⭐⭐ | 중간 | 같은 프로젝트 내 여러 곳에서 사용 |
-| ⭐ | 낮음 | 특정 기능에만 사용 |
-
-#### 재사용성 체크리스트
-```
-함수/컴포넌트별로 확인:
-□ 특정 도메인에 종속되어 있는가?
-□ 외부 상태에 의존하는가?
-□ 파라미터가 일반적인가?
-□ 반환값이 예측 가능한가?
-□ 사이드 이펙트가 있는가?
+□ Is the same logic in 2+ places?
+□ Are there multiple functions with similar names?
+□ Is the same data transformation repeated?
+□ Are similar UI patterns repeated?
+□ Is the same API call pattern repeated?
+□ Is similar error handling repeated?
 ```
 
-### 6.3 확장성 평가
+### 6.2 Reusability Assessment
 
-#### 확장 용이성 체크
+#### Assessment Criteria
+
+| Score | Criteria | Description |
+|-------|----------|-------------|
+| ⭐⭐⭐ | High | Can be used in other projects |
+| ⭐⭐ | Medium | Can be used in multiple places within same project |
+| ⭐ | Low | Used only for specific feature |
+
+#### Reusability Checklist
 ```
-새 요구사항이 왔을 때:
-□ 기존 코드 수정 없이 추가 가능한가?
-□ 설정만 변경해서 동작 변경 가능한가?
-□ 새 타입/케이스 추가가 쉬운가?
-□ 조건문 추가 없이 확장 가능한가?
+Check for each function/component:
+□ Is it tied to a specific domain?
+□ Does it depend on external state?
+□ Are parameters generic?
+□ Is the return value predictable?
+□ Are there side effects?
 ```
 
-#### 확장성 안티패턴
+### 6.3 Extensibility Assessment
+
+#### Extensibility Check
+```
+When new requirements come:
+□ Can it be added without modifying existing code?
+□ Can behavior be changed by configuration only?
+□ Is adding new types/cases easy?
+□ Can it be extended without adding conditionals?
+```
+
+#### Extensibility Anti-patterns
 ```typescript
-// ❌ 확장할 때마다 수정 필요
+// ❌ Requires modification for each extension
 function process(type: string) {
   if (type === 'a') { /* ... */ }
   else if (type === 'b') { /* ... */ }
-  // 새 타입마다 else if 추가...
+  // Add else if for each new type...
 }
 
-// ❌ 하드코딩된 목록
+// ❌ Hardcoded list
 const ALLOWED_TYPES = ['a', 'b', 'c']
 
-// ❌ switch 문 나열
+// ❌ Enumerated switch statements
 switch (action.type) {
   case 'ADD': // ...
   case 'REMOVE': // ...
-  // 새 액션마다 case 추가...
+  // Add case for each new action...
 }
 ```
 
-#### 확장성 좋은 패턴
+#### Good Extensibility Patterns
 ```typescript
-// ✅ 레지스트리 패턴
+// ✅ Registry pattern
 const handlers: Record<string, Handler> = {}
 function register(type: string, handler: Handler) {
   handlers[type] = handler
@@ -368,105 +368,105 @@ function process(type: string, data: unknown) {
   return handlers[type]?.(data)
 }
 
-// ✅ 설정 기반
+// ✅ Configuration-based
 const CONFIG = {
   types: ['a', 'b', 'c'],
   handlers: { ... }
 }
 
-// ✅ 플러그인 구조
+// ✅ Plugin structure
 interface Plugin { execute(data): Result }
 const plugins: Plugin[] = []
 ```
 
-### 6.4 객체지향 원칙 점검
+### 6.4 Object-Oriented Principles Check
 
-#### SOLID 원칙 체크리스트
+#### SOLID Principles Checklist
 
-**S - 단일 책임 (SRP)**
+**S - Single Responsibility (SRP)**
 ```
-□ 클래스/함수가 한 가지 이유로만 변경되는가?
-□ 이름이 명확하게 역할을 설명하는가?
-□ "그리고(and)"가 이름에 들어가는가? → 분리 필요
-```
-
-**O - 개방/폐쇄 (OCP)**
-```
-□ 확장에 열려있는가? (새 기능 추가 가능)
-□ 수정에 닫혀있는가? (기존 코드 변경 불필요)
-□ 인터페이스/추상화를 사용하는가?
+□ Does the class/function change for only one reason?
+□ Does the name clearly explain the role?
+□ Is "and" in the name? → Needs separation
 ```
 
-**L - 리스코프 치환 (LSP)**
+**O - Open/Closed (OCP)**
 ```
-□ 서브타입이 부모 타입을 대체할 수 있는가?
-□ 오버라이드된 메서드가 계약을 지키는가?
-```
-
-**I - 인터페이스 분리 (ISP)**
-```
-□ 인터페이스가 너무 크지 않은가?
-□ 사용하지 않는 메서드를 구현해야 하는가?
-□ 인터페이스를 더 작게 분리할 수 있는가?
+□ Is it open for extension? (new features can be added)
+□ Is it closed for modification? (no existing code changes needed)
+□ Are interfaces/abstractions used?
 ```
 
-**D - 의존성 역전 (DIP)**
+**L - Liskov Substitution (LSP)**
 ```
-□ 구체 클래스 대신 추상화에 의존하는가?
-□ 의존성이 주입되는가? (DI)
-□ 테스트하기 쉬운 구조인가?
+□ Can subtypes replace parent types?
+□ Do overridden methods keep the contract?
 ```
 
-### 6.5 리팩토링 우선순위
+**I - Interface Segregation (ISP)**
+```
+□ Is the interface too large?
+□ Must unused methods be implemented?
+□ Can the interface be split smaller?
+```
+
+**D - Dependency Inversion (DIP)**
+```
+□ Does it depend on abstractions instead of concrete classes?
+□ Are dependencies injected? (DI)
+□ Is the structure testable?
+```
+
+### 6.5 Refactoring Priority
 
 ```
-긴급 (배포 전 필수):
-1. 버그를 유발할 수 있는 중복
-2. 보안 취약점
-3. 성능 병목
+Urgent (Required before deployment):
+1. Duplication that can cause bugs
+2. Security vulnerabilities
+3. Performance bottlenecks
 
-높음 (가능한 빨리):
-4. 같은 로직 3곳 이상 중복
-5. 200줄 이상 파일
-6. 5단계 이상 중첩
+High (As soon as possible):
+4. Same logic duplicated in 3+ places
+5. Files over 200 lines
+6. Nesting deeper than 5 levels
 
-중간 (다음 스프린트):
-7. 확장성 부족한 구조
-8. 네이밍 불일치
-9. 테스트 어려운 구조
+Medium (Next sprint):
+7. Structure lacking extensibility
+8. Naming inconsistencies
+9. Structure difficult to test
 
-낮음 (백로그):
-10. 스타일 불일치
-11. 과도한 주석
-12. 미사용 코드
+Low (Backlog):
+10. Style inconsistencies
+11. Excessive comments
+12. Unused code
 ```
 
 ---
 
-## 7. AI 코드 리뷰 요청 템플릿
+## 7. AI Code Review Request Template
 
 ```markdown
-다음 관점에서 코드를 리뷰해주세요:
+Please review the code from these perspectives:
 
-1. 중복 코드
-   - 유사한 함수/컴포넌트가 있는가?
-   - 추출할 수 있는 공통 로직이 있는가?
+1. Duplicate Code
+   - Are there similar functions/components?
+   - Is there common logic that can be extracted?
 
-2. 재사용성
-   - 범용적으로 사용할 수 있는가?
-   - 특정 도메인에 종속되어 있는가?
+2. Reusability
+   - Can it be used generically?
+   - Is it tied to a specific domain?
 
-3. 확장성
-   - 새 요구사항에 유연하게 대응 가능한가?
-   - 하드코딩된 부분이 있는가?
+3. Extensibility
+   - Can it flexibly respond to new requirements?
+   - Are there hardcoded parts?
 
-4. SOLID 원칙
-   - 단일 책임을 지키는가?
-   - 확장에 열려있고 수정에 닫혀있는가?
+4. SOLID Principles
+   - Does it follow single responsibility?
+   - Is it open for extension and closed for modification?
 
-5. 컨벤션 준수
-   - CONVENTIONS.md 규칙을 따르는가?
-   - 네이밍이 일관적인가?
+5. Convention Compliance
+   - Does it follow CONVENTIONS.md rules?
+   - Is naming consistent?
 
-리팩토링이 필요한 부분과 우선순위를 알려주세요.
+Please identify parts that need refactoring and their priority.
 ```

@@ -15,99 +15,99 @@ allowed-tools:
 user-invocable: true
 ---
 
-# Development Pipeline 스킬
+# Development Pipeline Skill
 
-> 9단계 개발 파이프라인 전체 지식
+> Complete knowledge of the 9-phase development pipeline
 
-## 언제 사용되는가
+## When to Use
 
-- 사용자가 "개발 경험이 적다"고 표현했을 때
-- `/pipeline-*` 명령어 사용 시
-- "개발 어떻게 시작해요?", "순서가 어떻게 돼요?" 질문 시
-- 새 프로젝트를 처음부터 개발할 때
+- When user says "I have little development experience"
+- When using `/pipeline-*` commands
+- When asked "How do I start development?", "What's the order?"
+- When starting a new project from scratch
 
-## 선택적 적용 원칙
-
-```
-이 스킬은 강제가 아닌 선택입니다.
-
-활성화 조건:
-- 비개발자/초보 개발자가 개발 시작할 때
-- 사용자가 명시적으로 가이드 요청 시
-- /pipeline-start 명령어 사용 시
-
-비활성화 조건:
-- 숙련 개발자가 "자유롭게 진행"하겠다고 할 때
-- 비개발 AI 작업 (문서, 분석 등)
-- 기존 프로젝트 유지보수/버그 수정
-```
-
-## 9단계 파이프라인 개요
+## Optional Application Principle
 
 ```
-Phase 1: 스키마/용어 정의 ──→ 데이터 구조와 도메인 용어 정의
-Phase 2: 코딩 컨벤션 ───────→ 코드 작성 규칙 정의
-Phase 3: 목업 개발 ─────────→ HTML/CSS/JS + JSON으로 기능 검증
-Phase 4: API 설계/구현 ─────→ 백엔드 API + Zero Script QA
-Phase 5: 디자인 시스템 ─────→ 컴포넌트 시스템 구축
-Phase 6: UI 구현 + 연동 ────→ 실제 UI 구현 및 API 연동
-Phase 7: SEO/보안 ──────────→ 검색 최적화 및 보안 강화
-Phase 8: 리뷰 ──────────────→ 아키텍처/컨벤션 품질 검증
-Phase 9: 배포 ──────────────→ 프로덕션 배포
+This skill is optional, not mandatory.
+
+Activation conditions:
+- When non-developers/beginner developers start development
+- When user explicitly requests guidance
+- When /pipeline-start command is used
+
+Deactivation conditions:
+- When experienced developers want to "proceed freely"
+- For non-development AI work (documentation, analysis, etc.)
+- For existing project maintenance/bug fixes
 ```
 
-## PDCA와의 관계 (핵심)
+## 9-Phase Pipeline Overview
 
 ```
-❌ 잘못된 이해: Pipeline 전체를 PDCA에 매핑
+Phase 1: Schema/Terminology ──→ Define data structures and domain terms
+Phase 2: Coding Convention ────→ Define code writing rules
+Phase 3: Mockup Development ───→ Feature validation with HTML/CSS/JS + JSON
+Phase 4: API Design/Impl ──────→ Backend API + Zero Script QA
+Phase 5: Design System ────────→ Build component system
+Phase 6: UI Implementation ────→ Actual UI implementation and API integration
+Phase 7: SEO/Security ─────────→ Search optimization and security hardening
+Phase 8: Review ───────────────→ Architecture/convention quality verification
+Phase 9: Deployment ───────────→ Production deployment
+```
+
+## Relationship with PDCA (Key Concept)
+
+```
+❌ Wrong understanding: Mapping entire Pipeline to PDCA
 ❌ (Plan=Phase1-3, Do=Phase4-6, Check=Phase7-8, Act=Phase9)
 
-✅ 올바른 이해: 각 Phase마다 PDCA 사이클을 돈다
+✅ Correct understanding: Run PDCA cycle within each Phase
 
 Phase N
-├── Plan: 이번 Phase에서 할 일 계획
-├── Design: 구체적 설계
-├── Do: 실행/구현
-├── Check: 검증/리뷰
-└── Act: 확정 후 다음 Phase로
+├── Plan: Plan what to do in this Phase
+├── Design: Detailed design
+├── Do: Execute/implement
+├── Check: Verify/review
+└── Act: Confirm and move to next Phase
 ```
 
-## 레벨별 Phase 적용
+## Phase Application by Level
 
 | Phase | Starter | Dynamic | Enterprise |
 |-------|---------|---------|------------|
-| 1. 스키마/용어 | 간단 | 상세 | 상세 |
-| 2. 컨벤션 | 기본 | 확장 | 확장 |
-| 3. 목업 | O | O | O |
-| 4. API | - | bkend.ai | 직접 구현 |
-| 5. 디자인 시스템 | 선택 | O | O |
-| 6. UI + API | 정적 UI | 연동 | 연동 |
-| 7. SEO/보안 | SEO만 | O | O |
-| 8. 리뷰 | - | O | O |
-| 9. 배포 | 정적 호스팅 | Vercel 등 | K8s |
+| 1. Schema/Terms | Simple | Detailed | Detailed |
+| 2. Convention | Basic | Extended | Extended |
+| 3. Mockup | O | O | O |
+| 4. API | - | bkend.ai | Direct impl |
+| 5. Design System | Optional | O | O |
+| 6. UI + API | Static UI | Integration | Integration |
+| 7. SEO/Security | SEO only | O | O |
+| 8. Review | - | O | O |
+| 9. Deployment | Static hosting | Vercel etc. | K8s |
 
-### Starter 레벨 흐름
+### Starter Level Flow
 ```
-Phase 1 → 2 → 3 → 5(선택) → 6(정적) → 7(SEO) → 9
+Phase 1 → 2 → 3 → 5(optional) → 6(static) → 7(SEO) → 9
 ```
 
-### Dynamic 레벨 흐름
+### Dynamic Level Flow
 ```
 Phase 1 → 2 → 3 → 4(bkend.ai) → 5 → 6 → 7 → 8 → 9
 ```
 
-### Enterprise 레벨 흐름
+### Enterprise Level Flow
 ```
-Phase 1 → 2 → 3 → 4(직접구현) → 5 → 6 → 7 → 8 → 9
+Phase 1 → 2 → 3 → 4(direct impl) → 5 → 6 → 7 → 8 → 9
 ```
 
-## Phase별 산출물 요약
+## Phase Deliverables Summary
 
-| Phase | 주요 산출물 |
-|-------|-----------|
+| Phase | Key Deliverables |
+|-------|-----------------|
 | 1 | `docs/01-plan/schema.md`, `terminology.md` |
 | 2 | `CONVENTIONS.md`, `docs/01-plan/naming.md` |
-| 3 | `mockup/` 폴더, `docs/02-design/mockup-spec.md` |
+| 3 | `mockup/` folder, `docs/02-design/mockup-spec.md` |
 | 4 | `docs/02-design/api-spec.md`, `src/api/` |
 | 5 | `components/ui/`, `docs/02-design/design-system.md` |
 | 6 | `src/pages/`, `src/features/` |
@@ -115,8 +115,8 @@ Phase 1 → 2 → 3 → 4(직접구현) → 5 → 6 → 7 → 8 → 9
 | 8 | `docs/03-analysis/architecture-review.md` |
 | 9 | `docs/04-report/deployment-report.md` |
 
-## 참조 스킬
+## Related Skills
 
-- `phase-1-schema/` ~ `phase-9-deployment/`: Phase별 상세 가이드
-- `pdca-methodology/`: PDCA 적용 방법
-- `starter/`, `dynamic/`, `enterprise/`: 레벨별 특화 지식
+- `phase-1-schema/` ~ `phase-9-deployment/`: Detailed guides per Phase
+- `pdca-methodology/`: How to apply PDCA
+- `starter/`, `dynamic/`, `enterprise/`: Level-specific knowledge

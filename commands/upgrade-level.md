@@ -3,76 +3,76 @@ description: Upgrade project level (Starter→Dynamic→Enterprise)
 allowed-tools: ["Read", "Write", "Bash", "Glob", "Grep"]
 ---
 
-# 프로젝트 레벨 업그레이드
+# Project Level Upgrade
 
-$ARGUMENTS를 기반으로 업그레이드 수행 (예: /upgrade-level dynamic)
+Performs upgrade based on $ARGUMENTS (e.g., /upgrade-level dynamic)
 
-## 업그레이드 경로
+## Upgrade Path
 
 ```
 ┌──────────┐      ┌──────────┐      ┌─────────────┐
 │ Starter  │ ───▶ │ Dynamic  │ ───▶ │ Enterprise  │
-│ (정적)   │      │ (BaaS)   │      │ (MSA/K8s)   │
+│ (Static) │      │ (BaaS)   │      │ (MSA/K8s)   │
 └──────────┘      └──────────┘      └─────────────┘
 ```
 
-## Starter → Dynamic 업그레이드
+## Starter → Dynamic Upgrade
 
-### 필요 조건
-- React 또는 Next.js 설치
-- bkend.ai 계정 및 프로젝트
+### Prerequisites
+- React or Next.js installed
+- bkend.ai account and project
 
-### 추가되는 것
-1. **문서 구조 확장**
+### What's Added
+1. **Document Structure Expansion**
    - docs/02-design/data-model.md
    - docs/02-design/api-spec.md
 
-2. **설정 파일**
-   - .mcp.json (bkend.ai MCP 서버)
-   - .env.local 템플릿
+2. **Configuration Files**
+   - .mcp.json (bkend.ai MCP server)
+   - .env.local template
 
-3. **코드 구조**
+3. **Code Structure**
    - src/lib/bkend.ts
    - src/hooks/useAuth.ts
 
-## Dynamic → Enterprise 업그레이드
+## Dynamic → Enterprise Upgrade
 
-### 필요 조건
-- 자체 백엔드 필요성
-- 인프라 제어 필요
-- 대규모 트래픽 예상
+### Prerequisites
+- Need for own backend
+- Need for infrastructure control
+- Large-scale traffic expected
 
-### 추가되는 것
-1. **문서 구조 확장**
+### What's Added
+1. **Document Structure Expansion**
    - docs/00-requirement/
    - docs/02-scenario/
    - docs/04-operation/
 
-2. **도메인별 CLAUDE.md**
+2. **Domain-specific CLAUDE.md**
    - services/CLAUDE.md
    - frontend/CLAUDE.md
    - infra/CLAUDE.md
 
-3. **인프라 템플릿**
-   - infra/terraform/ 구조
-   - infra/k8s/ 구조
+3. **Infrastructure Templates**
+   - infra/terraform/ structure
+   - infra/k8s/ structure
    - docker-compose.yml
 
-## 수행 작업
+## Tasks Performed
 
-1. **현재 레벨 확인**
-   - 프로젝트 구조 분석
-   - 기존 문서 확인
+1. **Check Current Level**
+   - Analyze project structure
+   - Check existing documents
 
-2. **업그레이드 실행**
-   - 새 폴더/파일 생성 (기존 것은 유지)
-   - 마이그레이션 가이드 제공
+2. **Execute Upgrade**
+   - Create new folders/files (keep existing ones)
+   - Provide migration guide
 
-3. **완료 안내**
-   - 변경 사항 요약
-   - 다음 단계 안내
+3. **Completion Guide**
+   - Summarize changes
+   - Guide next steps
 
-## 사용 예시
+## Usage Examples
 
 ```
 /upgrade-level dynamic    # Starter → Dynamic

@@ -2,105 +2,105 @@
 description: Run Zero Script QA (verify via Docker logs without test scripts)
 arguments:
   - name: target
-    description: 검증 대상 (api, ui, feature명)
+    description: Verification target (api, ui, feature name)
     required: false
   - name: mode
-    description: 실행 모드 (setup, monitor, analyze)
+    description: Execution mode (setup, monitor, analyze)
     required: false
 ---
 
 # Zero Script QA
 
-테스트 스크립트 작성 없이 **Docker 로그 실시간 모니터링**으로 기능을 검증합니다.
+Verify features through **real-time Docker log monitoring** without writing test scripts.
 
-## Zero Script QA란?
+## What is Zero Script QA?
 
 ```
-기존 방식: 테스트 코드 작성 → 실행 → 결과 확인 → 유지보수
-Zero Script: 로그 인프라 구축 → 수동 UX 테스트 → AI 로그 분석 → 자동 이슈 감지
+Traditional: Write test code → Execute → Check results → Maintain
+Zero Script: Build log infrastructure → Manual UX test → AI log analysis → Auto issue detection
 
-핵심:
-- 구조화된 JSON 로그
-- Request ID로 전체 플로우 추적
-- Claude Code가 실시간 로그 모니터링
-- 이슈 자동 감지 및 문서화
-```
-
----
-
-## 실행 모드
-
-### 1. Setup 모드 (`/zero-script-qa setup`)
-```
-로깅 인프라 구축:
-1. JSON 로그 형식 설정 확인
-2. Request ID 전파 확인
-3. Docker Compose 로깅 설정 확인
-4. 환경 변수 (LOG_LEVEL=DEBUG) 확인
-```
-
-### 2. Monitor 모드 (`/zero-script-qa monitor`)
-```
-실시간 모니터링:
-1. docker compose logs -f 실행 안내
-2. 사용자 수동 UX 테스트 요청
-3. 로그 실시간 분석
-4. 이슈 감지 시 즉시 보고
-```
-
-### 3. Analyze 모드 (`/zero-script-qa analyze`)
-```
-로그 분석:
-1. 수집된 로그 분석
-2. 이슈 패턴 식별
-3. 성능 통계
-4. 종합 보고서 작성
+Key Points:
+- Structured JSON logs
+- Track entire flow with Request ID
+- Claude Code monitors logs in real-time
+- Auto issue detection and documentation
 ```
 
 ---
 
-## 워크플로우
+## Execution Modes
 
-### Step 1: 환경 시작
+### 1. Setup Mode (`/zero-script-qa setup`)
+```
+Build logging infrastructure:
+1. Verify JSON log format configuration
+2. Verify Request ID propagation
+3. Verify Docker Compose logging configuration
+4. Verify environment variables (LOG_LEVEL=DEBUG)
+```
+
+### 2. Monitor Mode (`/zero-script-qa monitor`)
+```
+Real-time monitoring:
+1. Guide docker compose logs -f execution
+2. Request user manual UX testing
+3. Real-time log analysis
+4. Immediate report on issue detection
+```
+
+### 3. Analyze Mode (`/zero-script-qa analyze`)
+```
+Log analysis:
+1. Analyze collected logs
+2. Identify issue patterns
+3. Performance statistics
+4. Write comprehensive report
+```
+
+---
+
+## Workflow
+
+### Step 1: Start Environment
 ```bash
-# Docker 환경 시작
+# Start Docker environment
 docker compose up -d
 
-# 상태 확인
+# Check status
 docker compose ps
 ```
 
-### Step 2: 로그 모니터링 시작
+### Step 2: Start Log Monitoring
 ```bash
-# 전체 로그 스트리밍 (Claude Code가 모니터링)
+# Stream all logs (Claude Code monitors)
 docker compose logs -f
 
-# 에러만 필터링
+# Filter errors only
 docker compose logs -f | grep '"level":"ERROR"'
 ```
 
-### Step 3: 수동 UX 테스트
+### Step 3: Manual UX Testing
 ```
-사용자가 브라우저에서 실제 기능 테스트:
-- 회원가입
-- 로그인
-- 핵심 기능 사용
-- 엣지 케이스 테스트
+User tests actual features in browser:
+- Sign up
+- Log in
+- Use core features
+- Test edge cases
 ```
 
-### Step 4: 이슈 감지 및 문서화
+### Step 4: Issue Detection and Documentation
 ```
-Claude Code가 자동으로:
-1. 에러 패턴 감지
-2. 느린 응답 감지 (> 1000ms)
-3. Request ID로 전체 플로우 추적
-4. 이슈 문서화
-5. 수정 방안 제시
+Claude Code automatically:
+1. Detect error patterns
+2. Detect slow responses (> 1000ms)
+3. Track entire flow with Request ID
+4. Document issues
+5. Suggest fixes
 ```
 
 ---
 
-## JSON 로그 표준
+## JSON Log Standard
 
 ```json
 {
@@ -120,53 +120,53 @@ Claude Code가 자동으로:
 
 ---
 
-## 이슈 감지 패턴
+## Issue Detection Patterns
 
-| 패턴 | 심각도 | 조건 |
-|------|--------|------|
-| 에러 | 🔴 Critical | `"level":"ERROR"` |
-| 서버 에러 | 🔴 Critical | `"status":5xx` |
-| 매우 느림 | 🔴 Critical | `duration_ms > 3000` |
-| 인증 실패 | 🟡 Warning | `"status":401` or `403` |
-| 느린 응답 | 🟡 Warning | `duration_ms > 1000` |
-| 연속 실패 | 🟡 Warning | 같은 엔드포인트 3회 실패 |
+| Pattern | Severity | Condition |
+|---------|----------|-----------|
+| Error | 🔴 Critical | `"level":"ERROR"` |
+| Server Error | 🔴 Critical | `"status":5xx` |
+| Very Slow | 🔴 Critical | `duration_ms > 3000` |
+| Auth Failure | 🟡 Warning | `"status":401` or `403` |
+| Slow Response | 🟡 Warning | `duration_ms > 1000` |
+| Consecutive Failures | 🟡 Warning | Same endpoint fails 3 times |
 
 ---
 
-## 모니터링 명령어
+## Monitoring Commands
 
 ```bash
-# 전체 로그
+# All logs
 docker compose logs -f
 
-# 특정 서비스
+# Specific service
 docker compose logs -f api
 docker compose logs -f web
 
-# 에러만
+# Errors only
 docker compose logs -f | grep '"level":"ERROR"'
 
-# 특정 Request ID 추적
+# Track specific Request ID
 docker compose logs -f | grep 'req_xxx'
 
-# 느린 응답 (1000ms 이상)
+# Slow responses (1000ms+)
 docker compose logs -f | grep -E '"duration_ms":[0-9]{4,}'
 
-# 최근 5분
+# Last 5 minutes
 docker compose logs --since "5m"
 ```
 
 ---
 
-## 결과 문서
+## Result Document
 
-검증 완료 후 `docs/03-analysis/zero-script-qa-{date}.md`에 보고서 생성
+Report generated at `docs/03-analysis/zero-script-qa-{date}.md` after verification
 
 ---
 
-## 참조
+## Reference
 
-- `.claude/skills/zero-script-qa/SKILL.md`: 전문 지식
-- `.claude/agents/qa-monitor.md`: QA 모니터링 에이전트
-- `.claude/templates/pipeline/zero-script-qa.template.md`: 보고서 템플릿
-- `.claude/instructions/zero-script-qa-rules.md`: 자동 적용 규칙
+- `.claude/skills/zero-script-qa/SKILL.md`: Expert knowledge
+- `.claude/agents/qa-monitor.md`: QA monitoring agent
+- `.claude/templates/pipeline/zero-script-qa.template.md`: Report template
+- `.claude/instructions/zero-script-qa-rules.md`: Auto-applied rules

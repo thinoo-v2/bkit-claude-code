@@ -3,15 +3,15 @@ description: Initialize Starter level project (static web, Next.js basics)
 allowed-tools: ["Read", "Write", "Bash", "Glob"]
 ---
 
-# Starter 프로젝트 초기화
+# Starter Project Initialization
 
-## 수행 작업
+## Tasks Performed
 
-1. **프로젝트 구조 확인**
-   - package.json 또는 index.html 확인
-   - 기존 docs/ 폴더 확인
+1. **Check Project Structure**
+   - Verify package.json or index.html
+   - Check existing docs/ folder
 
-2. **PDCA 문서 폴더 생성**
+2. **Create PDCA Document Folders**
    ```
    docs/
    ├── 01-plan/
@@ -26,25 +26,25 @@ allowed-tools: ["Read", "Write", "Bash", "Glob"]
        └── _INDEX.md
    ```
 
-3. **기본 문서 생성**
-   - 각 폴더에 _INDEX.md 생성
-   - 프로젝트 README.md 업데이트 (필요시)
+3. **Generate Base Documents**
+   - Create _INDEX.md in each folder
+   - Update project README.md (if needed)
 
-4. **완료 메시지**
-   - 생성된 구조 표시
-   - 다음 단계 안내
+4. **Completion Message**
+   - Display created structure
+   - Guide next steps
 
-## 실행 조건
+## Execution Conditions
 
-- Starter 레벨에 적합한 프로젝트인지 확인
-- 이미 초기화된 경우 건너뛰기 (덮어쓰지 않음)
+- Verify project is suitable for Starter level
+- Skip if already initialized (don't overwrite)
 
-## 다음 단계 안내
+## Next Steps Guide
 
 ```
-✅ Starter 프로젝트가 초기화되었습니다!
+✅ Starter project has been initialized!
 
-다음 단계:
-1. /pdca-plan [기능명] - 첫 번째 기능 계획 작성
-2. 또는 기능 구현을 요청하면 자동으로 PDCA가 적용됩니다
+Next Steps:
+1. /pdca-plan [feature-name] - Write first feature plan
+2. Or request feature implementation and PDCA will be automatically applied
 ```
