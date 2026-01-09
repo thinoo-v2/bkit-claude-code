@@ -2,6 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.1.1+-purple.svg)](https://code.claude.com)
+[![Author](https://img.shields.io/badge/Author-POPUP%20STUDIO-orange.svg)](https://popupstudio.ai)
 
 > **PDCA methodology + Claude Code mastery for AI-native development**
 
@@ -16,8 +17,8 @@ bkit is a Claude Code plugin that transforms how you build software with AI. It 
 - **3 Project Levels** - Starter (static), Dynamic (fullstack), Enterprise (microservices)
 - **Multilingual Support** - 8 languages (EN, KO, JA, ZH, ES, FR, DE, IT)
 - **17 Commands** - Automate common development tasks
-- **19 Skills** - Domain-specific knowledge for various development scenarios
-- **9 Agents** - Specialized AI assistants for different tasks
+- **23 Skills** - Domain-specific knowledge for various development scenarios
+- **10 Agents** - Specialized AI assistants for different tasks
 
 ---
 
