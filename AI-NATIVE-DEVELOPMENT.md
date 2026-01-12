@@ -9,7 +9,7 @@ This document explains what AI-Native development means in the current market an
 ```mermaid
 flowchart TB
     subgraph MAIN["bkit AI-Native Development"]
-        direction TB
+        direction LR
 
         subgraph ROW1[" "]
             direction LR
