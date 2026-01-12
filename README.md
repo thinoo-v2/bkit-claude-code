@@ -107,6 +107,7 @@ bkit-claude-code/
 
 - **[Architecture & User Journey](docs/00-ARCHITECTURE.md)** - Complete system analysis and user experience guide
 - **[AI-Native Transformation](docs/AI-NATIVE-TRANSFORMATION.md)** - Business value analysis for C-Level executives
+- **[AI-Native Development Methodology](AI-NATIVE-DEVELOPMENT.md)** - How bkit realizes AI-Native development principles
 - [Getting Started](.claude/docs/setup/environment-setup.md)
 - [PDCA Methodology](.claude/docs/pdca/overview.md)
 - [Evaluator-Optimizer Pattern](skills/evaluator-optimizer/SKILL.md)
