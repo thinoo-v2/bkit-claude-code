@@ -1,7 +1,6 @@
 #!/bin/bash
 # bkit Vibecoding Kit - SessionStart Hook
 # .claude folder installation users (command type)
-# Plugin uses UserPromptSubmit, so not synced with this file
 
 cat << 'JSON'
 {

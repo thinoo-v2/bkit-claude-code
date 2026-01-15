@@ -1,11 +1,12 @@
 ---
 name: task-classification
 description: |
-  Classifies task requests by scope to determine appropriate PDCA level.
-  Automatically referenced by PreToolUse hooks before Write/Edit operations.
+  PDCA task classification for Write/Edit operations.
+  Determines if task is Quick Fix, Minor Change, Feature, or Major Feature.
+  Apply PDCA guidance based on classification before writing code.
 
-  Triggers: task classification, PDCA level, scope judgment, quick fix, feature, major,
-  작업 분류, 규모 판단, タスク分類, 任务分类
+  Triggers: task-classification, PDCA check, write code, edit code, implement, create feature,
+  add feature, fix bug, refactor, redesign, 코드 작성, 기능 구현, 기능 추가, 버그 수정
 user-invocable: false
 ---
 
