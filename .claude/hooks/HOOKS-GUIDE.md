@@ -21,7 +21,6 @@ They are designed to naturally apply PDCA methodology.
 | **Stop** | On response completion | Checklists, summaries |
 | **SubagentStop** | On subagent completion | Result validation |
 | **PreCompact** | Before context compaction | Preserve important information |
-| **UserPromptSubmit** | On user input submission | Input validation, transformation |
 | **Notification** | On notification occurrence | Notification handling |
 
 ---

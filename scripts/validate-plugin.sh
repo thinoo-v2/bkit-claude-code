@@ -395,7 +395,7 @@ validate_hooks() {
     )
 
     local hooks_found=false
-    local valid_events=("SessionStart" "PreToolUse" "PostToolUse" "Stop" "SubagentStop" "PreCompact" "Notification" "UserPromptSubmit" "SessionEnd")
+    local valid_events=("SessionStart" "PreToolUse" "PostToolUse" "Stop" "SubagentStop" "PreCompact" "Notification" "SessionEnd")
 
     for hooks_file in "${hooks_files[@]}"; do
         if [ -f "$hooks_file" ]; then

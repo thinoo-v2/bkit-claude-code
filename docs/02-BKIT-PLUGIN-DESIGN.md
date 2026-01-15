@@ -700,8 +700,9 @@ claude --plugin-dir ./bkit
 ---
 
 **Created**: 2026-01-09
+**Updated**: 2026-01-15 
 **Author**: Claude (with Kay)
-**Version**: v1.1.2
+**Version**: v1.1.3
 **Status**: Design verified → Implementation complete
 
 ---
@@ -740,7 +741,8 @@ claude --plugin-dir ./bkit
 
 ## Changelog
 
-### v1.1.2 (2026-01-15)
+### v1.1.2, v1.1.3 (2026-01-15)
+- 📝 Fix PreToolUse & PostToolUse (Write) and remove UserPromptSubmit
 - 🌐 Translated 5 PDCA documents to English (1 plan + 4 design documents)
 - 📸 Added marketplace installation screenshots to README.md
 - 📝 Added auto-update configuration documentation
