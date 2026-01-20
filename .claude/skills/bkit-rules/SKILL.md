@@ -15,7 +15,7 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/pdca-pre-write.sh"
+          command: "$CLAUDE_PROJECT_DIR/scripts/pre-write.sh"
   PostToolUse:
     - matcher: "Write"
       hooks:
@@ -55,21 +55,55 @@ hooks:
 ### Detection Order
 
 1. Check CLAUDE.md for explicit Level declaration
-2. File structure based detection:
+2. File structure based detection
 
-| Conditions | Level |
-|-----------|-------|
-| infra/terraform/, services/, docker-compose.yml (2+) | Enterprise |
-| .mcp.json with bkend, lib/bkend/, supabase/ | Dynamic |
-| None of above | Starter |
+### Enterprise (2+ conditions met)
+
+- infra/terraform/ folder
+- infra/k8s/ or kubernetes/ folder
+- services/ folder (2+ services)
+- turbo.json or pnpm-workspace.yaml
+- docker-compose.yml
+- .github/workflows/ (CI/CD)
+
+### Dynamic (1+ conditions met)
+
+- bkend settings in .mcp.json
+- lib/bkend/ or src/lib/bkend/
+- supabase/ folder
+- firebase.json
+
+### Starter
+
+None of the above conditions met.
 
 ### Level-specific Behavior
 
-| Level | Style | Agent | Skills |
-|-------|-------|-------|--------|
-| Starter | Friendly, detailed | `starter-guide` | `starter` |
-| Dynamic | Technical, clear | `bkend-expert` | `dynamic` |
-| Enterprise | Concise, expert | `enterprise-expert` | `enterprise` |
+| Aspect | Starter | Dynamic | Enterprise |
+|--------|---------|---------|------------|
+| Explanation | Friendly, avoid jargon | Technical but clear | Concise, use terms |
+| Code comments | Detailed | Core logic only | Architecture only |
+| Error handling | Step-by-step guide | Technical solutions | Brief cause + fix |
+| PDCA docs | Simple | Feature-specific | Detailed architecture |
+| Primary Agent | `starter-guide` | `bkend-expert` | `enterprise-expert` |
+| Reference Skill | `starter` | `dynamic` | `enterprise` |
+
+### Level Upgrade Signals
+
+- Starter → Dynamic: "Add login", "Save data", "Admin page"
+- Dynamic → Enterprise: "High traffic", "Microservices", "Own server"
+
+### Hierarchical CLAUDE.md Rules
+
+```
+project/
+├── CLAUDE.md                 # Project-wide (always reference)
+├── services/CLAUDE.md        # Backend work context
+├── frontend/CLAUDE.md        # Frontend work context
+└── infra/CLAUDE.md           # Infrastructure context
+```
+
+Rule: Area-specific rules > Project-wide rules
 
 ---
 
@@ -133,3 +167,23 @@ After completing major tasks, suggest relevant agents.
 - Function exceeds 20 lines
 - if-else nests 3+ levels
 - Same parameters passed to multiple functions
+
+---
+
+## 5. Task Classification
+
+Classify tasks to apply appropriate PDCA level:
+
+| Classification | Content Size | PDCA Level | Action |
+|----------------|--------------|------------|--------|
+| Quick Fix | < 50 chars | None | Execute immediately |
+| Minor Change | 50-200 chars | Lite | Show summary, proceed |
+| Feature | 200-1000 chars | Standard | Check/create design doc |
+| Major Feature | > 1000 chars | Strict | Require design, user confirmation |
+
+### Classification Keywords
+
+**Quick Fix**: fix, typo, correct, adjust, tweak
+**Minor Change**: improve, refactor, enhance, optimize, update
+**Feature**: add, create, implement, build, new feature
+**Major Feature**: redesign, migrate, architecture, overhaul, rewrite

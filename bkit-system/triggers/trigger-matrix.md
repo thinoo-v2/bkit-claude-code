@@ -1,6 +1,6 @@
 # Trigger Matrix
 
-> 이벤트별로 어떤 컴포넌트가 발동되는지 정리한 핵심 매트릭스
+> 이벤트별로 어떤 컴포넌트가 발동되는지 정리한 핵심 매트릭스 (v1.2.0 리팩토링 반영)
 
 ## Hook Event Matrix
 
@@ -8,13 +8,13 @@
 
 | Tool | Skill/Agent | Script | 동작 |
 |------|-------------|--------|------|
-| `Write\|Edit` | [[components/skills/bkit-rules]] | `pdca-pre-write.sh` | PDCA 문서 존재 여부 체크, 가이드 제공 |
-| `Write\|Edit` | [[components/skills/task-classification]] | `task-classify.sh` | 작업 크기 분류 (Quick Fix/Minor/Feature/Major) |
-| `Write\|Edit` | [[components/skills/phase-2-convention]] | `phase2-convention-pre.sh` | 코딩 컨벤션 리마인드 |
+| `Write\|Edit` | [[components/skills/bkit-rules]] | **`pre-write.sh`** | **통합 훅**: PDCA 체크 + 작업분류 + 컨벤션 힌트 |
 | `Write` | [[components/agents/design-validator]] | `design-validator-pre.sh` | 설계 문서 작성 시 체크리스트 |
 | `Write\|Edit` | [[components/agents/code-analyzer]] | (block) | 코드 분석 에이전트는 read-only |
 | `Bash` | [[components/skills/zero-script-qa]] | `qa-pre-bash.sh` | 파괴적 명령어 차단 |
 | `Bash` | [[components/skills/phase-9-deployment]] | `phase9-deploy-pre.sh` | 배포 전 환경 검증 |
+
+**Note**: 기존 `task-classification`과 `phase-2-convention`의 훅은 `bkit-rules`의 `pre-write.sh`로 통합되었습니다.
 
 ### PostToolUse (도구 사용 후)
 
@@ -31,10 +31,11 @@
 | Skill | Script | 동작 |
 |-------|--------|------|
 | [[components/skills/phase-4-api]] | `phase4-api-stop.sh` | Zero Script QA 안내 |
-| [[components/skills/phase-8-review]] | `phase8-review-stop.sh` | 리뷰 완료 요약 |
-| [[components/skills/analysis-patterns]] | `analysis-stop.sh` | 갭 분석 결과 안내 |
+| [[components/skills/phase-8-review]] | `phase8-review-stop.sh` | 리뷰 완료 요약 + 갭 분석 안내 |
 | [[components/skills/zero-script-qa]] | `qa-stop.sh` | QA 세션 완료 안내 |
 | [[components/skills/development-pipeline]] | `echo` | 파이프라인 종료 |
+
+**Note**: `analysis-patterns` Stop hook 기능은 `phase-8-review`로 통합되었습니다.
 
 ### SessionStart (세션 시작 시)
 
@@ -44,18 +45,16 @@
 
 ---
 
-## Write/Edit 시 발동 순서 (예상)
+## Write/Edit 시 발동 순서 (v1.2.0)
 
 사용자가 소스 코드 파일을 Write/Edit 할 때:
 
 ```
 1. PreToolUse 단계
-   ├── bkit-rules (pdca-pre-write.sh)
-   │   └── 해당 feature의 design doc 존재 여부 체크
-   ├── task-classification (task-classify.sh)
-   │   └── 변경 크기에 따른 분류 (Quick Fix ~ Major Feature)
-   └── phase-2-convention (phase2-convention-pre.sh)
-       └── 파일 타입별 컨벤션 리마인드
+   └── bkit-rules (pre-write.sh) ← 통합 훅
+       ├── 1. 작업 분류 (Quick Fix ~ Major Feature)
+       ├── 2. PDCA 문서 체크 (design doc 존재 여부)
+       └── 3. 컨벤션 힌트 (파일 타입별)
 
 2. 실제 Write/Edit 실행
 
@@ -67,6 +66,8 @@
    └── phase-6-ui-integration (phase6-ui-post.sh)
        └── UI 레이어 파일인 경우 레이어 분리 검증
 ```
+
+**v1.2.0 개선사항**: 기존 3개의 개별 PreToolUse 훅이 1개의 통합 훅으로 합쳐져 성능이 향상되었습니다.
 
 ---
 
@@ -101,9 +102,13 @@ Skills와 Agents는 description의 "Triggers:" 키워드로도 활성화됩니�
 | Skill | Trigger Keywords |
 |-------|------------------|
 | [[components/skills/bkit-rules]] | bkit, PDCA, develop, implement, feature, bug, code, 개발, 기능, 버그 |
+| [[components/skills/bkit-templates]] | template, document standards, 템플릿, 문서 표준 |
 | [[components/skills/zero-script-qa]] | zero script qa, log-based testing, docker logs, 제로 스크립트 QA |
-| [[components/skills/evaluator-optimizer]] | iterate, optimize, auto-fix, 반복 개선, 자동 수정, イテレーション |
 | [[components/skills/development-pipeline]] | development pipeline, phase, where to start, 뭐부터, 어디서부터 |
+| [[components/skills/mobile-app]] | mobile app, React Native, Flutter, Expo, 모바일 앱 |
+| [[components/skills/desktop-app]] | desktop app, Electron, Tauri, 데스크톱 앱 |
+
+**Note**: `evaluator-optimizer` skill은 삭제되었습니다. 해당 기능은 `pdca-iterator` agent 설명에 통합되었습니다.
 
 ---
 
@@ -125,22 +130,28 @@ Skills와 Agents는 description의 "Triggers:" 키워드로도 활성화됩니�
 
 ---
 
-## Skill → Agent 연결
+## Skill → Agent 연결 (v1.2.0)
 
 각 Skill은 특정 Agent와 연결되어 있습니다:
 
-| Skill | Connected Agent |
-|-------|-----------------|
-| `starter` | [[components/agents/starter-guide]] |
-| `dynamic` | [[components/agents/bkend-expert]] |
-| `enterprise` | [[components/agents/enterprise-expert]] |
-| `enterprise` | [[components/agents/infra-architect]] |
-| `development-pipeline` | [[components/agents/pipeline-guide]] |
-| `zero-script-qa` | [[components/agents/qa-monitor]] |
-| `evaluator-optimizer` | [[components/agents/pdca-iterator]] |
-| `analysis-patterns` | [[components/agents/code-analyzer]] |
-| `pdca-methodology` | [[components/agents/design-validator]] |
-| `document-standards` | [[components/agents/design-validator]] |
+| Skill | Connected Agent | 비고 |
+|-------|-----------------|------|
+| `starter` | [[components/agents/starter-guide]] | |
+| `dynamic` | [[components/agents/bkend-expert]] | |
+| `enterprise` | [[components/agents/enterprise-expert]] | AI Native, 모노레포 포함 |
+| `enterprise` | [[components/agents/infra-architect]] | |
+| `development-pipeline` | [[components/agents/pipeline-guide]] | |
+| `zero-script-qa` | [[components/agents/qa-monitor]] | |
+| `phase-8-review` | [[components/agents/code-analyzer]] | analysis-patterns 통합 |
+| `bkit-templates` | [[components/agents/design-validator]] | document-standards 통합 |
+| `mobile-app` | [[components/agents/pipeline-guide]] | |
+| `desktop-app` | [[components/agents/pipeline-guide]] | |
+
+**삭제된 연결**:
+- `evaluator-optimizer` → 삭제 (pdca-iterator agent 설명에 통합)
+- `analysis-patterns` → phase-8-review로 통합
+- `pdca-methodology` → 삭제
+- `document-standards` → bkit-templates로 통합
 
 ---
 

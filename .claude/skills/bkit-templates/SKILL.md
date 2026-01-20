@@ -101,3 +101,72 @@ Templates use `{variable}` syntax:
 
 Additional templates for Development Pipeline phases:
 - `$CLAUDE_PROJECT_DIR/templates/pipeline/` directory
+
+---
+
+## Document Standards
+
+### File Naming Rules
+
+```
+{number}_{english_name}.md      # 01_system_architecture.md
+{number}-{english_name}.md      # 01-system-architecture.md
+{feature}.{type}.md             # login.design.md
+```
+
+### Common Header
+
+All documents should include:
+
+```markdown
+# {Document Title}
+
+> **Summary**: {One-line description}
+>
+> **Author**: {Name}
+> **Created**: {YYYY-MM-DD}
+> **Last Modified**: {YYYY-MM-DD}
+> **Status**: {Draft | Review | Approved | Deprecated}
+
+---
+```
+
+### Version Control
+
+Track changes within documents:
+
+```markdown
+## Version History
+
+| Version | Date | Changes | Author |
+|---------|------|---------|--------|
+| 1.0 | 2024-12-01 | Initial draft | Kay |
+| 1.1 | 2024-12-05 | Added API spec | Kay |
+```
+
+### Cross-References
+
+Link related documents:
+
+```markdown
+## Related Documents
+- Plan: [login.plan.md](../01-plan/features/login.plan.md)
+- Design: [login.design.md](../02-design/features/login.design.md)
+- Analysis: [login.analysis.md](../03-analysis/features/login.analysis.md)
+```
+
+### Status Tracking
+
+Use _INDEX.md in each folder:
+
+| Status | Meaning | Claude Behavior |
+|--------|---------|-----------------|
+| ✅ Approved | Use as reference | Follow as-is |
+| 🔄 In Progress | Being written | Notify of changes |
+| ⏸️ On Hold | Temporarily paused | Request confirmation |
+| ❌ Deprecated | No longer valid | Ignore |
+
+### Conflict Resolution
+
+- **Code vs Design mismatch**: Code is truth, suggest document update
+- **Multiple versions**: Reference only the latest version

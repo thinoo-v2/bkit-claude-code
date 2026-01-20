@@ -1,6 +1,6 @@
 # Scripts Overview
 
-> bkit에서 사용하는 15개 Shell Scripts 목록과 역할
+> bkit에서 사용하는 12개 Shell Scripts 목록과 역할 (v1.2.0 리팩토링 후)
 
 ## Scripts란?
 
@@ -9,28 +9,47 @@ Scripts는 **Hooks에서 실행되는 실제 로직**입니다.
 - stdin으로 JSON 입력, stdout으로 JSON 출력
 - allow/block 결정 및 additionalContext 제공
 
-## 전체 목록
+## v1.2.0 리팩토링 변경사항
 
-### PDCA Scripts (3개)
+### 새로 추가된 파일
+
+| 파일 | 역할 |
+|------|------|
+| `lib/common.sh` | 공유 유틸리티 라이브러리 |
+| `scripts/pre-write.sh` | 통합된 PreToolUse 훅 (PDCA + 분류 + 컨벤션) |
+| `bkit.config.json` | 설정 외부화 파일 |
+
+### 통합/Deprecated된 Scripts
+
+| Script | 상태 | 통합 위치 |
+|--------|------|----------|
+| `pdca-pre-write.sh` | DEPRECATED | → `pre-write.sh`로 통합 |
+| `task-classify.sh` | DEPRECATED | → `pre-write.sh`로 통합 |
+| `phase2-convention-pre.sh` | 기능 통합 | → `pre-write.sh`로 통합 |
+| `analysis-stop.sh` | 기능 통합 | → `phase-8-review` Stop hook 사용 |
+
+## 전체 목록 (12개 활성)
+
+### Core Scripts (2개)
 
 | Script | Hook | Skill/Agent | 역할 |
 |--------|------|-------------|------|
-| [[pdca-pre-write]] | PreToolUse | bkit-rules | Write 전 design doc 체크, PDCA 안내 |
+| **[[pre-write]]** | PreToolUse | bkit-rules | **통합 훅**: PDCA 체크 + 작업분류 + 컨벤션 힌트 |
 | [[pdca-post-write]] | PostToolUse | bkit-rules | Write 후 Gap Analysis 안내 |
-| [[task-classify]] | PreToolUse | task-classification | 변경 크기 분류 (Quick Fix ~ Major) |
 
-### Phase Scripts (7개)
+**Note**: `pre-write.sh`는 `lib/common.sh`를 참조하여 설정 기반으로 동작합니다.
+
+### Phase Scripts (5개)
 
 | Script | Hook | Skill | 역할 |
 |--------|------|-------|------|
-| [[phase2-convention-pre]] | PreToolUse | phase-2-convention | 코딩 컨벤션 리마인드 |
 | [[phase4-api-stop]] | Stop | phase-4-api | API 완료 후 Zero Script QA 안내 |
 | [[phase5-design-post]] | PostToolUse | phase-5-design-system | 디자인 토큰 사용 검증 |
 | [[phase6-ui-post]] | PostToolUse | phase-6-ui-integration | UI 레이어 분리 검증 |
-| [[phase8-review-stop]] | Stop | phase-8-review | 리뷰 완료 요약 |
+| [[phase8-review-stop]] | Stop | phase-8-review | 리뷰 완료 요약 + 갭 분석 안내 |
 | [[phase9-deploy-pre]] | PreToolUse | phase-9-deployment | 배포 전 환경 검증 |
 
-### QA Scripts (4개)
+### QA Scripts (3개)
 
 | Script | Hook | Skill/Agent | 역할 |
 |--------|------|-------------|------|
@@ -45,12 +64,29 @@ Scripts는 **Hooks에서 실행되는 실제 로직**입니다.
 | [[gap-detector-post]] | PostToolUse | gap-detector | 분석 완료 후 iterate 안내 |
 | [[design-validator-pre]] | PreToolUse | design-validator | 설계 문서 체크리스트 |
 
-### Other Scripts (2개)
+### Utility Scripts (1개)
 
 | Script | 용도 | 호출 방식 |
 |--------|------|----------|
-| [[analysis-stop]] | 갭 분석 완료 안내 | analysis-patterns Stop hook |
 | [[select-template]] | 레벨별 템플릿 선택 | Commands에서 직접 호출 |
+
+## 공유 라이브러리: lib/common.sh
+
+통합된 스크립트들은 `lib/common.sh`를 사용합니다:
+
+```bash
+source "${LIB_DIR}/common.sh"
+
+# 사용 가능한 함수들:
+get_config ".pdca.thresholds.quickFix" "50"   # 설정 값 읽기
+is_source_file "/path/to/file"                 # 소스 파일 여부
+is_code_file "/path/to/file.ts"                # 코드 파일 여부
+extract_feature "/src/features/auth/login.ts"  # 기능명 추출
+find_design_doc "auth"                         # 설계 문서 찾기
+classify_task "$content"                       # 작업 분류
+detect_level                                   # 레벨 감지
+output_allow "context message"                 # JSON 출력
+```
 
 ---
 
@@ -99,31 +135,62 @@ PreToolUse/PostToolUse에서 받는 JSON:
 
 ## 주요 Script 상세
 
-### pdca-pre-write.sh
+### pre-write.sh (통합 스크립트)
 
 ```
-트리거: Write|Edit on source files (src/, lib/, app/, components/, pages/)
+트리거: Write|Edit on source files (src/, lib/, app/, components/, pages/, features/, services/)
 
-동작:
-1. 파일 경로에서 feature 이름 추출
-2. design doc 존재 여부 체크
-3. 있으면 → "design doc 참조하세요" 안내
-4. plan만 있으면 → "design 먼저 만드세요" 경고
-5. 없으면 → 빈 출력 (Quick Fix로 판단)
-```
+동작 (3단계 통합):
 
-### task-classify.sh
-
-```
-트리거: Write|Edit on source files
-
-동작:
-1. 변경 내용 크기 측정 (content length)
-2. 분류:
-   - < 50 chars → Quick Fix (PDCA 불필요)
-   - < 200 chars → Minor Change (선택적 PDCA)
+1. 작업 분류 (Task Classification)
+   - content 크기 측정
+   - bkit.config.json의 thresholds 참조
+   - < 50 chars → Quick Fix
+   - < 200 chars → Minor Change
    - < 1000 chars → Feature (PDCA 권장)
    - >= 1000 chars → Major Feature (PDCA 필수)
+
+2. PDCA 문서 체크
+   - 파일 경로에서 feature 이름 추출 (extract_feature)
+   - design doc 존재 여부 체크 (find_design_doc)
+   - 있으면 → "design doc 참조하세요" 안내
+   - plan만 있으면 → "design 먼저 만드세요" 경고
+
+3. 컨벤션 힌트
+   - 코드 파일 → "Components=PascalCase, Functions=camelCase..."
+   - 환경 파일 → "NEXT_PUBLIC_* (client), DB_* (database)..."
+
+출력: 모든 컨텍스트를 한 JSON 응답으로 통합
+```
+
+### lib/common.sh 주요 함수
+
+```bash
+# 설정 관리
+get_config()         # bkit.config.json에서 값 읽기
+get_config_array()   # 배열 값 읽기
+
+# 파일 분류
+is_source_file()     # 소스 디렉토리 파일 여부
+is_code_file()       # 코드 확장자 여부
+is_env_file()        # 환경 파일 여부
+
+# 기능 추출
+extract_feature()    # 경로에서 feature명 추출
+find_design_doc()    # design 문서 경로 찾기
+find_plan_doc()      # plan 문서 경로 찾기
+
+# 작업 분류
+classify_task()      # 내용 크기로 작업 분류
+get_pdca_guidance()  # 분류에 따른 가이드 메시지
+
+# 레벨 감지
+detect_level()       # Starter/Dynamic/Enterprise 판별
+
+# JSON 출력
+output_allow()       # allow + additionalContext
+output_block()       # block + reason
+output_empty()       # {} 빈 응답
 ```
 
 ### qa-pre-bash.sh
@@ -153,26 +220,30 @@ PreToolUse/PostToolUse에서 받는 JSON:
 
 ---
 
-## Script 소스 위치
+## 소스 위치
 
 ```
-.claude/scripts/
-├── pdca-pre-write.sh
-├── pdca-post-write.sh
-├── task-classify.sh
-├── phase2-convention-pre.sh
-├── phase4-api-stop.sh
-├── phase5-design-post.sh
-├── phase6-ui-post.sh
-├── phase8-review-stop.sh
-├── phase9-deploy-pre.sh
-├── qa-pre-bash.sh
-├── qa-monitor-post.sh
-├── qa-stop.sh
-├── gap-detector-post.sh
-├── design-validator-pre.sh
-├── analysis-stop.sh
-└── select-template.sh
+.claude/
+├── lib/
+│   └── common.sh              # 공유 유틸리티 라이브러리 (NEW)
+├── scripts/
+│   ├── pre-write.sh           # 통합 PreToolUse 훅 (NEW)
+│   ├── pdca-pre-write.sh      # DEPRECATED → pre-write.sh
+│   ├── pdca-post-write.sh
+│   ├── task-classify.sh       # DEPRECATED → pre-write.sh
+│   ├── phase4-api-stop.sh
+│   ├── phase5-design-post.sh
+│   ├── phase6-ui-post.sh
+│   ├── phase8-review-stop.sh  # analysis-stop.sh 기능 통합
+│   ├── phase9-deploy-pre.sh
+│   ├── qa-pre-bash.sh
+│   ├── qa-monitor-post.sh
+│   ├── qa-stop.sh
+│   ├── gap-detector-post.sh
+│   ├── design-validator-pre.sh
+│   ├── analysis-stop.sh       # 기능 통합됨 (phase-8-review 사용)
+│   └── select-template.sh
+└── bkit.config.json           # 설정 외부화 파일 (NEW)
 ```
 
 ---

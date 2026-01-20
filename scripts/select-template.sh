@@ -33,7 +33,7 @@ fi
 
 # Template directory
 TEMPLATE_DIR="templates"
-PLUGIN_TEMPLATE_DIR="${CLAUDE_PROJECT_DIR:-/Users/popup-kay/Documents/GitHub/popup/bkit-claude-code}/templates"
+PLUGIN_TEMPLATE_DIR="${CLAUDE_PROJECT_DIR:-.}/templates"
 
 # Use plugin templates if available, fallback to local
 if [ -d "$PLUGIN_TEMPLATE_DIR" ]; then

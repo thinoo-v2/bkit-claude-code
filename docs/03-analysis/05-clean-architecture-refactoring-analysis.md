@@ -3,6 +3,7 @@
 > **Analysis Type**: Clean Architecture Violation & Refactoring Target Analysis
 > **Project**: bkit-claude-code
 > **Date**: 2026-01-20
+> **Updated**: 2026-01-20 (v1.1 - Verified with actual codebase)
 > **Purpose**: .claude/ 폴더의 클린아키텍처 위반 사항, 중복, 불필요 파일 식별
 
 ---
@@ -472,8 +473,52 @@ validate_input()
 
 ---
 
+## 11. Design Document Compliance Verification
+
+### 11.1 00-ARCHITECTURE.md Compliance
+
+| Component | Design | Implementation | Status |
+|-----------|--------|----------------|--------|
+| System Structure | Auto-Apply + Runtime + On-Demand + Output layers | ✅ 구현됨 | PASS |
+| PDCA Workflow | Plan → Design → Do → Check → Act | ✅ commands + agents로 구현 | PASS |
+| User Journey | SessionStart → Options → Level Select → PDCA | ✅ session-start.sh hook | PASS |
+| 18 Commands | Learning(4) + Init(3) + PDCA(7) + Pipeline(3) + QA(1) | ✅ 18개 존재 | PASS |
+| 11 Agents | gap-detector, pdca-iterator 등 | ✅ 11개 존재 | PASS |
+| 6 Templates | plan, design, analysis, report, _INDEX, CLAUDE | ✅ + 추가 템플릿 | PASS |
+
+### 11.2 02-BKIT-PLUGIN-DESIGN.md Compliance
+
+| Spec | Design | Implementation | Status |
+|------|--------|----------------|--------|
+| Plugin Manifest | `.claude-plugin/plugin.json` | ✅ 존재 (v1.2.0) | PASS |
+| Instructions Integration | Skills로 통합 | ⚠️ instructions/ 아직 존재 | PARTIAL |
+| Templates Integration | bkit-templates skill | ✅ 존재 | PASS |
+| Hooks Format | `hooks/hooks.json` 또는 skill frontmatter | ✅ skill frontmatter 사용 | PASS |
+| Path Portability | `$CLAUDE_PROJECT_DIR` 사용 | ⚠️ 1개 개인 경로 존재 | PARTIAL |
+
+### 11.3 03-BKIT-FEATURES.md Compliance
+
+| Feature | Design | Implementation | Status |
+|---------|--------|----------------|--------|
+| PDCA Auto-Apply | Hooks로 자동 적용 | ✅ bkit-rules skill hooks | PASS |
+| Level Detection | CLAUDE.md + 파일 구조 감지 | ✅ level-detection skill | PASS |
+| Agent Auto-Trigger | Description triggers | ✅ 모든 agents에 적용 | PASS |
+| Task Classification | Quick Fix/Minor/Feature/Major | ✅ task-classification skill | PASS |
+| Zero Script QA | Log-based QA | ✅ zero-script-qa skill + command | PASS |
+
+### 11.4 Newly Identified Issues (Not in Original Design)
+
+| Issue | Severity | Location | Action |
+|-------|----------|----------|--------|
+| Hook 중복 정의 | HIGH | bkit-rules + task-classification | 통합 필요 |
+| Skills 초과 | MEDIUM | 26개 (설계 17개) | 통합 필요 |
+| Skill 파일 크기 초과 | LOW | phase-6, zero-script-qa (700+ lines) | 500줄 이내 권장 |
+
+---
+
 ## Version History
 
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2026-01-20 | Initial clean architecture analysis |
+| 1.1 | 2026-01-20 | Added design document compliance verification, actual codebase verification |

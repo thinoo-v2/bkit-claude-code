@@ -2,11 +2,14 @@
 name: enterprise
 description: |
   Enterprise-grade system development with microservices, Kubernetes, and Terraform.
+  Includes AI Native methodology and Monorepo architecture patterns.
   Handles high traffic, high availability, and complex architecture requirements.
 
-  Use proactively when user needs high traffic, microservices, or custom infrastructure.
+  Use proactively when user needs high traffic, microservices, custom infrastructure,
+  or AI-native development patterns.
 
-  Triggers: microservices, kubernetes, terraform, k8s, AWS, 마이크로서비스, マイクロサービス, 微服务
+  Triggers: microservices, kubernetes, terraform, k8s, AWS, monorepo, AI native, 10-day,
+  마이크로서비스, 모노레포, マイクロサービス, モノレポ, 微服务, 单仓库
 
   Do NOT use for: simple websites, MVPs, or projects without infrastructure requirements.
 agent: infra-architect
@@ -282,3 +285,54 @@ ArgoCD Manual Sync (Production)
   - For understanding design intent
   - If different from code, code is correct
 ```
+
+---
+
+## AI Native Development
+
+### 3 Core Principles
+
+1. **Document-First Design**: Write design docs BEFORE code
+2. **Monorepo Context Control**: All code in one repo for AI context
+3. **PR-Based Collaboration**: Every change through PR
+
+### 10-Day Development Pattern
+
+| Day | Focus | Output |
+|-----|-------|--------|
+| 1 | Architecture | Market analysis + System architecture |
+| 2-3 | Core | Auth, User + Business services |
+| 4-5 | UX | PO feedback → Documentation → Implementation |
+| 6-7 | QA | Zero Script QA + bug fixes |
+| 8 | Infra | Terraform + GitOps |
+| 9-10 | Production | Security review + Deployment |
+
+---
+
+## Monorepo Benefits for AI
+
+```
+Mono-repo:
+└─ project/
+    ├─ frontend/ ──────┐
+    ├─ services/ ──────┤  AI reads completely
+    ├─ infra/ ─────────┤  Context unified
+    └─ packages/ ──────┘
+
+✅ AI understands full context
+✅ Single source of truth for types
+✅ Atomic commits across layers
+✅ Consistent patterns enforced
+```
+
+### CLAUDE.md Hierarchy
+
+```
+project/
+├── CLAUDE.md           # Project-wide context
+├── frontend/CLAUDE.md  # Frontend conventions
+├── services/CLAUDE.md  # Backend conventions
+└── infra/CLAUDE.md     # Infra conventions
+```
+
+Rule: Area-specific CLAUDE.md overrides project-level rules

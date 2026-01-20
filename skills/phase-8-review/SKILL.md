@@ -1,12 +1,14 @@
 ---
 name: phase-8-review
 description: |
-  Skill for verifying overall codebase quality.
-  Covers architecture consistency, convention compliance, and potential issue detection.
+  Skill for verifying overall codebase quality and gap analysis.
+  Covers architecture consistency, convention compliance, design-implementation gaps,
+  and potential issue detection. Includes analysis patterns and report writing.
 
   Use proactively when implementation is complete and quality verification is needed.
 
-  Triggers: code review, architecture review, quality check, refactoring, 코드 리뷰, コードレビュー, 代码审查
+  Triggers: code review, architecture review, quality check, refactoring, gap analysis,
+  코드 리뷰, 설계-구현 분석, コードレビュー, ギャップ分析, 代码审查, 差距分析
 
   Do NOT use for: initial development, design phase, or deployment tasks.
 hooks:
@@ -479,3 +481,55 @@ Please review the code from these perspectives:
 
 Please identify parts that need refactoring and their priority.
 ```
+
+---
+
+## 8. Gap Analysis (Design vs Implementation)
+
+### Gap Analysis Report Template
+
+```markdown
+# Gap Analysis Report
+
+## Analysis Target
+- Design document: docs/02-design/{feature}.design.md
+- Implementation path: src/features/{feature}/
+
+## Results by Category
+
+### API Endpoints
+| Design | Implementation | Status |
+|--------|----------------|--------|
+| POST /api/users | POST /api/users | ✅ Match |
+| GET /api/users/:id | - | ❌ Not implemented |
+| - | DELETE /api/users/:id | ⚠️ Missing from design |
+
+### Data Model
+| Design Entity | Implementation | Status |
+|---------------|----------------|--------|
+| User | types/user.ts | ✅ Match |
+| UserRole | - | ❌ Not implemented |
+
+### Match Rate
+- Total items: 10
+- Matches: 7
+- Not implemented: 2
+- Missing from design: 1
+- **Match Rate: 70%**
+```
+
+### Gap Types and Actions
+
+| Gap Type | Meaning | Action |
+|----------|---------|--------|
+| ✅ Match | Design = Implementation | None |
+| ❌ Not implemented | In design, not in code | Implement or update design |
+| ⚠️ Missing from design | In code, not in design | Add to design document |
+| 🔄 Different | Exists but different | Align (code is truth) |
+
+### When to Run Gap Analysis
+
+- After completing feature implementation
+- Before deployment
+- When design document is updated
+- During code review

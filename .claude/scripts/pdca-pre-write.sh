@@ -1,7 +1,8 @@
 #!/bin/bash
 # scripts/pdca-pre-write.sh
-# Purpose: Detect PDCA phase and provide guidance before Write/Edit
-# Hook: PreToolUse (Write|Edit) for bkit-rules skill
+# DEPRECATED: Functionality merged into pre-write.sh
+# Kept for backward compatibility - functionality now in lib/common.sh
+# Original Purpose: Detect PDCA phase and provide guidance before Write/Edit
 
 set -e
 

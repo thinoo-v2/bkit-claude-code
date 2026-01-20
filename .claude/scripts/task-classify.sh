@@ -1,7 +1,8 @@
 #!/bin/bash
 # scripts/task-classify.sh
-# Purpose: Classify task type and apply appropriate PDCA guidance
-# Hook: PreToolUse (Write|Edit) for task-classification skill
+# DEPRECATED: Functionality merged into pre-write.sh
+# Kept for backward compatibility - functionality now in lib/common.sh
+# Original Purpose: Classify task type and apply appropriate PDCA guidance
 
 set -e
 

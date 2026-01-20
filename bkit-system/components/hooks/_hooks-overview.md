@@ -147,18 +147,18 @@ hooks:
 
 ---
 
-## 이벤트별 매칭 현황
+## 이벤트별 매칭 현황 (v1.2.0 리팩토링 후)
 
 ### PreToolUse
 
-| Matcher | Skill/Agent | Script |
-|---------|-------------|--------|
-| `Write\|Edit` | bkit-rules | pdca-pre-write.sh |
-| `Write\|Edit` | task-classification | task-classify.sh |
-| `Write\|Edit` | phase-2-convention | phase2-convention-pre.sh |
-| `Write` | design-validator | design-validator-pre.sh |
-| `Bash` | zero-script-qa | qa-pre-bash.sh |
-| `Bash` | phase-9-deployment | phase9-deploy-pre.sh |
+| Matcher | Skill/Agent | Script | 비고 |
+|---------|-------------|--------|------|
+| `Write\|Edit` | bkit-rules | **pre-write.sh** | 통합 훅 (PDCA+분류+컨벤션) |
+| `Write` | design-validator | design-validator-pre.sh | |
+| `Bash` | zero-script-qa | qa-pre-bash.sh | |
+| `Bash` | phase-9-deployment | phase9-deploy-pre.sh | |
+
+**Note**: 기존 `task-classification`과 `phase-2-convention`의 PreToolUse 훅은 `bkit-rules`의 `pre-write.sh`로 통합되었습니다.
 
 ### PostToolUse
 
@@ -172,13 +172,14 @@ hooks:
 
 ### Stop
 
-| Skill | Script |
-|-------|--------|
-| phase-4-api | phase4-api-stop.sh |
-| phase-8-review | phase8-review-stop.sh |
-| analysis-patterns | analysis-stop.sh |
-| zero-script-qa | qa-stop.sh |
-| development-pipeline | echo |
+| Skill | Script | 비고 |
+|-------|--------|------|
+| phase-4-api | phase4-api-stop.sh | |
+| phase-8-review | phase8-review-stop.sh | analysis-patterns 기능 통합 |
+| zero-script-qa | qa-stop.sh | |
+| development-pipeline | echo | |
+
+**Note**: `analysis-patterns` Stop hook 기능은 `phase-8-review`로 통합되었습니다.
 
 ### SessionStart
 

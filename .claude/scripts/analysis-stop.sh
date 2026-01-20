@@ -1,7 +1,7 @@
 #!/bin/bash
 # scripts/analysis-stop.sh
 # Purpose: Guide report generation after gap analysis
-# Hook: Stop for analysis-patterns skill
+# Hook: Stop for phase-8-review skill (gap analysis component)
 
 set -e
 

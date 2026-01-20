@@ -1,4 +1,39 @@
 {
-  "description": "bkit Vibecoding Kit - Hooks disabled for stability (see docs/02-design/hooks-simplification.design.md)",
-  "hooks": {}
+  "$schema": "https://json.schemastore.org/claude-code-hooks.json",
+  "SessionStart": [
+    {
+      "once": true,
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh",
+          "timeout": 5000
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pre-write.sh",
+          "timeout": 5000
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/scripts/pdca-post-write.sh",
+          "timeout": 5000
+        }
+      ]
+    }
+  ]
 }

@@ -23,7 +23,7 @@
 │                                                                 │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
 │  │   Skills     │───▶│   Agents     │───▶│   Scripts    │      │
-│  │  (26개)      │    │  (11개)      │    │  (15개)      │      │
+│  │  (18개)      │    │  (11개)      │    │  (12개)      │      │
 │  └──────────────┘    └──────────────┘    └──────────────┘      │
 │         │                   │                   │               │
 │         ▼                   ▼                   ▼               │
@@ -44,10 +44,12 @@
 
 | 컴포넌트 | 개수 | 역할 | 상세 |
 |----------|------|------|------|
-| Skills | 26 | 도메인 지식 + 훅 정의 | [[components/skills/_skills-overview]] |
+| Skills | 18 | 도메인 지식 + 훅 정의 | [[components/skills/_skills-overview]] |
 | Agents | 11 | 전문 작업 수행 | [[components/agents/_agents-overview]] |
 | Hooks | 4종 | 이벤트 기반 트리거 | [[components/hooks/_hooks-overview]] |
-| Scripts | 15 | 실제 로직 실행 | [[components/scripts/_scripts-overview]] |
+| Scripts | 12 | 실제 로직 실행 | [[components/scripts/_scripts-overview]] |
+| Lib | 1 | 공유 유틸리티 | `lib/common.sh` |
+| Config | 1 | 설정 외부화 | `bkit.config.json` |
 | Commands | 18 | 슬래시 명령어 | `/pdca-*`, `/init-*`, 등 |
 | Instructions | 7 | Soft Rules | Claude가 읽어서 적용 |
 

@@ -9,12 +9,7 @@ description: |
   Triggers: convention, coding style, naming rules, 컨벤션, コンベンション, 编码风格
 
   Do NOT use for: existing projects with established conventions, deployment, or testing.
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/phase2-convention-pre.sh"
+# Note: Hook functionality merged into bkit-rules/pre-write.sh
 agent: pipeline-guide
 allowed-tools:
   - Read
