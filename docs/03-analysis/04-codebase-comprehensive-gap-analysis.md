@@ -100,9 +100,9 @@ Priority 4 분석: 00-03 설계문서의 설계 의도를 파악하고, Claude C
 > - See analysis documents: `docs/03-analysis/00-CLAUDE-CODE-HOOKS-ANALYSIS.md`, `docs/03-analysis/01-HOOKS-FIX-PLAN-2026-01-19.md`
 > - **Correct approach**: Using `type: "command"` in skills/agents frontmatter hooks provides stability
 
-### 3.3 NOT Utilized Features ❌ → ✅ IMPLEMENTED (v1.2.1)
+### 3.3 NOT Utilized Features ❌ → ✅ IMPLEMENTED (v1.2.0)
 
-> **📢 UPDATE (v1.2.1)**: P0-P2 기능들이 모두 구현되었습니다.
+> **📢 UPDATE (v1.2.0)**: P0-P2 기능들이 모두 구현되었습니다.
 
 | Feature | Official Support | bkit Implementation | Status |
 |---------|------------------|---------------------|--------|
@@ -121,7 +121,7 @@ Priority 4 분석: 00-03 설계문서의 설계 의도를 파악하고, Claude C
 
 ## 4. Detailed Gap Analysis
 
-### 4.1 ~~Permission Modes Gap~~ → ✅ IMPLEMENTED (v1.2.1)
+### 4.1 ~~Permission Modes Gap~~ → ✅ IMPLEMENTED (v1.2.0)
 
 **현재 상태**: ✅ 모든 11개 Agents에 `permissionMode` 지정 완료
 
@@ -172,7 +172,7 @@ hooks:
 
 ---
 
-### 4.3 ~~Environment Variable Persistence Gap~~ → ✅ IMPLEMENTED (v1.2.1)
+### 4.3 ~~Environment Variable Persistence Gap~~ → ✅ IMPLEMENTED (v1.2.0)
 
 **현재 상태**: ✅ SessionStart에서 env 변수 활용 구현 완료
 
@@ -279,7 +279,7 @@ agent: qa-monitor
 
 ---
 
-### 4.7 ~~disallowedTools Gap~~ → ✅ IMPLEMENTED (v1.2.1)
+### 4.7 ~~disallowedTools Gap~~ → ✅ IMPLEMENTED (v1.2.0)
 
 **현재 상태**: ✅ Read-only agents에 `disallowedTools` 지정 완료
 
@@ -320,7 +320,7 @@ disallowedTools:
 | Plugin structure (.claude-plugin/) | ✅ Implemented | 100% |
 | Skills/Agents/Commands | ✅ 26 skills, 11 agents, 18 commands | 100% |
 | Hooks automation | ✅ 16 scripts | 100% |
-| Permission modes | ✅ All 11 agents configured (v1.2.1) | 100% |
+| Permission modes | ✅ All 11 agents configured (v1.2.0) | 100% |
 
 **Match Rate: 100%** ✅ (Revised from 75%)
 
@@ -367,17 +367,17 @@ disallowedTools:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Overall Design-Implementation Match Rate (v1.2.1)           │
+│  Overall Design-Implementation Match Rate (v1.2.0)           │
 ├─────────────────────────────────────────────────────────────┤
 │  00-ARCHITECTURE.md:              100% ✅ (Permission modes) │
 │  01-AI-NATIVE-TRANSFORMATION.md:  100% ✅                   │
 │  02-BKIT-PLUGIN-DESIGN.md:        100% ✅                   │
 │  03-BKIT-FEATURES.md:             95%  ✅ (PreCompact pending)│
 ├─────────────────────────────────────────────────────────────┤
-│  Average:                         98.8% ✅ (Revised v1.2.1)  │
+│  Average:                         98.8% ✅ (Revised v1.2.0)  │
 └─────────────────────────────────────────────────────────────┘
 
-v1.2.1 Updates:
+v1.2.0 Updates:
 - Permission modes: All 11 agents configured ✅
 - disallowedTools: 4 read-only agents protected ✅
 - Environment persistence: BKIT_LEVEL, BKIT_PDCA_PHASE ✅
@@ -388,7 +388,7 @@ v1.2.1 Updates:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Claude Code Feature Utilization Rate (v1.2.1)               │
+│  Claude Code Feature Utilization Rate (v1.2.0)               │
 ├─────────────────────────────────────────────────────────────┤
 │  Fully Utilized:                  14 features  ✅ (+4)       │
 │  Partially Utilized:               2 features  ⚠️            │
@@ -399,7 +399,7 @@ v1.2.1 Updates:
 │  Effective Rate (excl. buggy):    72.7% (16/22) ✅           │
 └─────────────────────────────────────────────────────────────┘
 
-Newly Implemented (v1.2.1):
+Newly Implemented (v1.2.0):
 - Permission modes (+1)
 - disallowedTools (+1)
 - $CLAUDE_ENV_FILE (+1)
@@ -410,7 +410,7 @@ Newly Implemented (v1.2.1):
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  .claude/ vs Root Directory Sync Status (v1.2.1)             │
+│  .claude/ vs Root Directory Sync Status (v1.2.0)             │
 ├─────────────────────────────────────────────────────────────┤
 │  agents/:      ✅ 100% (11/11) - Permission modes synced    │
 │  commands/:    ✅ 100% (18/18)                              │
@@ -419,8 +419,8 @@ Newly Implemented (v1.2.1):
 │  scripts/:     ✅ 100% (16/16 functional) - 11 scripts added│
 │  hooks/:       ✅ session-start.sh synced with env persist  │
 ├─────────────────────────────────────────────────────────────┤
-│  Overall Sync Rate:             100% ✅ (Fixed in v1.2.1)   │
-│  ✅ Standalone users now have full v1.2.0/v1.2.1 features   │
+│  Overall Sync Rate:             100% ✅ (Fixed in v1.2.0)   │
+│  ✅ Standalone users now have full v1.2.0/v1.2.0 features   │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -428,7 +428,7 @@ Newly Implemented (v1.2.1):
 
 ## 7. Recommendations
 
-### 7.0 ~~Priority 0 (URGENT - Synchronization)~~ → ✅ COMPLETED (v1.2.1)
+### 7.0 ~~Priority 0 (URGENT - Synchronization)~~ → ✅ COMPLETED (v1.2.0)
 
 | Item | Action | Status |
 |------|--------|--------|
@@ -436,14 +436,14 @@ Newly Implemented (v1.2.1):
 | **Agents sync** | ✅ Permission modes synced to root/agents | ✅ DONE |
 | **Hooks sync** | ✅ session-start.sh with env persistence | ✅ DONE |
 
-### 7.1 ~~Priority 1 (Critical)~~ → ✅ COMPLETED (v1.2.1)
+### 7.1 ~~Priority 1 (Critical)~~ → ✅ COMPLETED (v1.2.0)
 
 | Item | Action | Status |
 |------|--------|--------|
 | Permission modes | ✅ All 11 agents configured | ✅ DONE |
 | disallowedTools | ✅ 4 read-only agents protected | ✅ DONE |
 
-### 7.2 ~~Priority 2 (High)~~ → ✅ MOSTLY COMPLETED (v1.2.1)
+### 7.2 ~~Priority 2 (High)~~ → ✅ MOSTLY COMPLETED (v1.2.0)
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -580,11 +580,11 @@ Changes:
 
 ## 9. Conclusion
 
-### 9.1 Current State (v1.2.1)
+### 9.1 Current State (v1.2.0)
 
-bkit 코드베이스는 v1.2.1 업데이트를 통해 Claude Code의 핵심 기능 활용도를 **72.7%**까지 향상시켰습니다.
+bkit 코드베이스는 v1.2.0 업데이트를 통해 Claude Code의 핵심 기능 활용도를 **72.7%**까지 향상시켰습니다.
 
-### 9.2 Key Achievements (v1.2.1)
+### 9.2 Key Achievements (v1.2.0)
 
 1. **✅ 완료**: Permission modes - 11개 전체 agents에 적용
 2. **✅ 완료**: disallowedTools - 4개 read-only agents 보호
@@ -603,11 +603,11 @@ bkit 코드베이스는 v1.2.1 업데이트를 통해 Claude Code의 핵심 기�
 | P2 | disallowedTools 적용 | ✅ DONE | 보안 강화 |
 | P3 | Lifecycle hooks | 📝 Pending | hooks.json 불안정 |
 
-### 9.4 Achieved State (v1.2.1)
+### 9.4 Achieved State (v1.2.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  v1.2.1 Implementation Results                               │
+│  v1.2.0 Implementation Results                               │
 ├─────────────────────────────────────────────────────────────┤
 │  Design-Implementation Match Rate: 91.3% → 98.8% ✅          │
 │  Claude Code Feature Utilization: 54.5% → 72.7% ✅           │
@@ -625,11 +625,11 @@ bkit 코드베이스는 v1.2.1 업데이트를 통해 Claude Code의 핵심 기�
 
 두 방식 모두 **일관된 사용자 경험**을 제공해야 합니다.
 
-### 10.1 Synchronization Status Overview ✅ FIXED (v1.2.1)
+### 10.1 Synchronization Status Overview ✅ FIXED (v1.2.0)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  .claude/ vs Root Directory Synchronization Status (v1.2.1)  │
+│  .claude/ vs Root Directory Synchronization Status (v1.2.0)  │
 ├─────────────────────────────────────────────────────────────┤
 │  agents/     11 files   ✅ 100% SYNC (+ permission modes)   │
 │  commands/   18 files   ✅ 100% SYNC                        │
@@ -638,7 +638,7 @@ bkit 코드베이스는 v1.2.1 업데이트를 통해 Claude Code의 핵심 기�
 │  scripts/    16 files   ✅ 100% SYNC (11 scripts added)    │
 │  hooks/      Synced     ✅ session-start.sh with env persist│
 ├─────────────────────────────────────────────────────────────┤
-│  Overall Sync Rate:     100% ✅ (Fixed in v1.2.1)           │
+│  Overall Sync Rate:     100% ✅ (Fixed in v1.2.0)           │
 └─────────────────────────────────────────────────────────────┘
 
 Note: Root has 2 extra infrastructure scripts (sync-folders.sh, validate-plugin.sh)
@@ -802,7 +802,7 @@ Recommended Structure:
 | 1.0 | 2026-01-20 | Initial comprehensive gap analysis | Claude Opus 4.5 |
 | 1.1 | 2026-01-20 | Added Section 10: Plugin vs Standalone Sync Analysis | Claude Opus 4.5 |
 | 1.2 | 2026-01-20 | **Hooks analysis correction**: Recognized `type: "prompt"` hooks non-usage as INTENTIONAL design decision due to GitHub #13155. Updated Sections 3.2, 4.2, 5.2, 5.3, 6.1, 6.2, 7.2, 8, 9.2. Revised match rates. | Claude Opus 4.5 |
-| 1.3 | 2026-01-20 | **v1.2.1 Implementation Complete**: P0-P2 fully implemented. Permission modes (11 agents), disallowedTools (4 agents), environment persistence (BKIT_LEVEL/PHASE), scripts sync (11 added to .claude/), hooks philosophy documented. Design match rate: 98.8%, Feature utilization: 72.7%, Sync rate: 100%. | Claude Opus 4.5 |
+| 1.3 | 2026-01-20 | **v1.2.0 Implementation Complete**: P0-P2 fully implemented. Permission modes (11 agents), disallowedTools (4 agents), environment persistence (BKIT_LEVEL/PHASE), scripts sync (11 added to .claude/), hooks philosophy documented. Design match rate: 98.8%, Feature utilization: 72.7%, Sync rate: 100%. | Claude Opus 4.5 |
 
 ---
 

@@ -206,6 +206,8 @@
   },
   "active": "dabb434299855c3f",
   "lastOpenFiles": [
+    ".claude/.DS_Store",
+    "docs/01-plan/06-CLAUDE-FOLDER-RESTRUCTURING-PLAN.md",
     "hooks/hooks.json",
     "test/src/features/auth/test.ts",
     "test/src/features/auth/signup.ts",
@@ -217,7 +219,6 @@
     "test/.claude",
     "test/src/features/auth/login.ts",
     "test/src/features/auth",
-    "test/src/features",
     "docs/01-plan/05-CLEAN-ARCHITECTURE-REFACTORING-PLAN.md",
     "docs/03-analysis/05-clean-architecture-refactoring-analysis.md",
     "test/README.md",
@@ -241,7 +242,6 @@
     "bkit-system/README.md",
     "docs/03-analysis/04-codebase-comprehensive-gap-analysis.md",
     "docs/03-analysis/02-bkit-automation-improvement.analysis.md",
-    "docs/03-analysis/00-CLAUDE-CODE-HOOKS-ANALYSIS.md",
     "무제.canvas"
   ]
 }
