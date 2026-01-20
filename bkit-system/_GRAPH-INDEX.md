@@ -8,6 +8,14 @@
 >
 > **v1.2.1 Language Tier System**: AI-Native 개발 및 Vibe Coding 트렌드 반영한 4단계 언어 분류 체계
 
+## Philosophy (3)
+
+Core design principles and methodology:
+
+- [[philosophy/core-mission|core-mission]] - Core mission & 3 philosophies (Automation First, No Guessing, Docs=Code)
+- [[philosophy/ai-native-principles|ai-native-principles]] - AI-Native development & 3 core competencies
+- [[philosophy/pdca-methodology|pdca-methodology]] - PDCA cycle & 9-stage pipeline relationship
+
 ## Skills (18)
 
 ### Core Skills (2)

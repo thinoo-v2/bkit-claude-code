@@ -17,10 +17,10 @@ Agents는 **특정 작업에 특화된 AI 서브에이전트**입니다.
 
 | Agent | 대상 레벨 | 역할 | Hooks |
 |-------|----------|------|-------|
-| [[starter-guide]] | Starter | 초보자 친화적 가이드 | - |
-| [[bkend-expert]] | Dynamic | BaaS/풀스택 전문가 | - |
-| [[enterprise-expert]] | Enterprise | CTO급 아키텍처 가이드 | - |
-| [[infra-architect]] | Enterprise | AWS/K8s/Terraform 전문가 | - |
+| [[../../../agents/starter-guide|starter-guide]] | Starter | 초보자 친화적 가이드 | - |
+| [[../../../agents/bkend-expert|bkend-expert]] | Dynamic | BaaS/풀스택 전문가 | - |
+| [[../../../agents/enterprise-expert|enterprise-expert]] | Enterprise | CTO급 아키텍처 가이드 | - |
+| [[../../../agents/infra-architect|infra-architect]] | Enterprise | AWS/K8s/Terraform 전문가 | - |
 
 ### Task-Based Agents (7개)
 
@@ -28,13 +28,13 @@ Agents는 **특정 작업에 특화된 AI 서브에이전트**입니다.
 
 | Agent | 트리거 조건 | 역할 | Hooks |
 |-------|-----------|------|-------|
-| [[pipeline-guide]] | "뭐부터", "어디서부터" | 9단계 파이프라인 안내 | - |
-| [[gap-detector]] | "갭 분석", "설계-구현 비교" | 설계 vs 구현 갭 분석 | PostToolUse |
-| [[design-validator]] | "설계 검증", "스펙 확인" | 설계 문서 검증 | PreToolUse |
-| [[code-analyzer]] | "코드 분석", "품질 검사" | 코드 품질/보안 분석 | PreToolUse (block) |
-| [[qa-monitor]] | "QA", "테스트", "로그 분석" | Zero Script QA 실행 | PostToolUse |
-| [[pdca-iterator]] | "고쳐줘", "개선해줘", "반복" | 자동 반복 개선 | - |
-| [[report-generator]] | "보고서", "요약", "완료" | PDCA 보고서 생성 | - |
+| [[../../../agents/pipeline-guide|pipeline-guide]] | "뭐부터", "어디서부터" | 9단계 파이프라인 안내 | - |
+| [[../../../agents/gap-detector|gap-detector]] | "갭 분석", "설계-구현 비교" | 설계 vs 구현 갭 분석 | PostToolUse |
+| [[../../../agents/design-validator|design-validator]] | "설계 검증", "스펙 확인" | 설계 문서 검증 | PreToolUse |
+| [[../../../agents/code-analyzer|code-analyzer]] | "코드 분석", "품질 검사" | 코드 품질/보안 분석 | PreToolUse (block) |
+| [[../../../agents/qa-monitor|qa-monitor]] | "QA", "테스트", "로그 분석" | Zero Script QA 실행 | PostToolUse |
+| [[../../../agents/pdca-iterator|pdca-iterator]] | "고쳐줘", "개선해줘", "반복" | 자동 반복 개선 | - |
+| [[../../../agents/report-generator|report-generator]] | "보고서", "요약", "완료" | PDCA 보고서 생성 | - |
 
 ---
 
@@ -113,10 +113,10 @@ hooks:
 
 | Agent | PreToolUse | PostToolUse |
 |-------|-----------|-------------|
-| [[gap-detector]] | - | `gap-detector-post.sh` |
-| [[design-validator]] | `design-validator-pre.sh` | - |
-| [[code-analyzer]] | Block (read-only) | - |
-| [[qa-monitor]] | - | `qa-monitor-post.sh` |
+| [[../../../agents/gap-detector|gap-detector]] | - | `gap-detector-post.sh` |
+| [[../../../agents/design-validator|design-validator]] | `design-validator-pre.sh` | - |
+| [[../../../agents/code-analyzer|code-analyzer]] | Block (read-only) | - |
+| [[../../../agents/qa-monitor|qa-monitor]] | - | `qa-monitor-post.sh` |
 
 ---
 

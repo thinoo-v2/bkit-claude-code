@@ -137,7 +137,7 @@ Claude는 이를 종합하여 사용자에게 안내
 
 ### 새 Hook 추가 시
 
-1. [[triggers/trigger-matrix]]에 먼저 기록
+1. [[trigger-matrix]]에 먼저 기록
 2. 기존 hook과 충돌 여부 확인
 3. `decision: "allow"` 기본, block은 최소화
 4. `additionalContext`로 안내 제공
@@ -146,12 +146,12 @@ Claude는 이를 종합하여 사용자에게 안내
 
 1. Triggers 키워드가 기존 skill과 겹치지 않는지 확인
 2. 연결할 Agent 명시
-3. hooks 정의 시 [[triggers/trigger-matrix]] 업데이트
+3. hooks 정의 시 [[trigger-matrix]] 업데이트
 
 ---
 
 ## 관련 문서
 
-- [[triggers/trigger-matrix]] - 전체 트리거 매트릭스
-- [[components/hooks/_hooks-overview]] - Hook 이벤트 상세
-- [[_GRAPH-INDEX]] - 전체 인덱스
+- [[trigger-matrix]] - 전체 트리거 매트릭스
+- [[../components/hooks/_hooks-overview]] - Hook 이벤트 상세
+- [[../_GRAPH-INDEX]] - 전체 인덱스

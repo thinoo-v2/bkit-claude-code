@@ -15,39 +15,39 @@ Skills are **domain-specific expert knowledge** components.
 
 | Skill | Purpose | Hooks | Agent |
 |-------|---------|-------|-------|
-| [[bkit-rules]] | PDCA rules + auto-triggering + code quality standards | PreToolUse, PostToolUse | - |
-| [[bkit-templates]] | Template references + document standards | - | - |
+| [[../../../skills/bkit-rules/SKILL|bkit-rules]] | PDCA rules + auto-triggering + code quality standards | PreToolUse, PostToolUse | - |
+| [[../../../skills/bkit-templates/SKILL|bkit-templates]] | Template references + document standards | - | - |
 
 ### Level Skills (3)
 
 | Skill | Target | Agent |
 |-------|--------|-------|
-| [[starter]] | Static web, beginners | [[../agents/starter-guide]] |
-| [[dynamic]] | BaaS fullstack | [[../agents/bkend-expert]] |
-| [[enterprise]] | MSA/K8s + AI Native | [[../agents/enterprise-expert]], [[../agents/infra-architect]] |
+| [[../../../skills/starter/SKILL|starter]] | Static web, beginners | [[../../../agents/starter-guide|starter-guide]] |
+| [[../../../skills/dynamic/SKILL|dynamic]] | BaaS fullstack | [[../../../agents/bkend-expert|bkend-expert]] |
+| [[../../../skills/enterprise/SKILL|enterprise]] | MSA/K8s + AI Native | [[../../../agents/enterprise-expert|enterprise-expert]], [[../../../agents/infra-architect|infra-architect]] |
 
 ### Pipeline Phase Skills (10)
 
 | Skill | Phase | Hooks | Content |
 |-------|-------|-------|---------|
-| [[development-pipeline]] | Overview | Stop | 9-stage pipeline overview |
-| [[phase-1-schema]] | 1 | - | Schema/terminology definition |
-| [[phase-2-convention]] | 2 | - | Coding conventions |
-| [[phase-3-mockup]] | 3 | - | Mockup development |
-| [[phase-4-api]] | 4 | Stop | API design/implementation |
-| [[phase-5-design-system]] | 5 | PostToolUse | Design system |
-| [[phase-6-ui-integration]] | 6 | PostToolUse | UI + API integration |
-| [[phase-7-seo-security]] | 7 | - | SEO/Security |
-| [[phase-8-review]] | 8 | Stop | Code review + gap analysis |
-| [[phase-9-deployment]] | 9 | PreToolUse | Deployment |
+| [[../../../skills/development-pipeline/SKILL|development-pipeline]] | Overview | Stop | 9-stage pipeline overview |
+| [[../../../skills/phase-1-schema/SKILL|phase-1-schema]] | 1 | - | Schema/terminology definition |
+| [[../../../skills/phase-2-convention/SKILL|phase-2-convention]] | 2 | - | Coding conventions |
+| [[../../../skills/phase-3-mockup/SKILL|phase-3-mockup]] | 3 | - | Mockup development |
+| [[../../../skills/phase-4-api/SKILL|phase-4-api]] | 4 | Stop | API design/implementation |
+| [[../../../skills/phase-5-design-system/SKILL|phase-5-design-system]] | 5 | PostToolUse | Design system |
+| [[../../../skills/phase-6-ui-integration/SKILL|phase-6-ui-integration]] | 6 | PostToolUse | UI + API integration |
+| [[../../../skills/phase-7-seo-security/SKILL|phase-7-seo-security]] | 7 | - | SEO/Security |
+| [[../../../skills/phase-8-review/SKILL|phase-8-review]] | 8 | Stop | Code review + gap analysis |
+| [[../../../skills/phase-9-deployment/SKILL|phase-9-deployment]] | 9 | PreToolUse | Deployment |
 
 ### Specialized Skills (3)
 
 | Skill | Purpose | Hooks | Agent |
 |-------|---------|-------|-------|
-| [[zero-script-qa]] | Log-based QA | PreToolUse, Stop | [[../agents/qa-monitor]] |
-| [[mobile-app]] | Mobile app dev | - | [[../agents/pipeline-guide]] |
-| [[desktop-app]] | Desktop app dev | - | [[../agents/pipeline-guide]] |
+| [[../../../skills/zero-script-qa/SKILL|zero-script-qa]] | Log-based QA | PreToolUse, Stop | [[../../../agents/qa-monitor|qa-monitor]] |
+| [[../../../skills/mobile-app/SKILL|mobile-app]] | Mobile app dev | - | [[../../../agents/pipeline-guide|pipeline-guide]] |
+| [[../../../skills/desktop-app/SKILL|desktop-app]] | Desktop app dev | - | [[../../../agents/pipeline-guide|pipeline-guide]] |
 
 ## Removed Skills (v1.2.0)
 

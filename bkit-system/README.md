@@ -11,6 +11,7 @@
 ## Quick Links
 
 - [[_GRAPH-INDEX]] - Obsidian graph hub (visualize all relationships)
+- [[philosophy/core-mission]] - Core mission & 3 philosophies
 - [[triggers/trigger-matrix]] - Trigger matrix (core reference)
 - [[scenarios/scenario-write-code]] - Code write flow
 
@@ -81,6 +82,10 @@ Details: [[triggers/trigger-matrix]]
 bkit-system/
 ├── README.md                  # This file
 ├── _GRAPH-INDEX.md            # Obsidian graph hub
+├── philosophy/                # Design philosophy
+│   ├── core-mission.md        # Core mission & 3 philosophies
+│   ├── ai-native-principles.md # AI-Native development principles
+│   └── pdca-methodology.md    # PDCA & Pipeline methodology
 ├── components/
 │   ├── skills/                # Skill details
 │   ├── agents/                # Agent details

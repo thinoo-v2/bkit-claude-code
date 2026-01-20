@@ -23,13 +23,13 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │  2. Skills 활성화 (키워드 매칭)                                  │
 │                                                                 │
-│  [[../components/skills/bkit-rules]] 활성화                     │
+│  [[../../skills/bkit-rules/SKILL|bkit-rules]] 활성화                     │
 │  • "기능", "만들어" 키워드 매칭                                 │
 │                                                                 │
-│  [[../components/skills/dynamic]] 활성화 (Level=Dynamic인 경우)  │
+│  [[../../skills/dynamic/SKILL|dynamic]] 활성화 (Level=Dynamic인 경우)  │
 │  • "로그인" 키워드 매칭                                         │
 │                                                                 │
-│  [[../components/skills/phase-4-api]] 활성화                    │
+│  [[../../skills/phase-4-api/SKILL|phase-4-api]] 활성화                    │
 │  • 백엔드 기능이므로 API 관련 skill 활성화                      │
 └─────────────────────────────────────────────────────────────────┘
                               │

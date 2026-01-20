@@ -28,7 +28,7 @@
 │  3. PreToolUse Hooks 실행 (Unified Hook v1.2.0)                 │
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │ [[../components/skills/bkit-rules]] → pre-write.sh      │   │
+│  │ [[../../skills/bkit-rules/SKILL|bkit-rules]] → pre-write.sh      │   │
 │  │ (통합 hook: PDCA + Task Classification + Convention)    │   │
 │  │                                                          │   │
 │  │ 1. 소스 파일 감지 (is_source_file - 확장자 기반 v1.2.1)  │   │
@@ -65,7 +65,7 @@
 │  5. PostToolUse Hooks 실행                                      │
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
-│  │ [[../components/skills/bkit-rules]] → pdca-post-write.sh │   │
+│  │ [[../../skills/bkit-rules/SKILL|bkit-rules]] → pdca-post-write.sh │   │
 │  │ • design doc 있으면: "/pdca-analyze 권장" 안내           │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                              │                                  │
@@ -73,7 +73,7 @@
 │  │ (UI 파일인 경우 - 확장자 기반 v1.2.1)                     │   │
 │  │ 감지: .tsx, .jsx, .vue, .svelte (is_ui_file)             │   │
 │  │                                                          │   │
-│  │ [[../components/skills/phase-5-design-system]]           │   │
+│  │ [[../../skills/phase-5-design-system/SKILL|phase-5-design-system]]           │   │
 │  │ → phase5-design-post.sh                                  │   │
 │  │ • 하드코딩 색상 검사                                     │   │
 │  │ • 디자인 토큰 사용 권장                                  │   │
@@ -81,7 +81,7 @@
 │                              │                                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │ (UI 파일 또는 pages/components/features 경로)            │   │
-│  │ [[../components/skills/phase-6-ui-integration]]          │   │
+│  │ [[../../skills/phase-6-ui-integration/SKILL|phase-6-ui-integration]]          │   │
 │  │ → phase6-ui-post.sh                                      │   │
 │  │ • UI 레이어 분리 검증                                    │   │
 │  └─────────────────────────────────────────────────────────┘   │
