@@ -10,10 +10,9 @@ Claude Code는 여러 hooks가 동시에 매칭될 때 **모두 실행**합니�
 ### PreToolUse 실행 순서 (Write|Edit)
 
 ```
-1. bkit-rules → pdca-pre-write.sh
-2. task-classification → task-classify.sh
-3. phase-2-convention → phase2-convention-pre.sh
-4. (특정 agent 활성화 시) design-validator, code-analyzer
+1. bkit-rules → pre-write.sh (PDCA check + task classification)
+2. phase-2-convention → phase2-convention-pre.sh
+3. (특정 agent 활성화 시) design-validator, code-analyzer
 ```
 
 **결과 병합**: 각 hook의 `additionalContext`가 Claude에게 전달됩니다.
@@ -76,18 +75,18 @@ Skills는 다음 조건으로 활성화됩니다:
 
 ---
 
-## Instructions vs Hooks
+## Skills vs Hooks
 
-| 구분 | Instructions | Hooks |
-|------|-------------|-------|
-| 위치 | `.claude/instructions/*.md` | skill/agent frontmatter |
+| 구분 | Skills | Hooks |
+|------|--------|-------|
+| 위치 | skills/*/SKILL.md | skill/agent frontmatter or hooks.json |
 | 적용 방식 | Claude가 읽고 판단 | 시스템이 자동 실행 |
 | 강제성 | Soft (Claude 재량) | Hard (무조건 실행) |
-| 우선순위 | Hooks보다 낮음 | Instructions보다 높음 |
+| 우선순위 | Hooks보다 낮음 | Skills보다 높음 |
 
 ### 권장 사용
 
-- **Instructions**: 일반적인 가이드라인, 스타일 규칙
+- **Skills**: 일반적인 가이드라인, 스타일 규칙, 도메인 지식
 - **Hooks**: 반드시 실행되어야 하는 검증, 차단, 알림
 
 ---
@@ -100,11 +99,10 @@ Skills는 다음 조건으로 활성화됩니다:
 상황: src/features/auth/login.ts 파일 Write
 
 발동:
-1. bkit-rules → "auth feature의 design doc 확인"
-2. task-classification → "Feature 크기, PDCA 권장"
-3. phase-2-convention → "TypeScript 컨벤션 리마인드"
+1. pre-write.sh → "auth feature의 design doc 확인" + "Feature 크기, PDCA 권장"
+2. phase-2-convention → "TypeScript 컨벤션 리마인드"
 
-결과: 3개의 additionalContext가 모두 Claude에게 전달
+결과: 2개의 additionalContext가 모두 Claude에게 전달
 Claude는 이를 종합하여 사용자에게 안내
 ```
 

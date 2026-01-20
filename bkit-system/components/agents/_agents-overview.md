@@ -140,9 +140,8 @@ hooks:
 | enterprise | enterprise-expert, infra-architect |
 | development-pipeline | pipeline-guide |
 | zero-script-qa | qa-monitor |
-| evaluator-optimizer | pdca-iterator |
-| analysis-patterns | code-analyzer, gap-detector |
-| document-standards | design-validator |
+| bkit-rules | pdca-iterator (via /pdca-iterate) |
+| bkit-templates | design-validator, code-analyzer, gap-detector |
 
 ---
 
