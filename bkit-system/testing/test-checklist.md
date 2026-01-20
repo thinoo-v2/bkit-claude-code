@@ -19,8 +19,19 @@
 | 1.1.1 | src/features/auth/login.ts Write (design doc 있음) | "Design doc 참조" 안내 | [ ] |
 | 1.1.2 | src/features/auth/login.ts Write (design doc 없음) | 빈 출력 | [ ] |
 | 1.1.3 | src/features/auth/login.ts Write (plan doc만 있음) | "Design 먼저 만드세요" 경고 | [ ] |
-| 1.1.4 | README.md Write | 빈 출력 (src/ 외부) | [ ] |
+| 1.1.4 | README.md Write | 빈 출력 (docs 파일) | [ ] |
 | 1.1.5 | src/lib/utils.ts Write | 빈 출력 (feature 아님) | [ ] |
+
+### 1.1.1 Multi-Language Support (v1.2.1)
+
+| # | 테스트 케이스 | 예상 결과 | Pass |
+|---|-------------|----------|------|
+| 1.1.6 | internal/auth/handler.go Write | 소스 파일 감지 (Go) | [ ] |
+| 1.1.7 | app/routers/users.py Write | 소스 파일 감지 (Python) | [ ] |
+| 1.1.8 | src/main.rs Write | 소스 파일 감지 (Rust) | [ ] |
+| 1.1.9 | packages/api/index.ts Write | 소스 파일 감지 (Monorepo) | [ ] |
+| 1.1.10 | node_modules/pkg/index.js Write | 빈 출력 (exclude pattern) | [ ] |
+| 1.1.11 | __pycache__/module.py Write | 빈 출력 (exclude pattern) | [ ] |
 
 ### 1.2 Task Classification (integrated in pre-write.sh)
 
@@ -74,13 +85,19 @@
 
 ### 2.2 phase-5-design-system (phase5-design-post.sh)
 
+> **Note**: Extension-based detection (v1.2.1) - .tsx, .jsx, .vue, .svelte
+
 | # | 테스트 케이스 | 예상 결과 | Pass |
 |---|-------------|----------|------|
 | 2.2.1 | components/Button.tsx Write (하드코딩 색상 있음) | "⚠️ 디자인 토큰 사용" 경고 | [ ] |
 | 2.2.2 | components/Button.tsx Write (하드코딩 없음) | "✅ 디자인 토큰 올바름" | [ ] |
-| 2.2.3 | src/lib/api.ts Write | 빈 출력 (components 아님) | [ ] |
+| 2.2.3 | src/lib/api.ts Write | 빈 출력 (.ts는 UI 아님) | [ ] |
+| 2.2.4 | src/App.vue Write (하드코딩 색상 있음) | "⚠️ 디자인 토큰 사용" 경고 | [ ] |
+| 2.2.5 | src/Button.svelte Write | UI 파일 감지 | [ ] |
 
 ### 2.3 phase-6-ui-integration (phase6-ui-post.sh)
+
+> **Note**: Extension-based UI detection (v1.2.1) + path-based layer detection
 
 | # | 테스트 케이스 | 예상 결과 | Pass |
 |---|-------------|----------|------|
@@ -88,6 +105,8 @@
 | 2.3.2 | features/auth/LoginForm.tsx Write | "UI Layer Check" 안내 | [ ] |
 | 2.3.3 | services/authService.ts Write | "Service Layer Check" 안내 | [ ] |
 | 2.3.4 | lib/utils.ts Write | 빈 출력 | [ ] |
+| 2.3.5 | src/components/Modal.vue Write | "UI Layer Check" 안내 | [ ] |
+| 2.3.6 | src/Card.svelte Write | "UI Layer Check" 안내 | [ ] |
 
 ### 2.4 qa-monitor (qa-monitor-post.sh)
 

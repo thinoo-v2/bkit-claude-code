@@ -3,6 +3,8 @@
 > Obsidian graph view central hub. All components connect from this file.
 >
 > **v1.2.0 Refactoring**: Skills consolidated, .claude/ removed from repo, single source of truth at root level
+>
+> **v1.2.1 Multi-Language Support**: Extension-based file detection, 20+ language support, configurable patterns
 
 ## Skills (18)
 
@@ -131,12 +133,19 @@ Defined in `hooks/hooks.json`:
 ## Infrastructure
 
 ### Shared Library
-- `lib/common.sh` - Shared utility functions
+- `lib/common.sh` - Shared utility functions (v1.2.1 Multi-Language Support)
   - `get_config()` - Read from bkit.config.json
-  - `is_source_file()` - Check if path is source code
-  - `extract_feature()` - Extract feature name from path
+  - `is_source_file()` - Negative pattern + extension detection (20+ languages)
+  - `is_code_file()` - Check code file extensions (.ts, .py, .go, .rs, .rb, etc.)
+  - `is_ui_file()` - Check UI component files (.tsx, .jsx, .vue, .svelte)
+  - `extract_feature()` - Multi-language feature extraction (Next.js/Python/Go/Ruby/Monorepo)
   - `classify_task()` - Task size classification
   - `detect_level()` - Project level detection
+  - `output_allow()`, `output_block()`, `output_empty()` - JSON output helpers
+
+### Configurable Patterns (v1.2.1)
+- `BKIT_EXCLUDE_PATTERNS` - Exclude directories (node_modules, __pycache__, .git, etc.)
+- `BKIT_FEATURE_PATTERNS` - Feature directory patterns (features, modules, packages, etc.)
 
 ### Configuration
 - `bkit.config.json` - Centralized configuration

@@ -103,13 +103,16 @@ source "${CLAUDE_PLUGIN_ROOT}/lib/common.sh"
 get_config ".pdca.thresholds.quickFix" "50"   # Read config value
 get_config_array ".sourceDirectories"          # Read array value
 
-# File Classification
-is_source_file "/path/to/file"                 # Check if source directory
-is_code_file "/path/to/file.ts"                # Check code extension
+# File Classification (Multi-Language Support v1.2.1)
+is_source_file "/path/to/file"                 # Negative pattern + extension detection
+is_code_file "/path/to/file.ts"                # Check 20+ language extensions
+is_ui_file "/path/to/Component.tsx"            # Check UI component (.tsx, .jsx, .vue, .svelte)
 is_env_file "/path/to/.env.local"              # Check env file
 
-# Feature Detection
-extract_feature "/src/features/auth/login.ts"  # Extract feature name
+# Feature Detection (Multi-Language Support v1.2.1)
+extract_feature "/src/features/auth/login.ts"  # Next.js features/
+extract_feature "/internal/auth/handler.go"    # Go internal/
+extract_feature "/app/routers/users.py"        # Python routers/
 find_design_doc "auth"                         # Find design document
 find_plan_doc "auth"                           # Find plan document
 
@@ -125,6 +128,33 @@ output_allow "context message"                 # Allow with context
 output_block "block reason"                    # Block with reason
 output_empty                                   # Empty response {}
 ```
+
+### Configurable Patterns (v1.2.1)
+
+```bash
+# Override via environment variable
+BKIT_EXCLUDE_PATTERNS="node_modules .git dist build __pycache__ .venv target vendor"
+BKIT_FEATURE_PATTERNS="features modules packages apps services domains"
+```
+
+### Supported Languages (is_code_file)
+
+| Language | Extensions |
+|----------|------------|
+| JavaScript/TypeScript | `.ts`, `.tsx`, `.js`, `.jsx`, `.mjs`, `.cjs` |
+| Python | `.py`, `.pyx`, `.pyi` |
+| Go | `.go` |
+| Rust | `.rs` |
+| Java/Kotlin | `.java`, `.kt`, `.kts` |
+| Ruby | `.rb`, `.erb` |
+| PHP | `.php` |
+| Swift | `.swift` |
+| C/C++ | `.c`, `.cpp`, `.cc`, `.h`, `.hpp` |
+| C# | `.cs` |
+| Scala | `.scala` |
+| Elixir | `.ex`, `.exs` |
+| Shell | `.sh`, `.bash` |
+| Vue/Svelte | `.vue`, `.svelte` |
 
 ## Script Input/Output
 
@@ -212,7 +242,8 @@ Actions:
 ### phase5-design-post.sh
 
 ```
-Trigger: Write on component files (components/, ui/)
+Trigger: Write on UI component files (extension-based detection v1.2.1)
+         Detects: .tsx, .jsx, .vue, .svelte files using is_ui_file()
 
 Actions:
 1. Search for hardcoded colors in content

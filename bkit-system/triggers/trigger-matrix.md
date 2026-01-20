@@ -47,7 +47,7 @@ These hooks are defined in skill YAML frontmatter:
 
 ---
 
-## Write/Edit Flow (v1.2.0)
+## Write/Edit Flow (v1.2.1)
 
 When user writes/edits source code files:
 
@@ -64,12 +64,14 @@ When user writes/edits source code files:
    ├── hooks.json (pdca-post-write.sh)
    │   └── Suggest gap analysis (if design doc exists)
    ├── phase-5-design-system (phase5-design-post.sh)
-   │   └── Verify design tokens (if component file)
+   │   └── Verify design tokens (if UI file: .tsx, .jsx, .vue, .svelte)
    └── phase-6-ui-integration (phase6-ui-post.sh)
-       └── Verify layer separation (if UI file)
+       └── Verify layer separation (if UI file or pages/components/features path)
 ```
 
 **v1.2.0 Improvement**: 3 separate PreToolUse hooks merged into 1 unified hook for better performance.
+
+**v1.2.1 Improvement**: Extension-based file detection replaces path-based detection for multi-language support.
 
 ---
 
