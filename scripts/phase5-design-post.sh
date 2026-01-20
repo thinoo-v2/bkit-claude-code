@@ -5,12 +5,27 @@
 
 set -e
 
+# Load common library
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_DIR="${SCRIPT_DIR}/../lib"
+
+if [ -f "${LIB_DIR}/common.sh" ]; then
+    source "${LIB_DIR}/common.sh"
+else
+    # Fallback if common.sh not found
+    is_ui_file() {
+        local file_path="$1"
+        [[ "$file_path" == *.tsx ]] || [[ "$file_path" == *.jsx ]] || \
+        [[ "$file_path" == *.vue ]] || [[ "$file_path" == *.svelte ]]
+    }
+fi
+
 INPUT=$(cat)
 FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.path // ""')
 CONTENT=$(echo "$INPUT" | jq -r '.tool_input.content // ""')
 
-# Check if file is a component
-if [[ "$FILE_PATH" == *"/components/"* ]] || [[ "$FILE_PATH" == *"/ui/"* ]]; then
+# Check if file is a UI component (framework-agnostic by extension)
+if is_ui_file "$FILE_PATH"; then
     # Check for hardcoded colors (common anti-pattern)
     if echo "$CONTENT" | grep -qE '#[0-9a-fA-F]{3,6}|rgb\(|rgba\('; then
         cat << 'EOF'

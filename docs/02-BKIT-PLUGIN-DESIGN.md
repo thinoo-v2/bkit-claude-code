@@ -328,13 +328,46 @@ Keep under 500 lines for optimal performance.
 
 ### 3.4 Path Portability
 
-> ⚠️ **CRITICAL**: Always use `$CLAUDE_PROJECT_DIR` for file references within plugins.
+> ⚠️ **CRITICAL**: Use the correct environment variable based on context.
+
+#### For Plugin's Own Files (scripts, templates, lib)
+
+Plugin의 자체 파일(스크립트, 템플릿, 라이브러리)을 참조할 때는 `${CLAUDE_PLUGIN_ROOT}` 사용:
 
 ```bash
-# ✅ Correct
-$CLAUDE_PROJECT_DIR/scripts/setup.sh
-$CLAUDE_PROJECT_DIR/references/guide.md
+# ✅ Correct - Plugin files
+${CLAUDE_PLUGIN_ROOT}/scripts/pre-write.sh
+${CLAUDE_PLUGIN_ROOT}/templates/plan.template.md
+${CLAUDE_PLUGIN_ROOT}/lib/common.sh
 
+# ❌ Incorrect - User's project doesn't have plugin files
+$CLAUDE_PROJECT_DIR/scripts/pre-write.sh
+```
+
+#### For User's Project Files (docs, config, source code)
+
+사용자 프로젝트의 파일(문서, 설정, 소스코드)을 참조할 때는 `$CLAUDE_PROJECT_DIR` 사용:
+
+```bash
+# ✅ Correct - User project files
+$CLAUDE_PROJECT_DIR/docs/02-design/
+$CLAUDE_PROJECT_DIR/CLAUDE.md
+$CLAUDE_PROJECT_DIR/bkit.config.json
+
+# ❌ Incorrect - Plugin doesn't contain user's docs
+${CLAUDE_PLUGIN_ROOT}/docs/02-design/
+```
+
+#### Environment Variable Reference
+
+| Variable | Purpose | Example |
+|----------|---------|---------|
+| `CLAUDE_PLUGIN_ROOT` | Plugin installation directory | `~/.claude/plugins/cache/bkit/` |
+| `CLAUDE_PROJECT_DIR` | User's project directory | `/Users/user/my-app/` |
+
+#### Absolute Paths to Avoid
+
+```bash
 # ❌ Incorrect - will break after installation
 /Users/kay/plugins/bkit/scripts/setup.sh
 ~/plugins/bkit/scripts/setup.sh
@@ -603,6 +636,48 @@ Add to ~/.claude/settings.json:
 | English | english (default) | static website, beginner... |
 ```
 
+### 8.4 Language Tier System (v1.2.1)
+
+bkit uses a 4-tier classification system for programming languages based on AI-Native development trends:
+
+| Tier | Category | Languages | Frameworks |
+|------|----------|-----------|------------|
+| **1** | AI-Native Essential | Python, TypeScript, JavaScript | React, Next.js, Svelte |
+| **2** | Mainstream Recommended | Go, Rust, Dart | Vue, Astro, Flutter, Tauri |
+| **3** | Domain Specific | Java, Kotlin, Swift, C/C++ | Angular, Electron |
+| **4** | Legacy/Niche | PHP, Ruby, C#, Scala, Elixir | - |
+
+**Experimental**: Mojo, Zig, V
+
+#### Selection Criteria
+
+- **AI Tool Ecosystem**: Copilot, Claude, Cursor support level
+- **Vibe Coding Optimization**: Natural language → code generation efficiency
+- **Market Share**: IEEE Spectrum 2025, Stack Overflow 2025
+- **Training Data**: LLM training data abundance
+
+#### Level × Tier Matrix
+
+| Level | Primary Tier | Secondary Tier | Notes |
+|-------|--------------|----------------|-------|
+| Starter | Tier 1 | - | AI-Native focus |
+| Dynamic | Tier 1 | Tier 2 | Fullstack + Mobile |
+| Enterprise | Tier 1-2 | Tier 3-4 | Legacy integration |
+
+#### Implementation
+
+Tier detection in `lib/common.sh`:
+
+```bash
+tier=$(get_language_tier "$file_path")
+case "$tier" in
+    1) echo "Full PDCA support" ;;
+    2) echo "PDCA recommended" ;;
+    3) echo "Platform-specific PDCA" ;;
+    4) echo "Migration recommended" ;;
+esac
+```
+
 ---
 
 ## 9. Limitations and Considerations
@@ -702,8 +777,8 @@ claude --plugin-dir ./bkit
 **Created**: 2026-01-09
 **Updated**: 2026-01-20
 **Author**: Claude (with Kay)
-**Version**: v1.2.0
-**Status**: Design verified → Implementation complete
+**Version**: v1.2.1
+**Status**: Design verified → Implementation complete → Language Tier System added
 
 ---
 
@@ -740,6 +815,18 @@ claude --plugin-dir ./bkit
 ---
 
 ## Changelog
+
+### v1.2.1 (2026-01-20)
+- 🌐 **Language Tier System**: 4-tier classification for AI-Native development
+  - Tier 1: AI-Native Essential (Python, TypeScript, JavaScript)
+  - Tier 2: Mainstream Recommended (Go, Rust, Dart, Vue, Astro, Flutter)
+  - Tier 3: Domain Specific (Java, Kotlin, Swift, C/C++)
+  - Tier 4: Legacy/Niche (PHP, Ruby, C#, Scala, Elixir)
+  - Experimental: Mojo, Zig, V
+- 🔧 **New Functions in lib/common.sh**: `get_language_tier()`, `get_tier_description()`, `get_tier_pdca_guidance()`, `is_tier_N()` helpers
+- 📝 **Updated Skills**: Tier guidance added to starter, dynamic, enterprise, mobile-app, desktop-app skills
+- 📄 **Template Updates**: `CLAUDE.template.md` now includes Tier context
+- 🔍 **New Extensions**: .dart, .astro, .mdx, .mojo, .zig, .v supported
 
 ### v1.2.0 (2026-01-20)
 - 🏗️ **Architecture Refactoring**: Remove `.claude/` from version control, use root-level as single source of truth

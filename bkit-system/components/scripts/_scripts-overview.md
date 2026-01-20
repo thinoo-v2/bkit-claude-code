@@ -1,8 +1,9 @@
 # Scripts Overview
 
-> 18 Shell Scripts used by bkit hooks (v1.2.0)
+> 18 Shell Scripts used by bkit hooks (v1.2.1)
 >
 > **Note**: task-classify.sh was removed and merged into pre-write.sh
+> **v1.2.1**: output_block() now exits with code 2 for proper blocking
 
 ## What are Scripts?
 
@@ -78,11 +79,11 @@ bkit-claude-code/
 
 ### Agent Scripts (3)
 
-| Script | Hook | Agent | Purpose |
-|--------|------|-------|---------|
+| Script | Hook | Agent(s) | Purpose |
+|--------|------|----------|---------|
 | design-validator-pre.sh | PreToolUse | design-validator | Design document checklist |
-| gap-detector-post.sh | PostToolUse | gap-detector | Post-analysis iteration guidance |
-| analysis-stop.sh | Stop | code-analyzer | Analysis completion guidance |
+| gap-detector-post.sh | PostToolUse | (legacy) | Post-analysis iteration guidance |
+| analysis-stop.sh | Stop | gap-detector, code-analyzer, pdca-iterator | Analysis completion guidance |
 
 ### Utility Scripts (3)
 
@@ -103,13 +104,16 @@ source "${CLAUDE_PLUGIN_ROOT}/lib/common.sh"
 get_config ".pdca.thresholds.quickFix" "50"   # Read config value
 get_config_array ".sourceDirectories"          # Read array value
 
-# File Classification
-is_source_file "/path/to/file"                 # Check if source directory
-is_code_file "/path/to/file.ts"                # Check code extension
+# File Classification (Multi-Language Support v1.2.1)
+is_source_file "/path/to/file"                 # Negative pattern + extension detection
+is_code_file "/path/to/file.ts"                # Check 20+ language extensions
+is_ui_file "/path/to/Component.tsx"            # Check UI component (.tsx, .jsx, .vue, .svelte)
 is_env_file "/path/to/.env.local"              # Check env file
 
-# Feature Detection
-extract_feature "/src/features/auth/login.ts"  # Extract feature name
+# Feature Detection (Multi-Language Support v1.2.1)
+extract_feature "/src/features/auth/login.ts"  # Next.js features/
+extract_feature "/internal/auth/handler.go"    # Go internal/
+extract_feature "/app/routers/users.py"        # Python routers/
 find_design_doc "auth"                         # Find design document
 find_plan_doc "auth"                           # Find plan document
 
@@ -122,9 +126,62 @@ detect_level                                   # Starter/Dynamic/Enterprise
 
 # JSON Output
 output_allow "context message"                 # Allow with context
-output_block "block reason"                    # Block with reason
+output_block "block reason"                    # Block with reason (exits with code 2)
 output_empty                                   # Empty response {}
 ```
+
+### Configurable Patterns (v1.2.1)
+
+```bash
+# Override via environment variable
+BKIT_EXCLUDE_PATTERNS="node_modules .git dist build __pycache__ .venv target vendor"
+BKIT_FEATURE_PATTERNS="features modules packages apps services domains"
+```
+
+### Supported Languages by Tier (v1.2.1)
+
+#### Tier 1: AI-Native Essential
+| Language | Extensions | AI Compatibility |
+|----------|------------|------------------|
+| Python | `.py`, `.pyx`, `.pyi` | ⭐⭐⭐ Full |
+| TypeScript | `.ts`, `.tsx` | ⭐⭐⭐ Full |
+| JavaScript | `.js`, `.jsx`, `.mjs`, `.cjs` | ⭐⭐⭐ Full |
+
+#### Tier 2: Mainstream Recommended
+| Language/Framework | Extensions | AI Compatibility |
+|--------------------|------------|------------------|
+| Go | `.go` | ⭐⭐ Good |
+| Rust | `.rs` | ⭐⭐ Good |
+| Dart/Flutter | `.dart` | ⭐⭐ Good |
+| Vue | `.vue` | ⭐⭐ Good |
+| Svelte | `.svelte` | ⭐⭐ Good |
+| Astro | `.astro` | ⭐⭐ Good |
+| MDX | `.mdx` | ⭐⭐ Good |
+
+#### Tier 3: Domain Specific
+| Language | Extensions | AI Compatibility |
+|----------|------------|------------------|
+| Java | `.java` | ⭐ Moderate |
+| Kotlin | `.kt`, `.kts` | ⭐ Moderate |
+| Swift | `.swift` | ⭐ Moderate |
+| C/C++ | `.c`, `.cpp`, `.cc`, `.h`, `.hpp` | ⭐ Moderate |
+| Shell | `.sh`, `.bash` | ⭐ Moderate |
+
+#### Tier 4: Legacy/Niche
+| Language | Extensions | AI Compatibility |
+|----------|------------|------------------|
+| PHP | `.php` | Limited |
+| Ruby | `.rb`, `.erb` | Limited |
+| C# | `.cs` | Limited |
+| Scala | `.scala` | Limited |
+| Elixir | `.ex`, `.exs` | Limited |
+
+#### Experimental
+| Language | Extensions | Status |
+|----------|------------|--------|
+| Mojo | `.mojo` | Monitoring |
+| Zig | `.zig` | Monitoring |
+| V | `.v` | Monitoring |
 
 ## Script Input/Output
 
@@ -212,7 +269,8 @@ Actions:
 ### phase5-design-post.sh
 
 ```
-Trigger: Write on component files (components/, ui/)
+Trigger: Write on UI component files (extension-based detection v1.2.1)
+         Detects: .tsx, .jsx, .vue, .svelte files using is_ui_file()
 
 Actions:
 1. Search for hardcoded colors in content

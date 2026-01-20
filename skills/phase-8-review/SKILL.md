@@ -15,7 +15,7 @@ hooks:
   Stop:
     - hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/phase8-review-stop.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/phase8-review-stop.sh"
 agent: code-analyzer
 allowed-tools:
   - Read

@@ -13,7 +13,7 @@ hooks:
   Stop:
     - hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/phase4-api-stop.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/phase4-api-stop.sh"
 agent: qa-monitor
 allowed-tools:
   - Read

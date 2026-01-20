@@ -20,12 +20,12 @@ description: |
 
 | Template | Path | Purpose |
 |----------|------|---------|
-| Plan | `$CLAUDE_PROJECT_DIR/templates/plan.template.md` | Feature planning |
-| Design | `$CLAUDE_PROJECT_DIR/templates/design.template.md` | Technical design |
-| Analysis | `$CLAUDE_PROJECT_DIR/templates/analysis.template.md` | Gap analysis |
-| Report | `$CLAUDE_PROJECT_DIR/templates/report.template.md` | Completion report |
-| Index | `$CLAUDE_PROJECT_DIR/templates/_INDEX.template.md` | Document index |
-| CLAUDE | `$CLAUDE_PROJECT_DIR/templates/CLAUDE.template.md` | CLAUDE.md template |
+| Plan | `${CLAUDE_PLUGIN_ROOT}/templates/plan.template.md` | Feature planning |
+| Design | `${CLAUDE_PLUGIN_ROOT}/templates/design.template.md` | Technical design |
+| Analysis | `${CLAUDE_PLUGIN_ROOT}/templates/analysis.template.md` | Gap analysis |
+| Report | `${CLAUDE_PLUGIN_ROOT}/templates/report.template.md` | Completion report |
+| Index | `${CLAUDE_PLUGIN_ROOT}/templates/_INDEX.template.md` | Document index |
+| CLAUDE | `${CLAUDE_PLUGIN_ROOT}/templates/CLAUDE.template.md` | CLAUDE.md template |
 
 ## Template Usage
 
@@ -100,7 +100,7 @@ Templates use `{variable}` syntax:
 ## Pipeline Templates
 
 Additional templates for Development Pipeline phases:
-- `$CLAUDE_PROJECT_DIR/templates/pipeline/` directory
+- `${CLAUDE_PLUGIN_ROOT}/templates/pipeline/` directory
 
 ---
 

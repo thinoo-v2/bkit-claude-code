@@ -1,6 +1,6 @@
 # Claude Code Official Sources Reference
 
-> Last Updated: 2026-01-10
+> Last Updated: 2026-01-20
 > Claude Code Version: 2.1.2
 
 This document organizes official information sources for Claude Code plugin development and maintenance.
@@ -215,7 +215,7 @@ hooks: hooks.json
 
 ## 8. bkit Plugin Compatibility
 
-### Current bkit Version: 1.2.0
+### Current bkit Version: 1.2.1
 
 | Component | Count | Claude Code Compatibility |
 |-----------|-------|--------------------------|
@@ -225,6 +225,20 @@ hooks: hooks.json
 | Scripts | 19 | v2.1.x ✅ |
 | Templates | 20 | v2.1.x ✅ |
 | Hooks | 3 events | v2.1.x ✅ |
+
+### v1.2.1 Changes
+
+- **Language Tier System**: 4-tier classification for AI-Native development
+  - Tier 1 (AI-Native Essential): Python, TypeScript, JavaScript
+  - Tier 2 (Mainstream Recommended): Go, Rust, Dart, Vue, Svelte, Astro
+  - Tier 3 (Domain Specific): Java, Kotlin, Swift, C/C++
+  - Tier 4 (Legacy/Niche): PHP, Ruby, C#, Scala, Elixir
+  - Experimental: Mojo, Zig, V
+- **New Tier Functions** in `lib/common.sh`: `get_language_tier()`, `get_tier_description()`, `get_tier_pdca_guidance()`, tier check helpers
+- **New Extension Support**: `.dart`, `.astro`, `.mdx`, `.mojo`, `.zig`, `.v`
+- **Tier Guidance** added to starter, dynamic, enterprise, mobile-app, desktop-app skills
+- **Environment Variables Fix**: `CLAUDE_PROJECT_DIR` vs `CLAUDE_PLUGIN_ROOT` usage corrected
+- **Hook JSON Output**: Stabilized JSON output handling with proper exit codes
 
 ### v1.2.0 Changes
 

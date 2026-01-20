@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2026-01-20
+
+### Added
+- **Language Tier System**: 4-tier classification for AI-Native development
+  - Tier 1 (AI-Native Essential): Python, TypeScript, JavaScript
+  - Tier 2 (Mainstream Recommended): Go, Rust, Dart, Vue, Svelte, Astro
+  - Tier 3 (Domain Specific): Java, Kotlin, Swift, C/C++
+  - Tier 4 (Legacy/Niche): PHP, Ruby, C#, Scala, Elixir
+  - Experimental: Mojo, Zig, V
+- **New Tier Detection Functions** in `lib/common.sh`:
+  - `get_language_tier()`: Get tier (1-4, experimental, unknown) for file
+  - `get_tier_description()`: Get tier description
+  - `get_tier_pdca_guidance()`: Get PDCA guidance based on tier
+  - `is_tier_1()`, `is_tier_2()`, `is_tier_3()`, `is_tier_4()`, `is_experimental_tier()`: Tier check helpers
+- **New Extension Support**: `.dart`, `.astro`, `.mdx`, `.mojo`, `.zig`, `.v`
+- **Tier Guidance in Skills**: Added tier recommendations to starter, dynamic, enterprise, mobile-app, desktop-app skills
+
+### Changed
+- **is_code_file()**: Refactored to use Tier constants (30+ extensions)
+- **is_ui_file()**: Added `.astro` support
+- **CLAUDE.template.md**: Added Tier context section
+- **Documentation**: Updated all bkit-system/, docs/, skills/ with Tier system info
+
+### Fixed
+- **Environment Variables**: Fixed `CLAUDE_PROJECT_DIR` vs `CLAUDE_PLUGIN_ROOT` usage in hooks
+- **Hook JSON Output**: Stabilized JSON output handling with proper exit codes
+
 ## [1.2.0] - 2026-01-20
 
 ### Added

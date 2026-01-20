@@ -22,7 +22,8 @@ hooks:
     - matcher: "Write"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/design-validator-pre.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/design-validator-pre.sh"
+          timeout: 5000
 model: opus
 tools:
   - Read

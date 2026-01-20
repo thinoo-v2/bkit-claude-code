@@ -15,12 +15,14 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/pre-write.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/pre-write.sh"
+          timeout: 5000
   PostToolUse:
     - matcher: "Write"
       hooks:
         - type: command
-          command: "$CLAUDE_PROJECT_DIR/scripts/pdca-post-write.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/pdca-post-write.sh"
+          timeout: 5000
 ---
 
 # bkit Core Rules
@@ -43,10 +45,10 @@ hooks:
 
 | Document Type | Template Path |
 |---------------|---------------|
-| Plan | `$CLAUDE_PROJECT_DIR/templates/plan.template.md` |
-| Design | `$CLAUDE_PROJECT_DIR/templates/design.template.md` |
-| Analysis | `$CLAUDE_PROJECT_DIR/templates/analysis.template.md` |
-| Report | `$CLAUDE_PROJECT_DIR/templates/report.template.md` |
+| Plan | `${CLAUDE_PLUGIN_ROOT}/templates/plan.template.md` |
+| Design | `${CLAUDE_PLUGIN_ROOT}/templates/design.template.md` |
+| Analysis | `${CLAUDE_PLUGIN_ROOT}/templates/analysis.template.md` |
+| Report | `${CLAUDE_PLUGIN_ROOT}/templates/report.template.md` |
 
 ---
 
