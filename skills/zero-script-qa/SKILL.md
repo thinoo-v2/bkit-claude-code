@@ -4,19 +4,23 @@ description: |
   Zero Script QA - Testing methodology without test scripts.
   Uses structured JSON logging and real-time Docker monitoring for verification.
 
+  Use proactively when user needs to verify features through log analysis instead of test scripts.
+
   Triggers: zero script qa, log-based testing, docker logs, 제로 스크립트 QA, ゼロスクリプトQA, 零脚本QA
+
+  Do NOT use for: unit testing, static analysis, or projects without Docker setup.
 context: fork
 agent: qa-monitor
 hooks:
   PreToolUse:
     - matcher: "Bash"
       hooks:
-        - type: prompt
-          prompt: "Verify this bash command is safe for QA testing. No destructive operations (rm, drop, delete) allowed. Respond with JSON: {\"decision\": \"approve\"|\"block\", \"reason\": \"...\"}"
+        - type: command
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/qa-pre-bash.sh"
   Stop:
     - hooks:
-        - type: prompt
-          prompt: "Verify QA checks completed. Ensure all logs are analyzed and issues documented. Respond with JSON: {\"decision\": \"approve\", \"summary\": \"QA result summary\"}"
+        - type: command
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/qa-stop.sh"
 ---
 
 # Zero Script QA Expert Knowledge
@@ -648,3 +652,60 @@ echo "════════════════════════�
 - [ ] Docker Compose configured
 - [ ] Real-time monitoring ready
 - [ ] Issue documentation template ready
+
+---
+
+## Auto-Apply Rules
+
+### When Building Logging Infrastructure
+
+When implementing API/Backend:
+1. Suggest logging middleware creation
+2. Suggest JSON format logger setup
+3. Add Request ID generation/propagation logic
+
+When implementing Frontend:
+1. Suggest Logger module creation
+2. Suggest logging integration with API client
+3. Suggest including Request ID header
+
+### When Performing QA
+
+On test request:
+1. Guide to run `docker compose logs -f`
+2. Request manual UX testing from user
+3. Real-time log monitoring
+4. Document issues immediately when detected
+5. Provide fix suggestions
+
+### Issue Detection Thresholds
+
+| Severity | Condition | Action |
+|----------|-----------|--------|
+| Critical | `level: ERROR` or `status: 5xx` | Immediate report |
+| Critical | `duration_ms > 3000` | Immediate report |
+| Critical | 3+ consecutive failures | Immediate report |
+| Warning | `status: 401, 403` | Warning report |
+| Warning | `duration_ms > 1000` | Warning report |
+| Info | Missing log fields | Note for improvement |
+| Info | Request ID not propagated | Note for improvement |
+
+### Required Logging Locations
+
+#### Backend (FastAPI/Express)
+```
+✅ Request start (method, path, params)
+✅ Request complete (status, duration_ms)
+✅ Major business logic steps
+✅ Detailed info on errors
+✅ Before/after external API calls
+✅ DB queries (in development)
+```
+
+#### Frontend (Next.js/React)
+```
+✅ API call start
+✅ API response received (status, duration)
+✅ Detailed info on errors
+✅ Important user actions
+```

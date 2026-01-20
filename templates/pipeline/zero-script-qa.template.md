@@ -176,6 +176,32 @@ Zero Script: Log infrastructure → Manual UX testing → AI log analysis → Au
 
 ---
 
+## 8.1 Validation Checklist
+
+### Logging Infrastructure
+- [ ] JSON log format applied
+- [ ] Request ID generation and propagation
+- [ ] Log level settings per environment
+- [ ] Docker logging configuration
+
+### Backend Logging
+- [ ] Logging middleware implemented
+- [ ] All API calls logged (including 200 OK)
+- [ ] Business logic logging
+- [ ] Detailed error logging
+
+### Frontend Logging
+- [ ] Logger module implemented
+- [ ] API client integration
+- [ ] Error boundary logging
+
+### QA Workflow
+- [ ] Docker Compose configured
+- [ ] Real-time monitoring ready
+- [ ] Issue documentation template ready
+
+---
+
 ## 9. Monitoring Commands
 
 ```bash
