@@ -245,6 +245,16 @@ bkit is **primarily designed for software development**. However, some component
 
 - **[Changelog](CHANGELOG.md)** - Version history and release notes
 
+### Visualize with Obsidian
+
+The `bkit-system/` documentation is optimized for [Obsidian](https://obsidian.md/)'s Graph View:
+
+1. Open `bkit-system/` as an Obsidian vault
+2. Press `Ctrl/Cmd + G` to open Graph View
+3. Explore component relationships visually
+
+See **[bkit-system/README.md](bkit-system/README.md#viewing-with-obsidian)** for detailed instructions.
+
 ---
 
 ## Language Support

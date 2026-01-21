@@ -113,3 +113,38 @@ bkit-system/
 | Config | `bkit.config.json` |
 
 > **Note**: The `.claude/` folder is not in version control. All plugin elements are at root level.
+
+---
+
+## Viewing with Obsidian
+
+The bkit-system documentation is optimized for [Obsidian](https://obsidian.md/)'s Graph View, allowing you to visualize component relationships interactively.
+
+### Option 1: Open bkit-system as a Vault (Recommended)
+
+1. Open Obsidian
+2. Click "Open folder as vault"
+3. Select the `bkit-system/` folder
+4. Press `Ctrl/Cmd + G` to open Graph View
+5. Start from `_GRAPH-INDEX.md` to explore all connections
+
+### Option 2: Open Project Root as a Vault
+
+1. Open Obsidian
+2. Click "Open folder as vault"
+3. Select the project root folder
+4. Navigate to `bkit-system/` in the file explorer
+5. Open `_GRAPH-INDEX.md` and use Graph View
+
+### Pre-configured Settings
+
+The `bkit-system/.obsidian/` folder includes shared settings:
+
+| File | Purpose | Shared |
+|------|---------|:------:|
+| `graph.json` | Optimized graph view layout | Yes |
+| `core-plugins.json` | Required Obsidian plugins | Yes |
+| `workspace.json` | Personal workspace state | No |
+| `app.json` | Personal app settings | No |
+
+> **Tip**: The graph settings are pre-configured for optimal visualization of bkit's 18 skills, 11 agents, and their relationships.
