@@ -24,7 +24,7 @@
 │                                                                 │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
 │  │   Skills     │───▶│   Agents     │───▶│   Scripts    │      │
-│  │  (18)        │    │  (11)        │    │  (18)        │      │
+│  │  (18)        │    │  (11)        │    │  (21)        │      │
 │  └──────────────┘    └──────────────┘    └──────────────┘      │
 │         │                   │                   │               │
 │         ▼                   ▼                   ▼               │
@@ -47,12 +47,12 @@
 |-----------|-------|------|---------|
 | Skills | 18 | Domain knowledge | [[components/skills/_skills-overview]] |
 | Agents | 11 | Specialized task execution | [[components/agents/_agents-overview]] |
-| Commands | 18 | Slash commands | `/pdca-*`, `/init-*`, etc. |
+| Commands | 20 | Slash commands | `/pdca-*`, `/init-*`, `/archive`, etc. |
 | Hooks | 3 events | Event-based triggers | [[components/hooks/_hooks-overview]] |
-| Scripts | 18 | Actual logic execution | [[components/scripts/_scripts-overview]] |
+| Scripts | 21 | Actual logic execution | [[components/scripts/_scripts-overview]] |
 | Lib | 1 | Shared utilities | `lib/common.sh` |
 | Config | 1 | Centralized settings | `bkit.config.json` |
-| Templates | 20 | Document templates | PDCA + Pipeline phases |
+| Templates | 21 | Document templates | PDCA + Pipeline phases |
 
 ## Trigger Layers
 

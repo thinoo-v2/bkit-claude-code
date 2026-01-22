@@ -20,9 +20,6 @@ tools:
   - Grep
   - Task
   - LSP
-skills:
-  - analysis-patterns
-  - document-standards
 hooks:
   PreToolUse:
     - matcher: "Write|Edit"

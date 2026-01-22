@@ -30,7 +30,7 @@ tools:
   - Glob
   - Grep
 skills:
-  - document-standards
+  - bkit-templates
 ---
 
 # Design Validation Agent

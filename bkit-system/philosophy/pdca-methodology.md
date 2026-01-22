@@ -118,6 +118,27 @@ Write/Edit 시 (PreToolUse hook):
 3. "Gap Analysis 실행할까요?" 제안
 ```
 
+### 4. Check-Act Iteration Loop (v1.3.0)
+
+```
+gap-detector Agent (Check)
+    ↓ (Stop hook)
+gap-detector-stop.sh
+    ├── >= 90% Match Rate → report-generator 제안 → /archive 가능
+    ├── 70-89% Match Rate → 선택지 제공 (수동/자동)
+    └── < 70% Match Rate  → pdca-iterator 강력 권장
+                               ↓
+                          pdca-iterator Agent (Act)
+                               ↓ (Stop hook)
+                          iterator-stop.sh
+                               ├── 완료 → report-generator 제안
+                               └── 진행 중 → gap-detector 재실행 안내
+                                    ↓
+                               반복 (최대 5회)
+```
+
+**v1.3.0 핵심 개선**: Stop hooks를 통해 Check-Act 반복이 자동화됨.
+
 ---
 
 ## Document Templates
@@ -203,6 +224,7 @@ PDCA 사이클 완료 후 archive로 이동:
 | `/pdca-iterate [feature]` | Auto-fix with Evaluator-Optimizer pattern |
 | `/pdca-report` | Generate completion report |
 | `/pdca-next` | Suggest next action |
+| `/archive [feature]` | Archive completed PDCA documents (v1.3.0) |
 
 ### Pipeline Management
 

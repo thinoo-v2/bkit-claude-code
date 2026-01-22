@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-v2.1.15+-purple.svg)](https://docs.anthropic.com/en/docs/claude-code/getting-started)
-[![Version](https://img.shields.io/badge/Version-1.2.3-green.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/Version-1.3.0-green.svg)](CHANGELOG.md)
 [![Author](https://img.shields.io/badge/Author-POPUP%20STUDIO-orange.svg)](https://popupstudio.ai)
 
 > **PDCA methodology + Claude Code mastery for AI-native development**
@@ -22,10 +22,11 @@ bkit is a Claude Code plugin that transforms how you build software with AI. It 
 - **9-Stage Development Pipeline** - From schema design to deployment
 - **3 Project Levels** - Starter (static), Dynamic (fullstack), Enterprise (microservices)
 - **Multilingual Support** - 8 languages (EN, KO, JA, ZH, ES, FR, DE, IT)
-- **18 Commands** - Automate common development tasks
+- **20 Commands** - Automate common development tasks
 - **18 Skills** - Domain-specific knowledge for various development scenarios
 - **11 Agents** - Specialized AI assistants for different tasks
-- **Skills Frontmatter Hooks** - Automatic triggers based on context (v1.2.0+)
+- **21 Scripts** - Hook execution and automation scripts
+- **Check-Act Iteration Loop** - Automatic gap analysis and fix cycles (v1.3.0+)
 
 ---
 
@@ -192,6 +193,7 @@ git commit -m "feat: customize bkit starter skill"
 /bkit:pdca-iterate {feature} # Auto-fix with Evaluator-Optimizer pattern
 /bkit:pdca-analyze           # Run gap analysis
 /bkit:pdca-report            # Generate completion report
+/bkit:archive {feature}      # Archive completed PDCA documents
 ```
 
 ---
@@ -243,7 +245,7 @@ bkit is **primarily designed for software development**. However, some component
 ### Component Reference
 
 - [Development Pipeline](skills/development-pipeline/SKILL.md) - 9-stage pipeline skill
-- [Commands Reference](commands/) - 18 slash commands
+- [Commands Reference](commands/) - 20 slash commands
 - [Skills Reference](skills/) - 18 domain skills
 - [Agents Reference](agents/) - 11 specialized agents
 
@@ -285,7 +287,19 @@ bkit automatically detects your language from trigger keywords:
 
 ### Setting Response Language
 
-To set Claude's **response language**, add to `~/.claude/settings.json`:
+Claude Code supports configuring your preferred response language through the `language` setting in your settings file.
+
+#### Configuration Files (Priority Order)
+
+| File | Scope | Git Tracked |
+|------|-------|-------------|
+| `.claude/settings.local.json` | Project (personal) | No (gitignored) |
+| `.claude/settings.json` | Project (shared) | Yes |
+| `~/.claude/settings.json` | User (global) | N/A |
+
+#### How to Configure
+
+Add the `language` key to any settings file:
 
 ```json
 {
@@ -293,12 +307,18 @@ To set Claude's **response language**, add to `~/.claude/settings.json`:
 }
 ```
 
+#### Supported Languages
+
 | Language | Setting Value |
 |----------|---------------|
-| Korean | `"language": "korean"` |
-| Japanese | `"language": "japanese"` |
-| Chinese | `"language": "chinese"` |
-| English | `"language": "english"` (default) |
+| English | `"english"` (default) |
+| Korean | `"korean"` |
+| Japanese | `"japanese"` |
+| Chinese | `"chinese"` |
+| Spanish | `"spanish"` |
+| French | `"french"` |
+| German | `"german"` |
+| Italian | `"italian"` |
 
 > **Note**: Trigger keywords work in any language. The `language` setting only affects Claude's response language.
 
