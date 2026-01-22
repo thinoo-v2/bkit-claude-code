@@ -1,8 +1,9 @@
 #!/bin/bash
 # scripts/pre-write.sh
-# Purpose: Unified PreToolUse hook for Write|Edit operations
-# Combines: PDCA check, task classification, convention hints
-# Hook: PreToolUse (Write|Edit) for bkit-rules skill
+# Purpose: Unified PreToolUse hook for Write|Edit operations (v1.3.0)
+# Combines: PDCA check, task classification (line-based), convention hints
+# Hook: PreToolUse (Write|Edit) - Global hook in hooks.json
+# Philosophy: Automation First - Guide, don't block
 
 set -e
 
@@ -16,6 +17,9 @@ else
     # Fallback functions if common.sh not found
     output_empty() { echo '{}'; }
     is_source_file() { return 1; }
+    classify_task_by_lines() { echo "quick_fix"; }
+    get_pdca_level() { echo "none"; }
+    get_pdca_guidance_by_level() { echo ""; }
 fi
 
 # Read input from stdin
@@ -34,24 +38,18 @@ fi
 # Collect context messages
 # ============================================================
 CONTEXT_PARTS=()
-SHOULD_BLOCK=false
-BLOCK_REASON=""
 
 # ------------------------------------------------------------
-# 1. Task Classification (based on content size)
+# 1. Task Classification (v1.3.0 - Line-based, Automation First)
 # ------------------------------------------------------------
 CLASSIFICATION="quick_fix"
-CONTENT_LENGTH=0
+PDCA_LEVEL="none"
+LINE_COUNT=0
 
 if [ -n "$CONTENT" ]; then
-    CLASSIFICATION=$(classify_task "$CONTENT")
-    CONTENT_LENGTH=${#CONTENT}
-
-    # Only add context for significant changes
-    if [ "$CLASSIFICATION" != "quick_fix" ]; then
-        GUIDANCE=$(get_pdca_guidance "$CLASSIFICATION")
-        CONTEXT_PARTS+=("$GUIDANCE (${CONTENT_LENGTH} chars)")
-    fi
+    LINE_COUNT=$(echo "$CONTENT" | wc -l | tr -d ' ')
+    CLASSIFICATION=$(classify_task_by_lines "$CONTENT")
+    PDCA_LEVEL=$(get_pdca_level "$CLASSIFICATION")
 fi
 
 # ------------------------------------------------------------
@@ -67,41 +65,57 @@ if is_source_file "$FILE_PATH"; then
     if [ -n "$FEATURE" ]; then
         DESIGN_DOC=$(find_design_doc "$FEATURE")
         PLAN_DOC=$(find_plan_doc "$FEATURE")
-
-        if [ -n "$DESIGN_DOC" ]; then
-            CONTEXT_PARTS+=("PDCA: Design doc exists at ${DESIGN_DOC}. Refer during implementation.")
-        elif [ -n "$PLAN_DOC" ]; then
-            CONTEXT_PARTS+=("PDCA: Plan exists but no design doc. Consider /pdca-design ${FEATURE}.")
-        else
-            # Major feature without design doc → Block and guide
-            if [ "$CLASSIFICATION" = "major_feature" ]; then
-                SHOULD_BLOCK=true
-                BLOCK_REASON="Major feature detected (${CONTENT_LENGTH} chars) but no design document found for '${FEATURE}'.\n\n"
-                BLOCK_REASON+="Next steps:\n"
-                BLOCK_REASON+="1. Run: /pdca-design ${FEATURE}\n"
-                BLOCK_REASON+="2. Review the generated design document\n"
-                BLOCK_REASON+="3. Then proceed with implementation\n\n"
-                BLOCK_REASON+="Or if you want to proceed without design doc, reduce the change scope to under 1000 chars."
-            fi
-        fi
     fi
 fi
 
 # ------------------------------------------------------------
-# 2.5. Block if needed (with helpful guidance)
+# 3. Generate PDCA Guidance (v1.3.0 - No blocking, guide only)
 # ------------------------------------------------------------
-if [ "$SHOULD_BLOCK" = true ]; then
-    output_block "$BLOCK_REASON"
-    # Note: output_block() calls exit 2, so code below won't execute
+case "$PDCA_LEVEL" in
+    "none")
+        # Quick Fix - no guidance needed
+        ;;
+    "light")
+        # Minor Change - light mention
+        CONTEXT_PARTS+=("Minor change (${LINE_COUNT} lines). PDCA optional.")
+        ;;
+    "recommended")
+        # Feature - recommend design doc
+        if [ -n "$DESIGN_DOC" ]; then
+            CONTEXT_PARTS+=("Feature (${LINE_COUNT} lines). Design doc exists: ${DESIGN_DOC}")
+        elif [ -n "$FEATURE" ]; then
+            CONTEXT_PARTS+=("Feature (${LINE_COUNT} lines). Design doc recommended for '${FEATURE}'. Consider /pdca-design ${FEATURE}")
+        else
+            CONTEXT_PARTS+=("Feature-level change (${LINE_COUNT} lines). Design doc recommended.")
+        fi
+        ;;
+    "required")
+        # Major Feature - strongly recommend (but don't block)
+        if [ -n "$DESIGN_DOC" ]; then
+            CONTEXT_PARTS+=("Major feature (${LINE_COUNT} lines). Design doc exists: ${DESIGN_DOC}. Refer during implementation.")
+        elif [ -n "$FEATURE" ]; then
+            CONTEXT_PARTS+=("⚠️ Major feature (${LINE_COUNT} lines) without design doc. Strongly recommend /pdca-design ${FEATURE} first.")
+        else
+            CONTEXT_PARTS+=("⚠️ Major feature (${LINE_COUNT} lines). Design doc strongly recommended before implementation.")
+        fi
+        ;;
+esac
+
+# Add reference to existing PDCA docs if not already mentioned
+if [ -n "$PLAN_DOC" ] && [ -z "$DESIGN_DOC" ] && [ "$PDCA_LEVEL" != "none" ] && [ "$PDCA_LEVEL" != "light" ]; then
+    CONTEXT_PARTS+=("Plan exists at ${PLAN_DOC}. Design doc not yet created.")
 fi
 
 # ------------------------------------------------------------
-# 3. Convention Hints (for code files)
+# 4. Convention Hints (for code files)
 # ------------------------------------------------------------
 if is_code_file "$FILE_PATH"; then
-    CONTEXT_PARTS+=("Convention: Components=PascalCase, Functions=camelCase, Constants=UPPER_SNAKE_CASE")
+    # Only add convention hints for larger changes
+    if [ "$PDCA_LEVEL" = "recommended" ] || [ "$PDCA_LEVEL" = "required" ]; then
+        CONTEXT_PARTS+=("Conventions: Components=PascalCase, Functions=camelCase, Constants=UPPER_SNAKE_CASE")
+    fi
 elif is_env_file "$FILE_PATH"; then
-    CONTEXT_PARTS+=("Env Convention: NEXT_PUBLIC_* (client), DB_* (database), API_* (external), AUTH_* (auth)")
+    CONTEXT_PARTS+=("Env naming: NEXT_PUBLIC_* (client), DB_* (database), API_* (external), AUTH_* (auth)")
 fi
 
 # ============================================================

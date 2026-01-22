@@ -22,8 +22,7 @@ tools:
   - Glob
   - Grep
 skills:
-  - document-standards
-  - pdca-methodology
+  - bkit-templates
 ---
 
 # Report Generator Agent

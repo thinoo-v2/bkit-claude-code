@@ -1,20 +1,22 @@
 # Trigger Matrix
 
-> Core matrix showing which components trigger on each event (v1.2.0)
+> Core matrix showing which components trigger on each event (v1.3.0)
 
 ## Hook Event Matrix
 
 ### hooks.json (Global Hooks)
 
-These hooks are defined in `hooks/hooks.json` and apply to all sessions:
+These hooks are defined in `hooks/hooks.json` and apply to **all sessions regardless of skill/agent activation**:
 
 | Event | Matcher | Script | Action |
 |-------|---------|--------|--------|
-| SessionStart | - | `session-start.sh` | Initialize session, greet user, detect level |
-| PreToolUse | `Write\|Edit` | `pre-write.sh` | PDCA check + task classification + convention hints |
-| PostToolUse | `Write` | `pdca-post-write.sh` | Suggest gap analysis |
+| SessionStart | - | `session-start.sh` | Initialize session, detect level, guide user via AskUserQuestion |
+| PreToolUse | `Write\|Edit` | `pre-write.sh` | PDCA doc check, task classification, convention hints, block major features without design |
+| PostToolUse | `Write` | `pdca-post-write.sh` | Suggest gap analysis after implementation |
 
-### Skill Frontmatter Hooks
+> **Note**: Global hooks ensure PDCA guidance is available. Skill-specific hooks provide additional contextual features when skills are activated.
+
+### Skill Frontmatter Hooks (PreToolUse/PostToolUse)
 
 These hooks are defined in skill YAML frontmatter:
 
@@ -38,30 +40,32 @@ These hooks are defined in skill YAML frontmatter:
 
 #### Stop
 
-| Skill | Script | Action |
-|-------|--------|--------|
+| Skill/Agent | Script | Action |
+|-------------|--------|--------|
 | [[../../skills/phase-4-api/SKILL|phase-4-api]] | `phase4-api-stop.sh` | Zero Script QA guidance |
 | [[../../skills/phase-8-review/SKILL|phase-8-review]] | `phase8-review-stop.sh` | Review summary + gap analysis |
 | [[../../skills/zero-script-qa/SKILL|zero-script-qa]] | `qa-stop.sh` | QA session cleanup |
 | [[../../skills/development-pipeline/SKILL|development-pipeline]] | `echo` | Pipeline completion |
+| [[../agents/gap-detector|gap-detector]] | `gap-detector-stop.sh` | Check-Act iteration: Match Rate 기반 분기 (v1.3.0) |
+| [[../agents/pdca-iterator|pdca-iterator]] | `iterator-stop.sh` | Check-Act iteration: 완료/계속 안내 (v1.3.0) |
 
 ---
 
-## Write/Edit Flow (v1.2.1)
+## Write/Edit Flow (v1.3.0)
 
 When user writes/edits source code files:
 
 ```
-1. PreToolUse Stage
-   └── hooks.json (pre-write.sh) ← Unified hook
+1. PreToolUse Stage (Skill Frontmatter)
+   └── pre-write.sh ← Unified hook
        ├── 1. Task classification (Quick Fix → Major Feature)
        ├── 2. PDCA document check (design doc exists?)
        └── 3. Convention hints (by file type)
 
 2. Actual Write/Edit Execution
 
-3. PostToolUse Stage
-   ├── hooks.json (pdca-post-write.sh)
+3. PostToolUse Stage (Skill Frontmatter)
+   ├── pdca-post-write.sh
    │   └── Suggest gap analysis (if design doc exists)
    ├── phase-5-design-system (phase5-design-post.sh)
    │   └── Verify design tokens (if UI file: .tsx, .jsx, .vue, .svelte)
@@ -73,11 +77,48 @@ When user writes/edits source code files:
 
 **v1.2.1 Improvement**: Extension-based file detection replaces path-based detection for multi-language support.
 
+**v1.2.3 Improvement**: SessionStart hook now guides users with AskUserQuestion (4 options).
+
+**v1.3.0 Improvement**: Check-Act iteration loop with Stop hooks on gap-detector and pdca-iterator agents.
+
 ---
 
-## Skill Description Triggers (Keyword-Based)
+## Check-Act Iteration Loop (v1.3.0)
 
-Skills and Agents are activated by "Triggers:" keywords in their description.
+Automatic iteration cycle for quality improvement:
+
+```
+gap-detector Agent (Check)
+    ↓ (Stop hook)
+gap-detector-stop.sh
+    ├── >= 90% Match Rate → report-generator 제안
+    ├── 70-89% Match Rate → 선택지 제공 (수동/자동)
+    └── < 70% Match Rate  → pdca-iterator 강력 권장
+                               ↓
+                          pdca-iterator Agent (Act)
+                               ↓ (Stop hook)
+                          iterator-stop.sh
+                               ├── 완료 감지 → report-generator 제안
+                               └── 진행 중 → gap-detector 재실행 안내
+```
+
+### Stop Hook Flow
+
+| Agent | Condition | Action |
+|-------|-----------|--------|
+| gap-detector | Match Rate >= 90% | `/pdca-report` 제안 → `/archive` 가능 |
+| gap-detector | Match Rate 70-89% | 수동 수정 or pdca-iterator 선택 |
+| gap-detector | Match Rate < 70% | pdca-iterator 강력 권장 |
+| pdca-iterator | 완료 메시지 감지 | gap-detector 재실행 또는 완료 안내 |
+| pdca-iterator | 진행 중 | gap-detector로 Check 수행 안내 |
+
+---
+
+## Skill Description Triggers (Semantic Matching)
+
+> **Note**: The "Triggers:" keyword in description is a **bkit convention**, not an official Claude Code feature. Claude uses **semantic matching** on the entire description field to decide when to auto-invoke skills/agents. The "Triggers:" section helps Claude understand activation contexts through natural language.
+
+Skills and Agents are activated by semantic matching on their description field.
 
 ### Level Skills
 
@@ -114,7 +155,9 @@ Skills and Agents are activated by "Triggers:" keywords in their description.
 
 ---
 
-## Agent Auto-Trigger (Keyword-Based)
+## Agent Auto-Trigger (Semantic Matching)
+
+> Same semantic matching applies to agents. Claude decides to delegate based on the description's meaning.
 
 | Agent | Trigger Keywords |
 |-------|------------------|
@@ -132,7 +175,7 @@ Skills and Agents are activated by "Triggers:" keywords in their description.
 
 ---
 
-## Skill → Agent Connections (v1.2.0)
+## Skill → Agent Connections (v1.3.0)
 
 Each Skill is connected to specific Agents:
 
@@ -144,8 +187,8 @@ Each Skill is connected to specific Agents:
 | `enterprise` | [[../agents/infra-architect|infra-architect]] | |
 | `development-pipeline` | [[../agents/pipeline-guide|pipeline-guide]] | |
 | `zero-script-qa` | [[../agents/qa-monitor|qa-monitor]] | |
-| `phase-8-review` | [[../agents/code-analyzer|code-analyzer]] | analysis-patterns merged |
-| `bkit-templates` | [[../agents/design-validator|design-validator]] | document-standards merged |
+| `phase-8-review` | [[../agents/code-analyzer|code-analyzer]] | Code quality analysis |
+| `bkit-templates` | [[../agents/design-validator|design-validator]] | Document validation |
 | `mobile-app` | [[../agents/pipeline-guide|pipeline-guide]] | |
 | `desktop-app` | [[../agents/pipeline-guide|pipeline-guide]] | |
 

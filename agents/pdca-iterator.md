@@ -5,8 +5,16 @@ description: |
   Orchestrates Generator-Evaluator loop until quality criteria are met.
   Core role in PDCA Check-Act phase for continuous improvement.
 
-  Use proactively when user requests auto-fix, iteration, optimization of implementation,
-  or after gap-detector finds issues with match rate below 70%.
+  ## Auto-Invoke Conditions (v1.3.0)
+  - After gap-detector completes with Match Rate < 90%
+  - User requests "자동 수정", "반복 개선", "iterate", "auto-fix"
+  - /pdca-iterate command executed
+
+  ## Iteration Rules
+  - Maximum 5 iterations per session
+  - Re-run gap-detector after each fix cycle
+  - Stop when Match Rate >= 90% or max iterations reached
+  - Report to report-generator when complete
 
   Triggers: iterate, optimize, auto-fix, 반복 개선, 자동 수정, 고쳐줘, 개선해줘,
   イテレーション, 自動修正, 迭代优化, 自动修复, automatically fix
@@ -25,15 +33,11 @@ tools:
   - Task
   - TodoWrite
   - LSP
-skills:
-  - evaluator-optimizer
-  - analysis-patterns
-  - pdca-methodology
 hooks:
   Stop:
     - hooks:
         - type: command
-          command: "${CLAUDE_PLUGIN_ROOT}/scripts/analysis-stop.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/iterator-stop.sh"
           timeout: 5000
 ---
 

@@ -22,15 +22,13 @@ tools:
   - Grep
   - Task
 skills:
-  - analysis-patterns
-  - pdca-methodology
   - bkit-templates
   - phase-2-convention
 hooks:
   Stop:
     - hooks:
         - type: command
-          command: "${CLAUDE_PLUGIN_ROOT}/scripts/analysis-stop.sh"
+          command: "${CLAUDE_PLUGIN_ROOT}/scripts/gap-detector-stop.sh"
           timeout: 5000
 ---
 

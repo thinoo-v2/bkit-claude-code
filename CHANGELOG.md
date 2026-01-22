@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-01-22
+
+### Added
+- **Check-Act Iteration Loop**: Automatic gap analysis and fix cycles
+  - `pdca-iterator` agent orchestrates evaluation-optimization loop
+  - Maximum 5 iterations per session with 90% pass threshold
+  - Auto-invoked when Match Rate < 90%
+- **SessionStart Enhancement**: AskUserQuestion integration for session initialization
+  - 4 options: Learn bkit, Learn Claude Code, Continue Previous Work, Start New Project
+- **Trigger Keyword Mapping**: Agent auto-triggering based on user keywords
+  - 검증/verify → gap-detector, 개선/improve → pdca-iterator, etc.
+- **Task Size Rules**: PDCA application guidance based on change size
+  - Quick Fix (<10 lines): No PDCA needed
+  - Minor Change (<50 lines): Light PDCA optional
+  - Feature (<200 lines): PDCA recommended
+  - Major Feature (>=200 lines): PDCA required
+- **New Commands**: `/archive`, `/github-stats`
+
+### Changed
+- **Version references**: Updated all version references from 1.2.x to 1.3.0
+- **Component counts**: Commands increased from 18 to 20
+
+### Compatibility
+- **Minimum Claude Code Version**: 2.1.12
+- **Recommended Claude Code Version**: 2.1.15
+
+---
+
+## [1.2.3] - 2026-01-22
+
+### Added
+- **Claude Code 2.1.15 Impact Analysis**: Added version compatibility documentation
+  - `docs/pdca/03-analysis/12-claude-code-2.1.15-impact-analysis.md`
+  - npm installation deprecation notice (use `claude install` instead)
+  - MCP stdio server timeout fix analysis
+  - UI rendering performance improvements
+
+### Changed
+- **README Badge Update**: Claude Code version badge updated to v2.1.15+
+  - Link updated to official getting-started documentation
+
+### Compatibility
+- **Minimum Claude Code Version**: 2.1.12
+- **Recommended Claude Code Version**: 2.1.15
+- All 2.1.14 improvements (98% context, parallel agents, memory fix) remain available
+
+---
+
 ## [1.2.2] - 2026-01-21
 
 ### Changed

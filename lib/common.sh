@@ -369,10 +369,10 @@ find_plan_doc() {
 }
 
 # ============================================================
-# Task Classification
+# Task Classification (v1.3.0 - Enhanced)
 # ============================================================
 
-# Classify task by content size
+# Classify task by content size (character-based, legacy)
 # Usage: classify_task "content string"
 # Output: "quick_fix" | "minor_change" | "feature" | "major_feature"
 classify_task() {
@@ -395,6 +395,51 @@ classify_task() {
     fi
 }
 
+# Classify task by line count (v1.3.0 - more accurate)
+# Usage: classify_task_by_lines "content string"
+# Output: "quick_fix" | "minor_change" | "feature" | "major_feature"
+classify_task_by_lines() {
+    local content="$1"
+    local line_count=$(echo "$content" | wc -l | tr -d ' ')
+
+    # Get thresholds from config or use defaults (line-based)
+    local quick_fix_lines=$(get_config ".taskClassification.lines.quickFix" "10")
+    local minor_change_lines=$(get_config ".taskClassification.lines.minorChange" "50")
+    local feature_lines=$(get_config ".taskClassification.lines.feature" "200")
+
+    if [ "$line_count" -lt "$quick_fix_lines" ]; then
+        echo "quick_fix"
+    elif [ "$line_count" -lt "$minor_change_lines" ]; then
+        echo "minor_change"
+    elif [ "$line_count" -lt "$feature_lines" ]; then
+        echo "feature"
+    else
+        echo "major_feature"
+    fi
+}
+
+# Get PDCA level for task classification (v1.3.0)
+# Returns: "none" | "light" | "recommended" | "required"
+# Usage: get_pdca_level "feature"
+get_pdca_level() {
+    local classification="$1"
+
+    case "$classification" in
+        quick_fix)
+            echo "none"
+            ;;
+        minor_change)
+            echo "light"
+            ;;
+        feature)
+            echo "recommended"
+            ;;
+        major_feature)
+            echo "required"
+            ;;
+    esac
+}
+
 # Get PDCA guidance for task classification
 # Usage: get_pdca_guidance "feature"
 # Output: guidance text
@@ -413,6 +458,30 @@ get_pdca_guidance() {
             ;;
         major_feature)
             echo "Task: Major Feature. PDCA documentation essential. Start with /pdca-plan."
+            ;;
+    esac
+}
+
+# Get PDCA guidance message based on level (v1.3.0)
+# Usage: get_pdca_guidance_by_level "recommended" "auth" "45"
+# Output: contextual guidance message
+get_pdca_guidance_by_level() {
+    local level="$1"
+    local feature="$2"
+    local line_count="$3"
+
+    case "$level" in
+        none)
+            echo ""
+            ;;
+        light)
+            echo "Minor change (${line_count} lines). PDCA optional."
+            ;;
+        recommended)
+            echo "Feature-level change (${line_count} lines). Design doc recommended for '${feature}'."
+            ;;
+        required)
+            echo "Major feature (${line_count} lines). Design doc strongly recommended. Consider /pdca-design ${feature}."
             ;;
     esac
 }

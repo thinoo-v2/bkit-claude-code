@@ -7,6 +7,10 @@
 > **v1.2.1 Multi-Language Support**: Extension-based file detection, 20+ language support, configurable patterns
 >
 > **v1.2.1 Language Tier System**: AI-Native 개발 및 Vibe Coding 트렌드 반영한 4단계 언어 분류 체계
+>
+> **v1.2.3 SessionStart Enhancement**: AskUserQuestion guidance with 4 options for session initialization
+>
+> **v1.3.0 Check-Act Iteration Loop**: Automatic gap analysis and fix cycles with pdca-iterator agent
 
 ## Philosophy (3)
 
@@ -102,11 +106,12 @@ The following skills were consolidated:
 
 ## Hooks (3 events)
 
-Defined in `hooks/hooks.json`:
+### Global Hooks (hooks/hooks.json)
+- [[components/hooks/_hooks-overview|SessionStart]] - Plugin initialization with AskUserQuestion guidance
 
-- [[components/hooks/_hooks-overview|SessionStart]] - Plugin initialization on session start
-- [[components/hooks/_hooks-overview|PreToolUse]] - Before Write/Edit operations
-- [[components/hooks/_hooks-overview|PostToolUse]] - After Write operations
+### Skill Frontmatter Hooks
+- [[components/hooks/_hooks-overview|PreToolUse]] - Before Write/Edit operations (defined in SKILL.md)
+- [[components/hooks/_hooks-overview|PostToolUse]] - After Write operations (defined in SKILL.md)
 
 ## Scripts (18)
 
