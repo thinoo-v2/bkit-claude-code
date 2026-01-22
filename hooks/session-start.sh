@@ -2,6 +2,9 @@
 # bkit Vibecoding Kit - SessionStart Hook
 # .claude folder installation users (command type)
 
+# Debug: Log hook execution
+echo "[$(date)] SessionStart hook executed in $(pwd)" >> /tmp/bkit-hook-debug.log
+
 # Environment Persistence: Detect project level and persist to CLAUDE_ENV_FILE
 detect_project_level() {
     local level="starter"
@@ -42,9 +45,10 @@ fi
 
 cat << 'JSON'
 {
+  "systemMessage": "👋 bkit Vibecoding Kit activated",
   "hookSpecificOutput": {
     "hookEventName": "SessionStart",
-    "additionalContext": "Welcome to bkit Vibecoding Kit!\n\n## PDCA Core Rules (Always Apply)\n- New feature request → Check/create design doc first\n- Don't guess → Check docs → Ask user\n- After implementation → Suggest Gap analysis\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\nUse AskUserQuestion tool to ask:\n\n**Question**: \"What kind of help do you need?\"\n**Header**: \"Help Type\"\n**Options**:\n1. bkit Introduction - Learn what bkit is\n2. Learn Development Process - 9-stage pipeline learning\n3. Learn Claude Code - Setup and usage\n4. Continue Work - Resume previous work\n5. Start New Project - Setup from scratch\n\n**Actions by Selection**:\n- Option 1 → Explain bkit features (PDCA, Pipeline, Levels, Agents, Zero Script QA)\n- Option 2 → Run /pipeline-start or teach 9 stages\n- Option 3 → Run /learn-claude-code\n- Option 4 → Check PDCA status (docs/.pdca-status.json or scan docs/), guide next step\n- Option 5 → Ask level selection, run /init-*\n\n**Important**: End response with 'Claude is not perfect. Always verify important decisions.'"
+    "additionalContext": "# bkit Vibecoding Kit - Required Startup Procedure\n\n## 🚨 MANDATORY: Session Start Action\n\nWhen user sends their first message, you MUST use the **AskUserQuestion tool** to ask the following question.\nDo NOT respond with plain text. You MUST invoke the AskUserQuestion tool.\n\n### AskUserQuestion Parameters:\n```json\n{\n  \"questions\": [{\n    \"question\": \"What would you like help with?\",\n    \"header\": \"Help Type\",\n    \"options\": [\n      {\"label\": \"Learn bkit\", \"description\": \"Introduction and 9-stage pipeline\"},\n      {\"label\": \"Learn Claude Code\", \"description\": \"Setup and usage guide\"},\n      {\"label\": \"Continue Previous Work\", \"description\": \"Resume from PDCA status\"},\n      {\"label\": \"Start New Project\", \"description\": \"Initialize new project\"}  \n    ],\n    \"multiSelect\": false\n  }]\n}\n```\n\n### Actions by Selection:\n- **Learn bkit** → Explain bkit features (PDCA, Pipeline, Levels, Agents, Zero Script QA) AND teach 9-stage development process. Run /pipeline-start if user wants hands-on learning.\n- **Learn Claude Code** → Run /learn-claude-code skill\n- **Continue Previous Work** → Check PDCA status (docs/.pdca-status.json or scan docs/), guide next step\n- **Start New Project** → Ask level selection (Starter/Dynamic/Enterprise), then run /init-starter, /init-dynamic, or /init-enterprise\n\n## PDCA Core Rules (Always Apply)\n- New feature request → Check/create design doc first\n- Don't guess → Check docs → Ask user\n- After implementation → Suggest Gap analysis\n\n💡 Important: Claude is not perfect. Always verify important decisions."
   }
 }
 JSON

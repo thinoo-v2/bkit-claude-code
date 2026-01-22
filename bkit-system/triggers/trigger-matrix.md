@@ -8,11 +8,11 @@
 
 These hooks are defined in `hooks/hooks.json` and apply to all sessions:
 
-| Event | Matcher | Script | Action |
-|-------|---------|--------|--------|
-| SessionStart | - | `session-start.sh` | Initialize session, greet user, detect level |
-| PreToolUse | `Write\|Edit` | `pre-write.sh` | PDCA check + task classification + convention hints |
-| PostToolUse | `Write` | `pdca-post-write.sh` | Suggest gap analysis |
+| Event        | Matcher       | Script               | Action                                              |
+| ------------ | ------------- | -------------------- | --------------------------------------------------- |
+| SessionStart | -             | `session-start.sh`   | Initialize session, greet user, detect level        |
+| PreToolUse   | `Write\|Edit` | `pre-write.sh`       | PDCA check + task classification + convention hints |
+| PostToolUse  | `Write`       | `pdca-post-write.sh` | Suggest gap analysis                                |
 
 ### Skill Frontmatter Hooks
 
