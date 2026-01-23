@@ -46,22 +46,12 @@
         "matcher": "run_shell_command",
         "command": "node ${extensionPath}/scripts/phase9-deploy-pre.js",
         "timeout": 5000
-      },
-      {
-        "matcher": "run_shell_command",
-        "command": "node ${extensionPath}/scripts/qa-pre-bash.js",
-        "timeout": 5000
       }
     ],
     "AfterTool": [
       {
         "matcher": "write_file",
         "command": "node ${extensionPath}/scripts/pdca-post-write.js",
-        "timeout": 5000
-      },
-      {
-        "matcher": "write_file|run_shell_command",
-        "command": "node ${extensionPath}/scripts/qa-monitor-post.js",
         "timeout": 5000
       }
     ],
