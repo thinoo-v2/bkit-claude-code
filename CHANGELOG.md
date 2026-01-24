@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1] - 2026-01-24
+
+### Added
+- **Response Report Rule**: AI Agent가 매 답변 끝에 bkit 기능 사용 현황 자동 보고
+  - Claude Code: `hooks/session-start.js` additionalContext에 규칙 추가
+  - Gemini CLI: `GEMINI.md`에 Response Report Rule 섹션 추가
+  - 보고 형식: 사용 기능, 미사용 이유, PDCA 단계별 추천
+- **Claude Code 2.1.19 Compatibility**: 호환성 테스트 완료
+  - 99개 컴포넌트 테스트 통과
+  - Breaking Change 없음 확인
+  - 새 기능 (additionalContext, Task System) 문서화
+
+### Changed
+- **Version references**: Updated all version references from 1.4.0 to 1.4.1
+- **session-start.js**: v1.4.1 Changes 주석 및 보고 규칙 추가 (+62 lines)
+- **GEMINI.md**: Response Report Rule 섹션 추가 (+50 lines)
+
+### Compatibility
+- **Claude Code**: Minimum v2.1.15, Recommended v2.1.19
+- **Gemini CLI**: Minimum v1.0.0
+- **Node.js**: Minimum v18.0.0
+
+---
+
 ## [1.4.0] - 2026-01-24
 
 ### Added

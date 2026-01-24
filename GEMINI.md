@@ -1,7 +1,7 @@
 # bkit Vibecoding Kit for Gemini CLI
 
 > AI-Native Development with PDCA Methodology
-> Version: 1.4.0
+> Version: 1.4.1
 
 ---
 
@@ -99,28 +99,81 @@ Never guess
 
 ---
 
-## Trigger Keywords
+## Trigger Keywords (8 Languages)
 
 When user mentions these keywords, consider using corresponding skills:
 
-| Keyword | Language | Skill/Action |
-|---------|----------|--------------|
-| gap analysis, verify, check | EN | Gap Analysis |
-| 갭 분석, 검증, 확인 | KO | Gap Analysis |
-| ギャップ分析, 検証 | JA | Gap Analysis |
-| 差距分析, 验证 | ZH | Gap Analysis |
-| iterate, improve, fix | EN | Auto-fix iteration |
-| 개선, 고쳐, 반복 | KO | Auto-fix iteration |
-| 改善, イテレーション | JA | Auto-fix iteration |
-| 改进, 迭代 | ZH | Auto-fix iteration |
-| analyze, quality, review | EN | Code quality analysis |
-| 분석, 품질, 리뷰 | KO | Code quality analysis |
-| report, summary | EN | Generate report |
-| 보고서, 요약 | KO | Generate report |
-| QA, test, log | EN | Zero Script QA |
-| 테스트, 로그 | KO | Zero Script QA |
-| design, spec | EN | Design validation |
-| 설계, 스펙 | KO | Design validation |
+### Gap Analysis
+| Language | Keywords |
+|----------|----------|
+| EN | gap analysis, verify, check |
+| KO | 갭 분석, 검증, 확인 |
+| JA | ギャップ分析, 検証, 確認 |
+| ZH | 差距分析, 验证, 确认 |
+| ES | análisis de brechas, verificar |
+| FR | analyse des écarts, vérifier |
+| DE | Lückenanalyse, verifizieren |
+| IT | analisi dei gap, verificare |
+
+### Auto-fix Iteration
+| Language | Keywords |
+|----------|----------|
+| EN | iterate, improve, fix |
+| KO | 개선, 고쳐, 반복 |
+| JA | 改善, イテレーション, 修正 |
+| ZH | 改进, 迭代, 修复 |
+| ES | mejorar, arreglar, iterar |
+| FR | améliorer, corriger, itérer |
+| DE | verbessern, reparieren, iterieren |
+| IT | migliorare, correggere, iterare |
+
+### Code Quality Analysis
+| Language | Keywords |
+|----------|----------|
+| EN | analyze, quality, review |
+| KO | 분석, 품질, 리뷰 |
+| JA | 分析, 品質, レビュー |
+| ZH | 分析, 质量, 审查 |
+| ES | analizar, calidad, revisar |
+| FR | analyser, qualité, réviser |
+| DE | analysieren, Qualität, überprüfen |
+| IT | analizzare, qualità, revisione |
+
+### Generate Report
+| Language | Keywords |
+|----------|----------|
+| EN | report, summary |
+| KO | 보고서, 요약 |
+| JA | 報告, サマリー |
+| ZH | 报告, 摘要 |
+| ES | informe, resumen |
+| FR | rapport, résumé |
+| DE | Bericht, Zusammenfassung |
+| IT | rapporto, riepilogo |
+
+### Zero Script QA
+| Language | Keywords |
+|----------|----------|
+| EN | QA, test, log |
+| KO | 테스트, 로그 |
+| JA | テスト, ログ |
+| ZH | 测试, 日志 |
+| ES | prueba, registro |
+| FR | test, journal |
+| DE | Test, Protokoll |
+| IT | test, registro |
+
+### Design Validation
+| Language | Keywords |
+|----------|----------|
+| EN | design, spec |
+| KO | 설계, 스펙 |
+| JA | 設計, スペック |
+| ZH | 设计, 规格 |
+| ES | diseño, especificación |
+| FR | conception, spécification |
+| DE | Design, Spezifikation |
+| IT | design, specifica |
 
 ---
 
@@ -138,14 +191,14 @@ When user mentions these keywords, consider using corresponding skills:
 ## Check-Act Iteration Loop
 
 ```
-gap-detector (Check) → Match Rate 확인
-    ├── >= 90% → report-generator (완료)
-    ├── 70-89% → 선택 제공 (수동/자동)
-    └── < 70% → pdca-iterator 권장 (Act)
+gap-detector (Check) → Check Match Rate
+    ├── >= 90% → report-generator (Complete)
+    ├── 70-89% → Offer choice (manual/auto)
+    └── < 70% → Recommend pdca-iterator (Act)
                    ↓
-              수정 후 gap-detector 재실행
+              Re-run gap-detector after fixes
                    ↓
-              반복 (최대 5회)
+              Repeat (max 5 iterations)
 ```
 
 ---
@@ -197,5 +250,51 @@ When generating PDCA documents, use these templates:
 
 ---
 
+## Response Report Rule (v1.4.1)
+
+**Include bkit feature usage report at the end of every response.**
+
+### Report Format
+
+```
+─────────────────────────────────────────────────
+📊 bkit Feature Usage
+─────────────────────────────────────────────────
+✅ Used: [bkit features used in this response]
+⏭️ Not Used: [major unused features] (reason)
+💡 Recommended: [features suitable for next task]
+─────────────────────────────────────────────────
+```
+
+### Features to Report
+
+**Priority Display:**
+- PDCA Commands: /pdca-plan, /pdca-design, /pdca-analyze, /pdca-report, /pdca-next, /pdca-status, /pdca-iterate
+- Task System: TaskCreate, TaskUpdate, TaskList, TaskGet
+- Agents: gap-detector, pdca-iterator, code-analyzer, report-generator, starter-guide, design-validator, qa-monitor, pipeline-guide, bkend-expert, enterprise-expert, infra-architect
+
+**Display When Used:**
+- Skills: bkit-rules, development-pipeline, starter, dynamic, enterprise, mobile-app, desktop-app, phase-1~9, zero-script-qa, bkit-templates
+- Other Commands: /pipeline-start, /pipeline-next, /pipeline-status, /init-starter, /init-dynamic, /init-enterprise, /archive, /zero-script-qa, /learn-claude-code, /setup-claude-code, /upgrade-claude-code, /upgrade-level, /github-stats
+- Tools: AskUserQuestion, SessionStart Hook
+
+### Report Rules
+
+1. Mandatory report at end of every response
+2. List bkit features used
+3. Explain reasons for major unused features
+4. Recommend next features based on PDCA phase
+
+### PDCA Phase Recommendations
+
+- Plan Complete → "Proceed to design phase with /pdca-design"
+- Design Complete → "Start implementation or use /pdca-next for guidance"
+- Do Complete → "Run Gap analysis with /pdca-analyze"
+- Check < 90% → "Auto-improve with /pdca-iterate"
+- Check >= 90% → "Generate completion report with /pdca-report"
+- No PDCA → "Start feature development with /pdca-plan"
+
+---
+
 **Generated by**: bkit Vibecoding Kit
-**Template Version**: 1.4.0 (Dual Platform Support)
+**Template Version**: 1.4.1 (Dual Platform Support)
