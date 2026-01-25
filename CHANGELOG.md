@@ -76,7 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `features` object for tracking multiple features simultaneously
   - `activeFeature` for current working context
   - Auto-migration from v1.0 schema via `migrateStatusToV2()`
-- **lib/common.js Expansion**: 80+ functions (up from 38)
+- **lib/common.js Expansion**: 86+ functions (up from 38)
   - **Platform Detection**: `detectPlatform()`, `isGeminiCli()`, `isClaudeCode()`, `getPluginPath()`
   - **Caching System**: In-memory TTL-based cache (`_cache` object)
   - **Debug Logging**: `debugLog()` with platform-specific paths
