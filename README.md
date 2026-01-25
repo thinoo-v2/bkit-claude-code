@@ -28,6 +28,8 @@ Context Engineering:
    to provide LLMs with optimal context for inference"
 ```
 
+**bkit is a practical implementation of Context Engineering**, providing a systematic context management system for Claude Code and Gemini CLI environments.
+
 ### bkit's Context Engineering Architecture
 
 bkit implements Context Engineering through three interconnected layers:
