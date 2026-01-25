@@ -93,8 +93,8 @@ bkit-claude-code/
 │   ├── gap-detector-stop.js       # Agent: Gap detector completion (v1.3.0)
 │   ├── iterator-stop.js           # Agent: Iterator completion (v1.3.0)
 │   ├── analysis-stop.js           # Agent: Analysis completion
+│   ├── code-analyzer-pre.js       # Agent: Code analyzer read-only block (v1.4.2)
 │   │
-│   ├── pdca-pre-write.js          # Legacy (use pre-write.js)
 │   ├── archive-feature.js         # Utility: Feature archiving
 │   ├── sync-folders.js            # Utility: Folder sync
 │   └── validate-plugin.js         # Utility: Plugin validation
@@ -159,14 +159,15 @@ bkit-claude-code/
 
 > **Note**: `gap-detector-post.js` exists in scripts/ but is **not currently used** by any agent. The gap-detector agent only uses Stop hook.
 
-### Utility Scripts (4)
+### Utility Scripts (3)
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| pdca-pre-write.js | Legacy script | Superseded by pre-write.js |
 | archive-feature.js | Feature archiving | `/archive` command |
 | sync-folders.js | Folder synchronization | Manual maintenance |
 | validate-plugin.js | Plugin validation | CI/CD or manual |
+
+> **Note**: pdca-pre-write.js was deprecated and deleted in v1.4.2. Its functionality is integrated into pre-write.js.
 
 ## Shared Library: lib/common.js
 

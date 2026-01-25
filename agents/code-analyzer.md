@@ -29,7 +29,8 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "echo '{\"decision\": \"block\", \"reason\": \"Code analyzer agent is read-only and cannot modify files\"}'"
+          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/code-analyzer-pre.js"
+          timeout: 5000
   Stop:
     - hooks:
         - type: command
