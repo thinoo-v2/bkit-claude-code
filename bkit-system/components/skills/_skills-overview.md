@@ -1,6 +1,9 @@
 # Skills Overview
 
-> 18 Skills defined in bkit (v1.3.1)
+> 18 Skills defined in bkit (v1.4.1)
+>
+> **v1.4.1**: Context Engineering 관점 추가 - 도메인 지식 계층
+> **v1.4.0**: Dual Platform Support (Claude Code + Gemini CLI)
 
 ## What are Skills?
 
@@ -8,6 +11,48 @@ Skills are **domain-specific expert knowledge** components.
 - Context that Claude references during specific tasks
 - Automated behavior via frontmatter hooks
 - Auto-activation via "Triggers:" keywords in description
+
+## Context Engineering 관점 (v1.4.1)
+
+Skills는 bkit의 **Domain Knowledge Layer**를 구성하며, [[../../philosophy/context-engineering|Context Engineering]] 원칙에 따라 설계되었습니다.
+
+### Skill Context Engineering 패턴
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Skill Context Engineering                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────┐  ┌──────────────────────┐             │
+│  │ Structured Knowledge │  │ Conditional Select   │             │
+│  │                      │  │                      │             │
+│  │ • 계층 구조 테이블     │  │ • Level 분기         │             │
+│  │ • ASCII 다이어그램    │  │ • Phase 분기         │             │
+│  │ • 체크리스트          │  │ • 8개 언어 트리거     │             │
+│  │ • 코드 예제           │  │ • Magic Word Bypass  │             │
+│  └──────────────────────┘  └──────────────────────┘             │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │              Skill Classification                         │   │
+│  │                                                          │   │
+│  │  Core (2)     → 전역 규칙, 템플릿 기준                       │   │
+│  │  Level (3)    → Starter/Dynamic/Enterprise               │   │
+│  │  Pipeline(10) → 9-Phase 단계별 가이드                       │   │
+│  │  Specialized(3) → QA, Mobile, Desktop 특수 도메인           │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Context Engineering 기법 적용
+
+| 기법 | Skill 구현 | 효과 |
+|------|-----------|------|
+| **계층 구조 테이블** | 레벨별/Phase별 적용 방법 | 조건부 지식 선택 |
+| **ASCII 다이어그램** | 아키텍처 시각화 | 구조적 이해 |
+| **체크리스트** | 완료 조건 명확화 | 자동화 가능 |
+| **코드 예제** | 즉시 적용 가능한 참조 | 일관된 구현 |
+| **Few-shot Examples** | 대화/출력 패턴 | 예측 가능한 응답 |
 
 ## Skill List (18)
 
@@ -156,6 +201,7 @@ bkit-claude-code/
 
 ## Related Documents
 
+- [[../../philosophy/context-engineering]] - Context Engineering 원칙 ⭐ NEW
 - [[../hooks/_hooks-overview]] - Hook event details
 - [[../scripts/_scripts-overview]] - Script details
 - [[../agents/_agents-overview]] - Agent details

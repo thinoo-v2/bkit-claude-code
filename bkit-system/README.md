@@ -3,6 +3,8 @@
 > Architecture guide documenting bkit plugin's internal structure and trigger system
 >
 > **v1.4.0**: Dual Platform Support (Claude Code + Gemini CLI)
+>
+> **v1.4.1**: Context Engineering 관점 추가 - LLM 추론을 위한 최적의 토큰 큐레이션
 
 ## Purpose of This Document
 
@@ -14,8 +16,63 @@
 
 - [[_GRAPH-INDEX]] - Obsidian graph hub (visualize all relationships)
 - [[philosophy/core-mission]] - Core mission & 3 philosophies
+- [[philosophy/context-engineering]] - Context Engineering principles ⭐ NEW
 - [[triggers/trigger-matrix]] - Trigger matrix (core reference)
 - [[scenarios/scenario-write-code]] - Code write flow
+
+## Context Engineering Overview (v1.4.1)
+
+bkit은 **Context Engineering**의 실제 구현체입니다. Context Engineering이란 LLM의 추론에 사용될 컨텍스트 토큰을 최적으로 큐레이션하는 작업입니다.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              bkit Context Engineering Architecture              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────┐  │
+│  │ Domain Knowledge │  │ Behavioral Rules │  │ State Mgmt   │  │
+│  │    (18 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
+│  │                  │  │                  │  │              │  │
+│  │ • 9-Phase Guide  │  │ • Role Def.      │  │ • PDCA v2.0  │  │
+│  │ • 3 Levels       │  │ • Constraints    │  │ • Multi-Feat │  │
+│  │ • 8 Languages    │  │ • Few-shot       │  │ • Caching    │  │
+│  └────────┬─────────┘  └────────┬─────────┘  └──────┬───────┘  │
+│           │                     │                    │          │
+│           └─────────────────────┼────────────────────┘          │
+│                                 ▼                               │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                5-Layer Hook System                        │  │
+│  │  L1: hooks.json (SessionStart)                           │  │
+│  │  L2: Skill Frontmatter (PreToolUse/PostToolUse/Stop)     │  │
+│  │  L3: Agent Frontmatter (PreToolUse/PostToolUse)          │  │
+│  │  L4: Description Triggers (keyword matching)             │  │
+│  │  L5: Scripts (26 Node.js modules)                        │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                 │                               │
+│                                 ▼                               │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │         Dynamic Context Injection                         │  │
+│  │  • Task Size → PDCA Level                                │  │
+│  │  • User Intent → Agent/Skill Auto-Trigger                │  │
+│  │  • Ambiguity Score → Clarifying Questions                │  │
+│  │  • Match Rate → Check-Act Iteration                      │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Core Context Engineering Patterns
+
+| Pattern | Implementation | Purpose |
+|---------|----------------|---------|
+| **Role Definition** | Agent frontmatter | 전문 분야, 책임 범위, 레벨 명시 |
+| **Structured Instructions** | Skill SKILL.md | 체크리스트, 테이블, 다이어그램으로 지식 구조화 |
+| **Few-shot Examples** | Agent/Skill prompts | 코드 패턴, 출력 템플릿, 대화 예제 |
+| **Constraint Specification** | Hook + Permission Mode | 도구 제한, 점수 임계값, 워크플로우 규칙 |
+| **State Injection** | SessionStart + Scripts | PDCA 상태, 기능 컨텍스트, 반복 카운터 |
+| **Adaptive Guidance** | lib/common.js | 레벨별 분기, 언어별 트리거, 모호성 대응 |
+
+Details: [[philosophy/context-engineering]]
 
 ## System Overview
 

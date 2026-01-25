@@ -128,7 +128,7 @@ For deeper understanding, explore the `bkit-system/` folder:
 
 bkit is not just a collection of prompts—it's a **production-grade plugin architecture** with carefully designed components that work together as a cohesive system.
 
-### Component Inventory (v1.4.0)
+### Component Inventory (v1.4.1)
 
 | Component | Count | Purpose |
 |-----------|-------|---------|
@@ -138,11 +138,67 @@ bkit is not just a collection of prompts—it's a **production-grade plugin arch
 | **Scripts** | 26 | Hook execution scripts (Node.js) |
 | **Templates** | 20 | Document templates (PDCA + 9 phases) |
 | **Hooks** | 5 layers | Event-driven automation triggers |
-| **lib/common.js** | 80+ functions | Shared utility library (v1.4.0) |
+| **lib/common.js** | 76+ functions | Shared utility library (v1.4.1) |
 
 **Total: 95+ components** working in harmony.
 
 > **v1.4.0**: Dual Platform Support - bkit now works on both Claude Code and Gemini CLI
+
+### Context Engineering Architecture (v1.4.1)
+
+bkit is a **practical implementation of Context Engineering**—the art of curating optimal tokens for LLM inference. Unlike traditional prompt engineering that focuses on single prompts, Context Engineering designs an entire system of context delivery.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              bkit Context Engineering Architecture              │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────┐  │
+│  │ Domain Knowledge │  │ Behavioral Rules │  │ State Mgmt   │  │
+│  │    (18 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
+│  │                  │  │                  │  │              │  │
+│  │ • 9-Phase Guide  │  │ • Role Def.      │  │ • PDCA v2.0  │  │
+│  │ • 3 Levels       │  │ • Constraints    │  │ • Multi-Feat │  │
+│  │ • 8 Languages    │  │ • Few-shot       │  │ • Caching    │  │
+│  └────────┬─────────┘  └────────┬─────────┘  └──────┬───────┘  │
+│           │                     │                    │          │
+│           └─────────────────────┼────────────────────┘          │
+│                                 ▼                               │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │                5-Layer Hook System                        │  │
+│  │  L1: hooks.json (SessionStart)                           │  │
+│  │  L2: Skill Frontmatter (PreToolUse/PostToolUse/Stop)     │  │
+│  │  L3: Agent Frontmatter (PreToolUse/PostToolUse)          │  │
+│  │  L4: Description Triggers (keyword matching)             │  │
+│  │  L5: Scripts (26 Node.js modules)                        │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                 │                               │
+│                                 ▼                               │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │         Dynamic Context Injection                         │  │
+│  │  • Task Size → PDCA Level                                │  │
+│  │  • User Intent → Agent/Skill Auto-Trigger                │  │
+│  │  • Ambiguity Score → Clarifying Questions                │  │
+│  │  • Match Rate → Check-Act Iteration                      │  │
+│  └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+#### Context Engineering Patterns in bkit
+
+| Pattern | Implementation | Purpose |
+|---------|----------------|---------|
+| **Role Definition** | Agent frontmatter | Expert role, responsibilities, level (CTO/Entry) |
+| **Structured Instructions** | Skill SKILL.md | Checklists, tables, ASCII diagrams |
+| **Few-shot Examples** | Agent/Skill prompts | Code patterns, output templates |
+| **Constraint Specification** | Hook + Permission Mode | Tool restrictions, score thresholds |
+| **State Injection** | SessionStart + Scripts | PDCA status, feature context, iteration counters |
+| **Adaptive Guidance** | lib/common.js | Level-based branching, 8-language triggers, ambiguity detection |
+
+> **Key Insight**: bkit doesn't just prompt the AI—it constructs an entire **context ecosystem** that guides AI behavior consistently across sessions.
+
+For detailed Context Engineering documentation, see [bkit-system/philosophy/context-engineering.md](bkit-system/philosophy/context-engineering.md).
 
 ### Architectural Excellence
 
@@ -150,7 +206,7 @@ bkit is not just a collection of prompts—it's a **production-grade plugin arch
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│               bkit Component Architecture (v1.4.0)               │
+│               bkit Component Architecture (v1.4.1)               │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  Knowledge Layer    │ Skills (18)      │ Domain expertise       │
@@ -163,7 +219,7 @@ bkit is not just a collection of prompts—it's a **production-grade plugin arch
 │  ─────────────────────────────────────────────────────────────  │
 │  Template Layer     │ Templates (20)   │ Document standards     │
 │  ─────────────────────────────────────────────────────────────  │
-│  Shared Library     │ lib/common.js (80+)│ Platform utilities    │
+│  Shared Library     │ lib/common.js (76+)│ Platform utilities    │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```

@@ -15,8 +15,28 @@
 > **v1.3.1 Cross-Platform**: All hooks converted from Bash (.sh) to Node.js (.js) for Windows/Mac/Linux compatibility
 >
 > **v1.4.0 Dual Platform Support**: Claude Code + Gemini CLI 동시 지원, 80+ lib/common.js 함수, 8언어 Intent Detection
+>
+> **v1.4.1 Context Engineering**: LLM 추론을 위한 최적의 토큰 큐레이션 관점 추가, Response Report Rule
 
-## Philosophy (3)
+## Philosophy (4)
+
+### Context Engineering (NEW)
+
+bkit은 **Context Engineering**의 실제 구현체입니다:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│              bkit Context Engineering Components                 │
+├─────────────────────────────────────────────────────────────────┤
+│  Domain Knowledge (18 Skills)  → 구조화된 도메인 지식            │
+│  Behavioral Rules (11 Agents)  → 역할 기반 행동 규칙             │
+│  State Management (lib/common) → 상태 관리 76+ 함수             │
+│  5-Layer Hook System           → 컨텍스트 주입 타이밍 제어       │
+│  Dynamic Injection             → 조건부 컨텍스트 선택            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Philosophy
 
 Core design principles and methodology:
 

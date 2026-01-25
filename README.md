@@ -19,6 +19,7 @@ bkit is a plugin/extension that transforms how you build software with AI. It pr
 
 ![bkit Features](images/bkit-features.png)
 
+- **Context Engineering (v1.4.1)** - Systematic context curation for optimal LLM inference with 5-layer hook system
 - **PDCA Methodology** - Structured development workflow with automatic documentation
 - **Evaluator-Optimizer Pattern** - Automatic iteration cycles from Anthropic's agent architecture
 - **9-Stage Development Pipeline** - From schema design to deployment
@@ -28,6 +29,7 @@ bkit is a plugin/extension that transforms how you build software with AI. It pr
 - **18 Skills** - Domain-specific knowledge for various development scenarios
 - **11 Agents** - Specialized AI assistants for different tasks
 - **26 Scripts** - Hook execution and automation scripts
+- **76+ Utility Functions** - lib/common.js with state management, intent detection, ambiguity handling
 - **Check-Act Iteration Loop** - Automatic gap analysis and fix cycles (v1.3.0+)
 
 ---
@@ -268,6 +270,7 @@ bkit is **primarily designed for software development**. However, some component
 ### Current Reference (bkit-system/)
 
 - **[System Architecture](bkit-system/README.md)** - Plugin structure and trigger system overview
+- **[Context Engineering](bkit-system/philosophy/context-engineering.md)** - LLM context curation principles (v1.4.1) ⭐ NEW
 - **[Core Mission & Philosophy](bkit-system/philosophy/core-mission.md)** - 3 core philosophies (Automation First, No Guessing, Docs=Code)
 - **[AI-Native Principles](bkit-system/philosophy/ai-native-principles.md)** - AI-Native development and 3 core competencies
 - **[PDCA Methodology](bkit-system/philosophy/pdca-methodology.md)** - PDCA cycle and 9-stage pipeline relationship

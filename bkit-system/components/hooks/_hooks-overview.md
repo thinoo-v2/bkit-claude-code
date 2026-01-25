@@ -1,7 +1,8 @@
 # Hooks Overview
 
-> Hook events triggered during Claude Code / Gemini CLI operations (v1.4.0)
+> Hook events triggered during Claude Code / Gemini CLI operations (v1.4.1)
 >
+> **v1.4.1**: Context Engineering 관점 추가 - 5-Layer Hook System
 > **v1.4.0**: Dual Platform Support (Claude Code + Gemini CLI)
 > **v1.3.1**: All hooks converted from Bash (.sh) to Node.js (.js) for cross-platform compatibility
 
@@ -12,6 +13,44 @@ Hooks are **scripts that automatically execute on specific Claude Code / Gemini 
 **Two Hook Sources:**
 1. **Global Hooks** (`hooks/hooks.json` for Claude, `gemini-extension.json` for Gemini) - Apply to all sessions
 2. **Skill Frontmatter Hooks** - Defined in SKILL.md/AGENT.md YAML frontmatter
+
+## Context Engineering 관점 (v1.4.1)
+
+Hooks는 bkit의 **컨텍스트 주입 시스템**의 핵심이며, [[../../philosophy/context-engineering|Context Engineering]] 원칙에 따라 5개 레이어로 구성됩니다.
+
+### 5-Layer Hook System
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    5-Layer Hook System                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  Layer 1: hooks.json (Global)                                   │
+│           └── SessionStart only (AskUserQuestion guidance)      │
+│                                                                  │
+│  Layer 2: Skill Frontmatter                                     │
+│           └── hooks: { PreToolUse, PostToolUse, Stop }          │
+│                                                                  │
+│  Layer 3: Agent Frontmatter                                     │
+│           └── hooks: { PreToolUse, PostToolUse, Stop }          │
+│                                                                  │
+│  Layer 4: Description Triggers                                  │
+│           └── "Triggers:" keyword matching (8 languages)        │
+│                                                                  │
+│  Layer 5: Scripts (26 modules)                                  │
+│           └── Actual Node.js logic execution                    │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Hook Event별 컨텍스트 주입
+
+| Event | Timing | Injection Type |
+|-------|--------|----------------|
+| **SessionStart** | 세션 시작 | 온보딩, PDCA 상태, 트리거 테이블 |
+| **PreToolUse** | 도구 실행 전 | 검증 체크리스트, 컨벤션 힌트 |
+| **PostToolUse** | 도구 실행 후 | 다음 단계 가이드, 분석 제안 |
+| **Stop** | 에이전트 종료 | 상태 전환, 사용자 선택 유도 |
 
 ## Platform Hook Mapping (v1.4.0)
 
@@ -221,13 +260,17 @@ These scripts are available for skill frontmatter hooks or manual use:
 
 ### Agent Scripts
 
-| Script | Event | Purpose |
-|--------|-------|---------|
-| `design-validator-pre.js` | PreToolUse | Design document validation |
-| `gap-detector-post.js` | PostToolUse | Gap analysis guidance |
-| `gap-detector-stop.js` | Stop | Gap detector completion |
-| `iterator-stop.js` | Stop | Iterator completion |
-| `analysis-stop.js` | Stop | Analysis completion |
+| Script | Event | Agent | Purpose |
+|--------|-------|-------|---------|
+| `design-validator-pre.js` | PreToolUse | design-validator | Design document validation |
+| `gap-detector-stop.js` | Stop | gap-detector | Check-Act iteration: Match Rate 분기 |
+| `iterator-stop.js` | Stop | pdca-iterator | Check-Act iteration: 완료/계속 안내 |
+| `analysis-stop.js` | Stop | code-analyzer | Analysis completion guidance |
+| `qa-pre-bash.js` | PreToolUse | qa-monitor | Block destructive commands |
+| `qa-monitor-post.js` | PostToolUse | qa-monitor | Critical issue notification |
+| `qa-stop.js` | Stop | qa-monitor | QA session cleanup |
+
+> **Note**: `gap-detector-post.js` exists but is **not used** by gap-detector agent (only Stop hook is active).
 
 ## Hook Script Writing Rules
 
@@ -266,6 +309,8 @@ outputEmpty()            // Allow without context
 
 ## Related Documents
 
+- [[../../philosophy/context-engineering]] - Context Engineering 원칙 ⭐ NEW
 - [[../scripts/_scripts-overview]] - Script details
 - [[../skills/_skills-overview]] - Skill details
+- [[../agents/_agents-overview]] - Agent details
 - [[../../triggers/trigger-matrix]] - Trigger matrix

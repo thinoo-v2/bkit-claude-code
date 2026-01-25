@@ -9,6 +9,7 @@
 | Feature | 완료일 | 매치율 | 문서 수 | 상태 |
 |---------|--------|:------:|:------:|:----:|
 | [bkit-automation-enhancement-v1.4.0](./bkit-automation-enhancement-v1.4.0/) | 2026-01-24 | 97% | 4 | ✅ Complete |
+| [bkit-usage-report-auto-display](./bkit-usage-report-auto-display/) | 2026-01-25 | 100% | 4 | ✅ Complete |
 
 ---
 
@@ -34,4 +35,24 @@
 
 ---
 
-*Last updated: 2026-01-24*
+### bkit-usage-report-auto-display
+
+- **완료일**: 2026-01-25
+- **PDCA Cycle**: #2
+- **최종 매치율**: 100%
+
+**포함 문서:**
+- `bkit-usage-report-auto-display.plan.md` - Plan 문서
+- `bkit-usage-report-auto-display.design.md` - Design 문서
+- `bkit-usage-report-auto-display.analysis.md` - Analysis 문서
+- `bkit-usage-report-auto-display.report.md` - Report 문서
+
+**주요 성과:**
+- 모든 응답 끝에 bkit 기능 사용 현황 자동 표시 구현
+- PDCA 단계별 맞춤 추천 기능
+- 사용/미사용/추천 기능 분류 체계 확립
+- v1.4.1 Response Report Rule 완성
+
+---
+
+*Last updated: 2026-01-25*

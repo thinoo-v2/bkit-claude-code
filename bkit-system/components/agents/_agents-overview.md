@@ -1,6 +1,9 @@
 # Agents Overview
 
-> bkit에 정의된 11개 Agents 목록과 각각의 역할 (v1.3.1)
+> bkit에 정의된 11개 Agents 목록과 각각의 역할 (v1.4.1)
+>
+> **v1.4.1**: Context Engineering 관점 추가 - 역할 기반 행동 규칙 계층
+> **v1.4.0**: Dual Platform Support (Claude Code + Gemini CLI)
 
 ## Agents란?
 
@@ -8,6 +11,45 @@ Agents는 **특정 작업에 특화된 AI 서브에이전트**입니다.
 - Task tool로 호출되어 독립적으로 작업 수행
 - 각자의 allowed-tools와 전문 프롬프트 보유
 - Frontmatter hooks로 특정 동작 트리거
+
+## Context Engineering 관점 (v1.4.1)
+
+Agents는 bkit의 **Behavioral Rules Layer**를 구성하며, [[../../philosophy/context-engineering|Context Engineering]] 원칙에 따라 설계되었습니다.
+
+### Agent Context Engineering 패턴
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    Agent Context Engineering                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────┐  ┌──────────────────────┐             │
+│  │   Role Definition    │  │   Constraint Spec    │             │
+│  │                      │  │                      │             │
+│  │ • Expert in X        │  │ • Permission Mode    │             │
+│  │ • Responsible for Y  │  │ • Allowed Tools      │             │
+│  │ • Level (CTO/Entry)  │  │ • Score Thresholds   │             │
+│  │ • Case Study Ref     │  │ • Workflow Rules     │             │
+│  └──────────────────────┘  └──────────────────────┘             │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │              Model Selection Strategy                     │   │
+│  │                                                          │   │
+│  │  opus   → 복잡한 분석, 전략적 판단                          │   │
+│  │  sonnet → 실행, 가이드, 반복 작업                          │   │
+│  │  haiku  → 빠른 모니터링, 문서 생성                         │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Agent별 모델 선택 전략
+
+| Model | Agents | 특성 |
+|-------|--------|------|
+| **opus** | code-analyzer, design-validator, gap-detector, enterprise-expert, infra-architect | 복잡한 분석, 전략적 판단 |
+| **sonnet** | bkend-expert, pdca-iterator, pipeline-guide, starter-guide | 실행, 가이드, 반복 |
+| **haiku** | qa-monitor, report-generator | 빠른 모니터링, 문서 생성 |
 
 ## 전체 목록
 
@@ -29,11 +71,11 @@ Agents는 **특정 작업에 특화된 AI 서브에이전트**입니다.
 | Agent | 트리거 조건 | 역할 | Hooks |
 |-------|-----------|------|-------|
 | [[../../../agents/pipeline-guide|pipeline-guide]] | "뭐부터", "어디서부터" | 9단계 파이프라인 안내 | - |
-| [[../../../agents/gap-detector|gap-detector]] | "갭 분석", "설계-구현 비교" | 설계 vs 구현 갭 분석 | PostToolUse |
+| [[../../../agents/gap-detector|gap-detector]] | "갭 분석", "설계-구현 비교" | 설계 vs 구현 갭 분석 | Stop |
 | [[../../../agents/design-validator|design-validator]] | "설계 검증", "스펙 확인" | 설계 문서 검증 | PreToolUse |
-| [[../../../agents/code-analyzer|code-analyzer]] | "코드 분석", "품질 검사" | 코드 품질/보안 분석 | PreToolUse (block) |
-| [[../../../agents/qa-monitor|qa-monitor]] | "QA", "테스트", "로그 분석" | Zero Script QA 실행 | PostToolUse |
-| [[../../../agents/pdca-iterator|pdca-iterator]] | "고쳐줘", "개선해줘", "반복" | 자동 반복 개선 | - |
+| [[../../../agents/code-analyzer|code-analyzer]] | "코드 분석", "품질 검사" | 코드 품질/보안 분석 | PreToolUse (block), Stop |
+| [[../../../agents/qa-monitor|qa-monitor]] | "QA", "테스트", "로그 분석" | Zero Script QA 실행 | PreToolUse, PostToolUse, Stop |
+| [[../../../agents/pdca-iterator|pdca-iterator]] | "고쳐줘", "개선해줘", "반복" | 자동 반복 개선 | Stop |
 | [[../../../agents/report-generator|report-generator]] | "보고서", "요약", "완료" | PDCA 보고서 생성 | - |
 
 ---
@@ -111,12 +153,13 @@ hooks:
 
 ## Agent별 Hooks
 
-| Agent | PreToolUse | PostToolUse |
-|-------|-----------|-------------|
-| [[../../../agents/gap-detector|gap-detector]] | - | `gap-detector-post.js` |
-| [[../../../agents/design-validator|design-validator]] | `design-validator-pre.js` | - |
-| [[../../../agents/code-analyzer|code-analyzer]] | Block (read-only) | - |
-| [[../../../agents/qa-monitor|qa-monitor]] | - | `qa-monitor-post.js` |
+| Agent | PreToolUse | PostToolUse | Stop |
+|-------|-----------|-------------|------|
+| [[../../../agents/gap-detector|gap-detector]] | - | - | `gap-detector-stop.js` |
+| [[../../../agents/design-validator|design-validator]] | `design-validator-pre.js` | - | - |
+| [[../../../agents/code-analyzer|code-analyzer]] | Block (read-only) | - | `analysis-stop.js` |
+| [[../../../agents/qa-monitor|qa-monitor]] | `qa-pre-bash.js` | `qa-monitor-post.js` | `qa-stop.js` |
+| [[../../../agents/pdca-iterator|pdca-iterator]] | - | - | `iterator-stop.js` |
 
 ---
 
@@ -169,6 +212,8 @@ bkit-claude-code/
 
 ## 관련 문서
 
+- [[../../philosophy/context-engineering]] - Context Engineering 원칙 ⭐ NEW
 - [[../skills/_skills-overview]] - Skill 상세
 - [[../hooks/_hooks-overview]] - Hook 이벤트 상세
+- [[../scripts/_scripts-overview]] - Script 상세
 - [[../../triggers/trigger-matrix]] - 트리거 매트릭스

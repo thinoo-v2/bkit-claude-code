@@ -126,10 +126,24 @@ According to Addy Osmani's research on AI-Native engineers, effective practition
 - Test edge cases and error handling
 - Validate against requirements
 
-### 4. Context Engineering
-- Craft effective prompts and specifications
-- Maintain clear project documentation
-- Build reusable patterns and templates
+### 4. Context Engineering (v1.4.1 Enhanced)
+
+Context Engineering is the **systematic design of information flow to LLMs**—going beyond simple prompt crafting to build entire systems that consistently guide AI behavior.
+
+**Key Practices**:
+- Design multi-layered context injection systems
+- Build state management for session persistence
+- Create adaptive triggers based on user intent
+- Implement quality feedback loops (Evaluator-Optimizer)
+
+**bkit Implementation**:
+```
+Domain Knowledge (18 Skills) ─┐
+Behavioral Rules (11 Agents) ─┼─→ 5-Layer Hook System ─→ Dynamic Context Injection
+State Management (76+ funcs) ─┘
+```
+
+See [bkit-system/philosophy/context-engineering.md](bkit-system/philosophy/context-engineering.md) for detailed implementation.
 
 ---
 
@@ -153,18 +167,36 @@ bkit implements each AI-Native principle through specific features and workflows
 → AI generates code from specs
 ```
 
-### Principle 2: Context-Aware Development
+### Principle 2: Context-Aware Development (Context Engineering)
+
+bkit implements **Context Engineering**—the systematic curation of context tokens for optimal LLM inference.
 
 | bkit Feature | Implementation |
 |--------------|----------------|
 | **3 Project Levels** | Starter, Dynamic, Enterprise contexts |
 | **Convention Skill (Phase 2)** | Defines naming, structure, patterns |
 | **CLAUDE.md Files** | Project-specific AI instructions |
-| **Skill System (24 skills)** | Domain-specific knowledge |
+| **Skill System (18 skills)** | Domain-specific knowledge |
+| **5-Layer Hook System** | Context injection at multiple points |
+| **lib/common.js (76+ functions)** | State management, intent detection, ambiguity handling |
 
-**Context Layers**:
+**Context Engineering Architecture**:
 ```
-Level Detection → Project conventions → Domain skills → AI generation
+┌─────────────────────────────────────────────────────────────────┐
+│              bkit Context Engineering Layers                     │
+├─────────────────────────────────────────────────────────────────┤
+│  Layer 1: Domain Knowledge   │ 18 Skills (structured instructions)│
+│  Layer 2: Behavioral Rules   │ 11 Agents (role + constraints)    │
+│  Layer 3: State Management   │ PDCA v2.0, Multi-Feature Context  │
+│  Layer 4: Dynamic Injection  │ Intent detection, ambiguity score │
+│  Layer 5: Feedback Loop      │ Match Rate → Iteration            │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Context Injection Flow**:
+```
+User Message → Intent Detection → Skill/Agent Trigger →
+→ State Injection → Tool Hooks → Response → Feedback Loop
 ```
 
 ### Principle 3: AI Agents as Developers

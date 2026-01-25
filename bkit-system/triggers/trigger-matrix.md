@@ -48,25 +48,33 @@ These hooks are defined in skill YAML frontmatter:
 |------|-------------|--------|--------|
 | `Write` | [[../../skills/phase-5-design-system/SKILL|phase-5-design-system]] | `phase5-design-post.js` | Design token verification |
 | `Write` | [[../../skills/phase-6-ui-integration/SKILL|phase-6-ui-integration]] | `phase6-ui-post.js` | UI layer separation check |
-| `Write` | [[../agents/gap-detector|gap-detector]] | `gap-detector-post.js` | Post-analysis iteration guidance |
 | `Write` | [[../agents/qa-monitor|qa-monitor]] | `qa-monitor-post.js` | Critical issue notification |
 
 #### Stop
 
+**Active Stop Hooks** (SKILL.md frontmatter에 정의됨):
+
 | Skill/Agent | Script | Action |
 |-------------|--------|--------|
-| [[../../skills/phase-1-schema/SKILL|phase-1-schema]] | `phase1-schema-stop.js` | Schema phase completion (v1.4.0) |
-| [[../../skills/phase-2-convention/SKILL|phase-2-convention]] | `phase2-convention-stop.js` | Convention phase completion (v1.4.0) |
-| [[../../skills/phase-3-mockup/SKILL|phase-3-mockup]] | `phase3-mockup-stop.js` | Mockup phase completion (v1.4.0) |
 | [[../../skills/phase-4-api/SKILL|phase-4-api]] | `phase4-api-stop.js` | Zero Script QA guidance |
-| [[../../skills/phase-7-seo-security/SKILL|phase-7-seo-security]] | `phase7-seo-stop.js` | SEO/Security phase completion (v1.4.0) |
 | [[../../skills/phase-8-review/SKILL|phase-8-review]] | `phase8-review-stop.js` | Review summary + gap analysis |
 | [[../../skills/zero-script-qa/SKILL|zero-script-qa]] | `qa-stop.js` | QA session cleanup |
 | [[../../skills/development-pipeline/SKILL|development-pipeline]] | `echo` | Pipeline completion |
 | [[../agents/gap-detector|gap-detector]] | `gap-detector-stop.js` | Check-Act iteration: Match Rate 기반 분기 (v1.3.0) |
 | [[../agents/pdca-iterator|pdca-iterator]] | `iterator-stop.js` | Check-Act iteration: 완료/계속 안내 (v1.3.0) |
+| [[../agents/code-analyzer|code-analyzer]] | `analysis-stop.js` | 분석 완료 시 이슈 요약 및 다음 액션 안내 |
+| [[../agents/qa-monitor|qa-monitor]] | `qa-stop.js` | QA 세션 종료 시 결과 요약 및 정리 |
 
-> **v1.4.0**: 4개 신규 Phase Stop 스크립트 추가 (phase1-schema, phase2-convention, phase3-mockup, phase7-seo)
+**Prepared Scripts** (스크립트 존재하지만 SKILL.md hooks 미연결):
+
+| Skill | Script | Status |
+|-------|--------|--------|
+| [[../../skills/phase-1-schema/SKILL|phase-1-schema]] | `phase1-schema-stop.js` | 스크립트 준비됨, hook 미연결 |
+| [[../../skills/phase-2-convention/SKILL|phase-2-convention]] | `phase2-convention-stop.js` | 스크립트 준비됨, hook 미연결 |
+| [[../../skills/phase-3-mockup/SKILL|phase-3-mockup]] | `phase3-mockup-stop.js` | 스크립트 준비됨, hook 미연결 |
+| [[../../skills/phase-7-seo-security/SKILL|phase-7-seo-security]] | `phase7-seo-stop.js` | 스크립트 준비됨, hook 미연결 |
+
+> **Note**: v1.4.0에서 스크립트가 추가되었으나, 해당 SKILL.md 파일들에 hooks frontmatter가 아직 추가되지 않았습니다.
 
 ---
 
