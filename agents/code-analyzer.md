@@ -16,6 +16,9 @@ description: |
 
   Do NOT use for: design document review (use design-validator), gap analysis
   (use gap-detector), or writing/modifying code (this agent is read-only).
+imports:
+  - ${PLUGIN_ROOT}/templates/shared/error-handling-patterns.md
+  - ${PLUGIN_ROOT}/templates/shared/naming-conventions.md
 permissionMode: plan
 model: opus
 tools:
