@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.4] - 2026-01-27
+
+### Added
+- **PDCA Skill Integration**: Unified `/pdca` skill with 8 actions
+  - `plan`, `design`, `do`, `analyze`, `iterate`, `report`, `status`, `next`
+  - Replaces individual `/pdca-*` commands
+  - Task Management System integration for tracking
+- **hooks-json-integration**: Centralized hook management (GitHub #9354 workaround)
+  - `scripts/unified-stop.js` (223 lines) - 14 handlers (10 skills, 4 agents)
+  - `scripts/unified-bash-pre.js` (134 lines) - 2 handlers
+  - `scripts/unified-write-post.js` (166 lines) - 4 handlers
+  - `scripts/unified-bash-post.js` (80 lines) - 1 handler
+- **skill-orchestrator.js**: New library module for skill action routing
+- **New Skills** (4):
+  - `pdca` - Unified PDCA cycle management
+  - `code-review` - Code review and quality analysis
+  - `claude-code-learning` - Claude Code learning guide
+  - `github-integration` - GitHub statistics and automation
+
+### Changed
+- **Commands deprecated**: All `commands/*.md` migrated to Skills
+  - See `commands/DEPRECATED.md` for migration guide
+  - Commands still available via `commands/gemini/` for Gemini CLI
+- **Skills count**: Increased from 18 to 22
+- **Scripts count**: Increased from 28 to 39
+- **Library modules**: Increased from 6 to 7 (added `skill-orchestrator.js`)
+- **Hook system**: Migrated from SKILL.md frontmatter to centralized `hooks.json`
+- **bkit feature report**: Updated to use Skills instead of deprecated Commands
+
+### Deprecated
+- All commands in `commands/*.md` (use Skills instead)
+- SKILL.md frontmatter hooks (use `hooks.json` instead)
+
+### Compatibility
+- **Claude Code**: Minimum v2.1.15, Recommended v2.1.20
+- **Gemini CLI**: Minimum v0.25.0
+- **Node.js**: Minimum v18.0.0
+
+---
+
 ## [1.4.3] - 2026-01-26
 
 ### Added

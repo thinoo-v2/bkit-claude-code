@@ -9,6 +9,8 @@
 > **v1.4.2**: Context Engineering modules + Task Management integration + UserPromptSubmit/PreCompact hooks
 >
 > **v1.4.3**: Gemini CLI v0.25+ compatibility - `xmlSafeOutput()` for XML wrapping, engines version update
+>
+> **v1.4.4**: Commands deprecated → Skills migration, PDCA Skill integration (8 actions), hooks-json-integration (unified scripts)
 
 ## Purpose of This Document
 
@@ -35,7 +37,7 @@ bkit is a practical implementation of **Context Engineering**. Context Engineeri
 │                                                                 │
 │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────┐  │
 │  │ Domain Knowledge │  │ Behavioral Rules │  │ State Mgmt   │  │
-│  │    (18 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
+│  │    (22 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
 │  │                  │  │                  │  │              │  │
 │  │ • 9-Phase Guide  │  │ • Role Def.      │  │ • PDCA v2.0  │  │
 │  │ • 3 Levels       │  │ • Constraints    │  │ • Multi-Feat │  │
@@ -45,12 +47,12 @@ bkit is a practical implementation of **Context Engineering**. Context Engineeri
 │           └─────────────────────┼────────────────────┘          │
 │                                 ▼                               │
 │  ┌──────────────────────────────────────────────────────────┐  │
-│  │                5-Layer Hook System                        │  │
-│  │  L1: hooks.json (SessionStart)                           │  │
-│  │  L2: Skill Frontmatter (PreToolUse/PostToolUse/Stop)     │  │
-│  │  L3: Agent Frontmatter (PreToolUse/PostToolUse)          │  │
+│  │                Unified Hook System (v1.4.4)               │  │
+│  │  L1: hooks.json (6 events - all hooks centralized)       │  │
+│  │  L2: Unified Scripts (stop, bash-pre, write-post, etc.)  │  │
+│  │  L3: Agent Frontmatter (constraints only)                │  │
 │  │  L4: Description Triggers (keyword matching)             │  │
-│  │  L5: Scripts (28 Node.js modules)                        │  │
+│  │  L5: Scripts (39 Node.js modules)                        │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                 │                               │
 │                                 ▼                               │
@@ -78,16 +80,83 @@ bkit is a practical implementation of **Context Engineering**. Context Engineeri
 
 Details: [[philosophy/context-engineering]]
 
+## v1.4.4 Architecture
+
+### Component Diagram (5-Layer)
+
+```mermaid
+flowchart TB
+    subgraph UserLayer["User Request"]
+        UR[User Input]
+    end
+
+    subgraph SkillLayer["Skill Layer"]
+        PDCA["/pdca"]
+        ENT["/enterprise"]
+        P8["/phase-8-review"]
+    end
+
+    subgraph Orchestrator["skill-orchestrator.js"]
+        GAA["getAgentForAction()"]
+    end
+
+    subgraph AgentLayer["Agent Layer (11)"]
+        GD["gap-detector"]
+        PI["pdca-iterator"]
+        RG["report-generator"]
+    end
+
+    subgraph StopHooks["Stop Hooks Layer"]
+        GDS["gap-detector-stop.js"]
+        ITS["iterator-stop.js"]
+    end
+
+    subgraph StateLayer["State Management"]
+        PDS[".pdca-status.json"]
+        TASK["Task System"]
+    end
+
+    UR --> SkillLayer
+    SkillLayer --> Orchestrator
+    Orchestrator --> AgentLayer
+    AgentLayer --> StopHooks
+    StopHooks --> StateLayer
+```
+
+### Data Flow (PDCA Cycle)
+
+```mermaid
+flowchart LR
+    A["/pdca analyze"] --> B["gap-detector"]
+    B --> C{"matchRate?"}
+    C -->|"< 90%"| D["[Act] Task + AskUserQuestion"]
+    C -->|">= 90%"| E["[Report] Task"]
+    D --> F["/pdca iterate"]
+    F --> G["pdca-iterator"]
+    G --> A
+    E --> H["/pdca report"]
+```
+
+### Component Dependencies
+
+| Component | Depends On | Purpose |
+|-----------|-----------|---------|
+| `skill-orchestrator.js` | `lib/common.js` | PDCA state management |
+| `gap-detector-stop.js` | `lib/common.js` | Task creation, state update |
+| `iterator-stop.js` | `lib/common.js` | Task update, phase transition |
+| `pdca` skill | `templates/*.md` | Template imports |
+| `agents/*.md` | `skills` | `skills_preload` fields |
+
 ## System Overview
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                bkit Trigger System (v1.4.2)                      │
+│                bkit Trigger System (v1.4.4)                      │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
 │  │   Skills     │───▶│   Agents     │───▶│   Scripts    │      │
-│  │  (18)        │    │  (11)        │    │  (28)        │      │
+│  │  (22)        │    │  (11)        │    │  (39)        │      │
 │  └──────────────┘    └──────────────┘    └──────────────┘      │
 │         │                   │                   │               │
 │         ▼                   ▼                   ▼               │
@@ -109,12 +178,12 @@ Details: [[philosophy/context-engineering]]
 
 | Component | Count | Role | Details |
 |-----------|-------|------|---------|
-| Skills | 18 | Domain knowledge | [[components/skills/_skills-overview]] |
+| Skills | 22 | Domain knowledge + Slash commands | [[components/skills/_skills-overview]] |
 | Agents | 11 | Specialized task execution | [[components/agents/_agents-overview]] |
-| Commands | 20 (×2) | Slash commands | Claude: `commands/*.md`, Gemini: `commands/gemini/*.toml` |
-| Hooks | 5 events | Event-based triggers | [[components/hooks/_hooks-overview]] |
-| Scripts | 28 | Actual logic execution | [[components/scripts/_scripts-overview]] |
-| Lib | 6 | Shared utilities | `lib/*.js` (86+ functions) |
+| Commands | DEPRECATED | Migrated to Skills (v1.4.4) | Gemini: `commands/gemini/*.toml` |
+| Hooks | 6 events | Event-based triggers (unified) | [[components/hooks/_hooks-overview]] |
+| Scripts | 39 | Actual logic execution | [[components/scripts/_scripts-overview]] |
+| Lib | 7 | Shared utilities | `lib/*.js` (86+ functions) |
 | Config | 1 | Centralized settings | `bkit.config.json` |
 | Templates | 23 | Document templates | PDCA + Pipeline + Shared |
 
@@ -123,14 +192,14 @@ Details: [[philosophy/context-engineering]]
 bkit triggers occur across 5 layers:
 
 ```
-Layer 1: hooks.json (Global) → SessionStart, UserPromptSubmit, PreCompact (v1.4.2)
-Layer 2: Skill Frontmatter   → hooks: PreToolUse, PostToolUse, Stop
-Layer 3: Agent Frontmatter   → hooks: PreToolUse, PostToolUse
+Layer 1: hooks.json (Global) → SessionStart, UserPromptSubmit, PreCompact, PreToolUse, PostToolUse, Stop
+Layer 2: Unified Scripts     → unified-stop.js, unified-bash-pre.js, unified-write-post.js, etc.
+Layer 3: Agent Frontmatter   → Constraints and role definitions (hooks deprecated)
 Layer 4: Description Triggers → "Triggers:" keyword matching
-Layer 5: Scripts             → Actual Node.js logic execution (28 modules)
+Layer 5: Scripts             → Actual Node.js logic execution (39 modules)
 ```
 
-> **Note**: Global hooks.json contains 5 hook events. PreToolUse/PostToolUse hooks are also defined in skill/agent frontmatter for contextual activation.
+> **Note (v1.4.4)**: All hooks centralized in hooks.json. SKILL.md frontmatter hooks deprecated (backward compatible).
 
 Details: [[triggers/trigger-matrix]]
 
@@ -216,4 +285,4 @@ The `bkit-system/.obsidian/` folder includes shared settings:
 | `workspace.json` | Personal workspace state | No |
 | `app.json` | Personal app settings | No |
 
-> **Tip**: The graph settings are pre-configured for optimal visualization of bkit's 18 skills, 11 agents, 28 scripts, and their relationships.
+> **Tip**: The graph settings are pre-configured for optimal visualization of bkit's 22 skills, 11 agents, 39 scripts, and their relationships.

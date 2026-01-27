@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 /**
- * bkit Vibecoding Kit - SessionStart Hook (v1.4.3)
+ * bkit Vibecoding Kit - SessionStart Hook (v1.4.4)
  * Cross-platform Node.js implementation
  * Supports: Claude Code, Gemini CLI
+ *
+ * v1.4.4 Changes:
+ * - Updated bkit feature report to use Skills instead of deprecated Commands
+ * - All commands migrated to Skills (see commands/DEPRECATED.md)
  *
  * v1.4.3 Changes:
  * - Applied xmlSafeOutput to dynamic content for Gemini CLI v0.26+ (ISSUE-001)
@@ -479,7 +483,7 @@ if (isGeminiCli()) {
   // ------------------------------------------------------------
 
   let output = `
-\x1b[36m🤖 bkit Vibecoding Kit v1.4.3 (Gemini Edition)\x1b[0m
+\x1b[36m🤖 bkit Vibecoding Kit v1.4.4 (Gemini Edition)\x1b[0m
 ====================================================
 PDCA Cycle & AI-Native Development Environment
 `;
@@ -523,7 +527,7 @@ PDCA Cycle & AI-Native Development Environment
   // ------------------------------------------------------------
 
   // Build context based on onboarding type
-  let additionalContext = `# bkit Vibecoding Kit v1.4.3 - Session Startup\n\n`;
+  let additionalContext = `# bkit Vibecoding Kit v1.4.4 - Session Startup\n\n`;
 
   if (onboardingData.hasExistingWork) {
     additionalContext += `## 🔄 이전 작업 감지됨\n\n`;
@@ -568,7 +572,7 @@ PDCA Cycle & AI-Native Development Environment
   // ============================================================
   additionalContext += `
 
-## 📊 bkit 기능 현황 보고 (v1.4.3 - 모든 답변 필수)
+## 📊 bkit 기능 현황 보고 (v1.4.4 - 모든 답변 필수)
 
 **규칙: 모든 답변 끝에 아래 형식으로 bkit 기능 사용 현황을 보고합니다.**
 
@@ -584,8 +588,8 @@ PDCA Cycle & AI-Native Development Environment
 
 ### 보고 대상 bkit 기능 목록:
 
-**1. PDCA Commands (우선 표시):**
-/pdca-plan, /pdca-design, /pdca-analyze, /pdca-report, /pdca-next, /pdca-status, /pdca-iterate
+**1. PDCA Skill (우선 표시) - 통합 PDCA 관리:**
+/pdca plan, /pdca design, /pdca do, /pdca analyze, /pdca iterate, /pdca report, /pdca status, /pdca next
 
 **2. Task System (우선 표시):**
 TaskCreate, TaskUpdate, TaskList, TaskGet
@@ -593,37 +597,38 @@ TaskCreate, TaskUpdate, TaskList, TaskGet
 **3. Agents (우선 표시):**
 gap-detector, pdca-iterator, code-analyzer, report-generator, starter-guide, design-validator, qa-monitor, pipeline-guide, bkend-expert, enterprise-expert, infra-architect
 
-**4. Skills (사용 시 표시):**
-bkit-rules, development-pipeline, starter, dynamic, enterprise, mobile-app, desktop-app, phase-1~9, zero-script-qa, bkit-templates
+**4. Core Skills (22개):**
+- **PDCA**: /pdca (plan, design, do, analyze, iterate, report, status, next)
+- **Level**: /starter, /dynamic, /enterprise
+- **Pipeline**: /development-pipeline (start, next, status)
+- **Phase**: /phase-1-schema ~ /phase-9-deployment
+- **Utility**: /code-review, /zero-script-qa, /claude-code-learning, /github-integration, /mobile-app, /desktop-app, /bkit-templates, /bkit-rules
 
-**5. 기타 Commands (사용 시 표시):**
-/pipeline-start, /pipeline-next, /pipeline-status, /init-starter, /init-dynamic, /init-enterprise, /archive, /zero-script-qa, /learn-claude-code, /setup-claude-code, /upgrade-claude-code, /upgrade-level, /github-stats
-
-**6. 도구 (관련 시 표시):**
-AskUserQuestion, SessionStart Hook
+**5. 도구 (관련 시 표시):**
+AskUserQuestion, SessionStart Hook, Read, Write, Edit, Bash
 
 ### 보고 규칙:
 
 1. **필수**: 모든 답변 끝에 보고 (보고 없으면 불완전한 답변)
 2. **사용 기능**: 이번 답변에서 실제로 사용한 bkit 기능 나열
 3. **미사용 설명**: 주요 기능을 사용하지 않은 이유 간단히 설명
-4. **추천**: 현재 PDCA 단계에 맞는 다음 기능 제안
+4. **추천**: 현재 PDCA 단계에 맞는 다음 skill 제안
 
 ### PDCA 단계별 추천:
 
-| 현재 상태 | 추천 |
-|----------|------|
-| PDCA 없음 | "기능 개발 시 /pdca-plan으로 시작" |
-| Plan 완료 | "/pdca-design으로 설계 단계 진행" |
-| Design 완료 | "구현 시작 또는 /pdca-next로 가이드" |
-| Do 완료 | "/pdca-analyze로 Gap 분석" |
-| Check < 90% | "/pdca-iterate로 자동 개선" |
-| Check ≥ 90% | "/pdca-report로 완료 보고서" |
+| 현재 상태 | 추천 Skill |
+|----------|------------|
+| PDCA 없음 | "/pdca plan {feature}로 시작" |
+| Plan 완료 | "/pdca design {feature}로 설계" |
+| Design 완료 | "구현 시작 또는 /pdca do {feature}" |
+| Do 완료 | "/pdca analyze {feature}로 Gap 분석" |
+| Check < 90% | "/pdca iterate {feature}로 자동 개선" |
+| Check ≥ 90% | "/pdca report {feature}로 완료 보고서" |
 
 `;
 
   const response = {
-    systemMessage: `bkit Vibecoding Kit v1.4.3 activated (Claude Code)`,
+    systemMessage: `bkit Vibecoding Kit v1.4.4 activated (Claude Code)`,
     hookSpecificOutput: {
       hookEventName: "SessionStart",
       onboardingType: onboardingData.type,

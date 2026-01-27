@@ -14,7 +14,7 @@ flowchart TB
         subgraph ROW1[" "]
             direction LR
             SPEC["**1. SPEC**<br/>Plan Doc<br/>Design Doc"]
-            CONTEXT["**2. CONTEXT**<br/>CLAUDE.md<br/>24 Skills"]
+            CONTEXT["**2. CONTEXT**<br/>CLAUDE.md<br/>22 Skills"]
             AGENT["**3. AI AGENT**<br/>11 Agents<br/>Autonomous Implementation"]
         end
 
@@ -126,7 +126,7 @@ According to Addy Osmani's research on AI-Native engineers, effective practition
 - Test edge cases and error handling
 - Validate against requirements
 
-### 4. Context Engineering (v1.4.3 Enhanced)
+### 4. Context Engineering (v1.4.4 Enhanced)
 
 Context Engineering is the **systematic design of information flow to LLMs**—going beyond simple prompt crafting to build entire systems that consistently guide AI behavior.
 
@@ -138,8 +138,8 @@ Context Engineering is the **systematic design of information flow to LLMs**—g
 
 **bkit Implementation**:
 ```
-Domain Knowledge (18 Skills) ─┐
-Behavioral Rules (11 Agents) ─┼─→ 5-Layer Hook System ─→ Dynamic Context Injection
+Domain Knowledge (22 Skills) ─┐
+Behavioral Rules (11 Agents) ─┼─→ Unified Hook System ─→ Dynamic Context Injection
 State Management (86+ funcs) ─┘
 ```
 
@@ -162,8 +162,8 @@ bkit implements each AI-Native principle through specific features and workflows
 
 **Workflow**:
 ```
-/bkit:pdca-plan {feature}    → Create specification
-/bkit:pdca-design {feature}  → Design architecture
+/pdca plan {feature}    → Create specification
+/pdca design {feature}  → Design architecture
 → AI generates code from specs
 ```
 
@@ -176,8 +176,8 @@ bkit implements **Context Engineering**—the systematic curation of context tok
 | **3 Project Levels** | Starter, Dynamic, Enterprise contexts |
 | **Convention Skill (Phase 2)** | Defines naming, structure, patterns |
 | **CLAUDE.md Files** | Project-specific AI instructions |
-| **Skill System (18 skills)** | Domain-specific knowledge |
-| **5-Layer Hook System** | Context injection at multiple points |
+| **Skill System (22 skills)** | Domain-specific knowledge |
+| **Unified Hook System (v1.4.4)** | Centralized context injection via hooks.json |
 | **lib/*.js (86+ functions)** | State management, intent detection, ambiguity handling |
 
 **Context Engineering Architecture**:
@@ -185,7 +185,7 @@ bkit implements **Context Engineering**—the systematic curation of context tok
 ┌─────────────────────────────────────────────────────────────────┐
 │              bkit Context Engineering Layers                     │
 ├─────────────────────────────────────────────────────────────────┤
-│  Layer 1: Domain Knowledge   │ 18 Skills (structured instructions)│
+│  Layer 1: Domain Knowledge   │ 22 Skills (structured instructions)│
 │  Layer 2: Behavioral Rules   │ 11 Agents (role + constraints)    │
 │  Layer 3: State Management   │ PDCA v2.0, Multi-Feature Context  │
 │  Layer 4: Dynamic Injection  │ Intent detection, ambiguity score │
@@ -249,7 +249,7 @@ Specification Document → PDCA Design → AI Implementation → Working Code
 - Self-healing through iteration cycles
 
 ```bash
-/bkit:pdca-iterate {feature}  # Runs until quality threshold met
+/pdca iterate {feature}  # Runs until quality threshold met
 ```
 
 ### 3. Continuous Context Evolution
@@ -282,13 +282,13 @@ Specification Document → PDCA Design → AI Implementation → Working Code
 
 ### Step 1: Initialize with Context
 ```bash
-/bkit:init-starter      # or init-dynamic, init-enterprise
+/starter      # or /dynamic, /enterprise
 ```
 
 ### Step 2: Create Specifications
 ```bash
-/bkit:pdca-plan {feature}
-/bkit:pdca-design {feature}
+/pdca plan {feature}
+/pdca design {feature}
 ```
 
 ### Step 3: Implement with AI Agents
@@ -299,13 +299,13 @@ Specification Document → PDCA Design → AI Implementation → Working Code
 
 ### Step 4: Iterate to Quality
 ```bash
-/bkit:pdca-iterate {feature}  # Automatic improvement cycles
-/bkit:pdca-analyze            # Gap analysis
+/pdca iterate {feature}  # Automatic improvement cycles
+/pdca analyze {feature}  # Gap analysis
 ```
 
 ### Step 5: Document and Learn
 ```bash
-/bkit:pdca-report {feature}   # Generate completion report
+/pdca report {feature}   # Generate completion report
 ```
 
 ---

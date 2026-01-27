@@ -28,7 +28,7 @@ bkit is a practical implementation of **Context Engineering**:
 ┌─────────────────────────────────────────────────────────────────┐
 │              bkit Context Engineering Components                 │
 ├─────────────────────────────────────────────────────────────────┤
-│  Domain Knowledge (18 Skills)  → Structured domain knowledge     │
+│  Domain Knowledge (22 Skills)  → Structured domain knowledge     │
 │  Behavioral Rules (11 Agents)  → Role-based behavioral rules     │
 │  State Management (lib/common) → State management 76+ functions  │
 │  5-Layer Hook System           → Context injection timing ctrl   │
@@ -44,7 +44,7 @@ Core design principles and methodology:
 - [[philosophy/ai-native-principles|ai-native-principles]] - AI-Native development & 3 core competencies
 - [[philosophy/pdca-methodology|pdca-methodology]] - PDCA cycle & 9-stage pipeline relationship
 
-## Skills (18)
+## Skills (22)
 
 ### Core Skills (2)
 - [[../skills/bkit-rules/SKILL|bkit-rules]] - PDCA rules + auto-triggering + code quality standards
@@ -100,35 +100,35 @@ The following skills were consolidated:
 - [[../agents/pdca-iterator|pdca-iterator]] - Iteration optimizer (Evaluator-Optimizer pattern)
 - [[../agents/report-generator|report-generator]] - Report generation
 
-## Commands (20)
+## Skills - User Invocable (v1.4.4)
 
-### Initialization
-- `/init-starter` - Initialize Starter level project
-- `/init-dynamic` - Initialize Dynamic level project
-- `/init-enterprise` - Initialize Enterprise level project
+> **Note**: Commands deprecated in v1.4.4. Use Skills instead.
 
-### PDCA Workflow
-- `/pdca-plan` - Create plan document
-- `/pdca-design` - Create design document
-- `/pdca-analyze` - Run gap analysis
-- `/pdca-iterate` - Auto-fix with Evaluator-Optimizer
-- `/pdca-report` - Generate completion report
-- `/pdca-status` - Show PDCA dashboard
-- `/pdca-next` - Guide next PDCA step
+### PDCA Skill (Unified)
+- `/pdca plan` - Create plan document
+- `/pdca design` - Create design document
+- `/pdca do` - Implementation guide
+- `/pdca analyze` - Run gap analysis
+- `/pdca iterate` - Auto-fix with Evaluator-Optimizer
+- `/pdca report` - Generate completion report
+- `/pdca status` - Show PDCA dashboard
+- `/pdca next` - Guide next PDCA step
 
-### Pipeline
-- `/pipeline-start` - Start pipeline guide
-- `/pipeline-next` - Next pipeline phase
-- `/pipeline-status` - Pipeline progress
+### Level Skills
+- `/starter` - Starter level project guidance
+- `/dynamic` - Dynamic level project guidance
+- `/enterprise` - Enterprise level project guidance
 
-### Utilities
+### Pipeline Skills
+- `/development-pipeline start` - Start pipeline guide
+- `/development-pipeline next` - Next pipeline phase
+- `/development-pipeline status` - Pipeline progress
+
+### Utility Skills
 - `/zero-script-qa` - Run Zero Script QA
-- `/learn-claude-code` - Learning curriculum
-- `/setup-claude-code` - Generate project settings
-- `/upgrade-claude-code` - Upgrade settings
-- `/upgrade-level` - Upgrade project level
-- `/archive` - Archive completed PDCA documents
-- `/github-stats` - Collect GitHub repository statistics
+- `/claude-code-learning` - Learning curriculum
+- `/code-review` - Code review and quality analysis
+- `/github-integration` - GitHub statistics and automation
 
 ## Hooks (3 events)
 
@@ -327,7 +327,7 @@ Stop                →  AgentStop
 ```
 
 **Shared Components** (Cross-platform):
-- `skills/` - All 18 skills work on both platforms
+- `skills/` - All 22 skills work on both platforms
 - `agents/` - All 11 agents work on both platforms
 - `scripts/` - All 26 scripts use Node.js (cross-platform)
 - `lib/common.js` - Platform detection via `detectPlatform()`

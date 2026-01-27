@@ -128,23 +128,23 @@ For deeper understanding, explore the `bkit-system/` folder:
 
 bkit is not just a collection of prompts—it's a **production-grade plugin architecture** with carefully designed components that work together as a cohesive system.
 
-### Component Inventory (v1.4.3)
+### Component Inventory (v1.4.4)
 
 | Component | Count | Purpose |
 |-----------|-------|---------|
 | **Agents** | 11 | Specialized AI subagents for task delegation |
-| **Skills** | 18 | Domain knowledge and automated behaviors |
-| **Commands** | 20 (×2) | User-invocable slash commands (Claude + Gemini) |
-| **Scripts** | 28 | Hook execution scripts (Node.js) |
+| **Skills** | 22 | Domain knowledge and slash commands (Commands deprecated) |
+| **Commands** | DEPRECATED | Migrated to Skills in v1.4.4 (Gemini: `commands/gemini/*.toml`) |
+| **Scripts** | 39 | Hook execution scripts with unified handlers |
 | **Templates** | 23 | Document templates (PDCA + 9 phases + shared) |
-| **Hooks** | 5 events | Event-driven automation triggers |
-| **lib/*.js** | 6 modules (87+ functions) | Shared utility library (v1.4.3) |
+| **Hooks** | 6 events | Event-driven automation (centralized in hooks.json) |
+| **lib/*.js** | 7 modules (87+ functions) | Shared utility library (v1.4.4) |
 
 **Total: 100+ components** working in harmony.
 
 > **v1.4.0**: Dual Platform Support - bkit now works on both Claude Code and Gemini CLI
 
-### Context Engineering Architecture (v1.4.3)
+### Context Engineering Architecture (v1.4.4)
 
 bkit is a **practical implementation of Context Engineering**—the art of curating optimal tokens for LLM inference. Unlike traditional prompt engineering that focuses on single prompts, Context Engineering designs an entire system of context delivery.
 
@@ -155,7 +155,7 @@ bkit is a **practical implementation of Context Engineering**—the art of curat
 │                                                                 │
 │  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────┐  │
 │  │ Domain Knowledge │  │ Behavioral Rules │  │ State Mgmt   │  │
-│  │    (18 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
+│  │    (22 Skills)   │  │   (11 Agents)    │  │(lib/common)  │  │
 │  │                  │  │                  │  │              │  │
 │  │ • 9-Phase Guide  │  │ • Role Def.      │  │ • PDCA v2.0  │  │
 │  │ • 3 Levels       │  │ • Constraints    │  │ • Multi-Feat │  │
@@ -170,7 +170,7 @@ bkit is a **practical implementation of Context Engineering**—the art of curat
 │  │  L2: Skill Frontmatter (PreToolUse/PostToolUse/Stop)     │  │
 │  │  L3: Agent Frontmatter (PreToolUse/PostToolUse)          │  │
 │  │  L4: Description Triggers (keyword matching)             │  │
-│  │  L5: Scripts (28 Node.js modules)                        │  │
+│  │  L5: Scripts (39 Node.js modules)                        │  │
 │  └──────────────────────────────────────────────────────────┘  │
 │                                 │                               │
 │                                 ▼                               │

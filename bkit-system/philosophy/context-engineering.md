@@ -7,6 +7,8 @@
 > **v1.4.2**: Complete Context Engineering implementation with 8 functional requirements (FR-01~FR-08)
 >
 > **v1.4.3**: Gemini CLI v0.25+ compatibility - `xmlSafeOutput()` function for XML special character escaping
+>
+> **v1.4.4**: Skills-Agents multi-binding architecture, PDCA Skill integration (8 actions)
 
 ## What is Context Engineering?
 
@@ -93,7 +95,7 @@ v1.4.2 implements 8 functional requirements (FR-01~FR-08) for comprehensive cont
 
 ## bkit's Context Engineering Structure
 
-### 1. Domain Knowledge Layer (18 Skills)
+### 1. Domain Knowledge Layer (22 Skills)
 
 Skills provide **structured domain knowledge**.
 
@@ -221,7 +223,7 @@ Layer 3: Agent Frontmatter
 Layer 4: Description Triggers
          └── "Triggers:" keyword matching (8 languages)
 
-Layer 5: Scripts (28 modules)
+Layer 5: Scripts (39 modules)
          └── Actual Node.js logic execution
 ```
 
@@ -319,12 +321,12 @@ Reports bkit feature usage status at the end of every response.
 
 | Current Status | Recommendation |
 |----------------|----------------|
-| No PDCA | Start with `/pdca-plan` |
-| Plan complete | Design with `/pdca-design` |
-| Design complete | Implement or `/pdca-next` |
-| Do complete | Gap analysis with `/pdca-analyze` |
-| Check < 90% | Auto-improve with `/pdca-iterate` |
-| Check >= 90% | Complete with `/pdca-report` |
+| No PDCA | Start with `/pdca plan` |
+| Plan complete | Design with `/pdca design` |
+| Design complete | Implement or `/pdca next` |
+| Do complete | Gap analysis with `/pdca analyze` |
+| Check < 90% | Auto-improve with `/pdca iterate` |
+| Check >= 90% | Complete with `/pdca report` |
 
 ---
 
@@ -590,6 +592,105 @@ All new modules are integrated through the following call paths:
 | `context-fork.js` | `hooks/session-start.js` | SessionStart (stale fork cleanup) |
 | `permission-manager.js` | `scripts/pre-write.js` | PreToolUse (Write\|Edit) |
 | `memory-store.js` | `hooks/session-start.js` | SessionStart |
+
+---
+
+## v1.4.4 Architecture Diagrams
+
+### Component Diagram (5-Layer Architecture)
+
+```mermaid
+flowchart TB
+    subgraph UserLayer["User Request"]
+        UR[User Input]
+    end
+
+    subgraph SkillLayer["Skill Layer (Entry Point)"]
+        PDCA["/pdca<br/>agents:<br/>analyze: gap-detector<br/>iterate: pdca-iterator"]
+        ENT["/enterprise<br/>agents:<br/>init: enterprise-expert<br/>infra: infra-architect"]
+        P8["/phase-8<br/>agents:<br/>design: design-validator<br/>code: code-analyzer"]
+    end
+
+    subgraph Orchestrator["skill-orchestrator.js (Enhanced)"]
+        PAF["parseAgentsField()"]
+        GAA["getAgentForAction()"]
+        OSPre["orchestrateSkillPre()"]
+        OSPost["orchestrateSkillPost()"]
+    end
+
+    subgraph AgentLayer["Agent Layer"]
+        GD["gap-detector<br/>Stop Hook: gap-detector-stop.js"]
+        PI["pdca-iterator<br/>Stop Hook: iterator-stop.js"]
+        RG["report-generator<br/>Skills: bkit-templates, pdca"]
+    end
+
+    subgraph StopHooks["Stop Hooks Layer (Enhanced)"]
+        GDS["gap-detector-stop.js<br/>• Match Rate branching<br/>• Task auto-creation<br/>• AskUserQuestion prompt"]
+        ITS["iterator-stop.js<br/>• Iteration result branching<br/>• Auto re-analyze trigger<br/>• Task status update"]
+    end
+
+    subgraph StateLayer["State Management Layer"]
+        PDS[".pdca-status.json<br/>matchRate, iterationCount, phase"]
+        MEM[".bkit-memory<br/>activePdca, pdcaHistory, sessionCount"]
+        TASK["Task System<br/>[Plan]→[Design]→[Do]→[Check]→[Act]→[Report]"]
+    end
+
+    UR --> SkillLayer
+    PDCA --> Orchestrator
+    ENT --> Orchestrator
+    P8 --> Orchestrator
+    Orchestrator --> AgentLayer
+    GD --> StopHooks
+    PI --> StopHooks
+    StopHooks --> StateLayer
+```
+
+### Data Flow (PDCA Analyze Cycle)
+
+```mermaid
+flowchart TD
+    A["User: /pdca analyze feature"] --> B["Skill: pdca<br/>Action: analyze"]
+    B -->|"getAgentForAction('pdca', 'analyze')"| C["Agent: gap-detector<br/>model: opus"]
+    C -->|"Design vs Implementation comparison"| D["Analysis Result<br/>matchRate: 85%"]
+    D -->|"Agent Stop"| E["gap-detector-stop.js"]
+    E -->|"matchRate < 90%"| F["Task Auto-Creation<br/>[Act-1] feature<br/>blockedBy: [Check]"]
+    E -->|"matchRate < 90%"| G["AskUserQuestion<br/>'Auto-improve?'<br/>• Auto-improve (Recommended)<br/>• Manual fix<br/>• Complete as-is"]
+    E -->|"matchRate >= 90%"| H["Task Auto-Creation<br/>[Report] feature<br/>blockedBy: [Check]"]
+    E -->|"matchRate >= 90%"| I["AskUserQuestion<br/>'Generate report?'<br/>• Generate report<br/>• Continue improvement"]
+```
+
+### Component Dependencies
+
+| Component | Depends On | Purpose |
+|-----------|-----------|---------|
+| `skill-orchestrator.js` | `lib/common.js` | PDCA state management functions |
+| `gap-detector-stop.js` | `lib/common.js` | Task creation, state update |
+| `iterator-stop.js` | `lib/common.js` | Task update, phase transition |
+| `pdca` skill | `templates/*.md` | Template imports |
+| `agents/*.md` | `skills` | `skills_preload`, `skills` fields |
+
+### Agents Multi-Binding
+
+v1.4.4 introduces `agents` field for action-specific agent routing:
+
+```yaml
+# Single binding (backward compatible)
+agent: starter-guide
+
+# Multi-binding (v1.4.4)
+agents:
+  analyze: gap-detector      # /pdca analyze → gap-detector
+  iterate: pdca-iterator     # /pdca iterate → pdca-iterator
+  report: report-generator   # /pdca report → report-generator
+  default: gap-detector      # fallback agent
+```
+
+**Skills with Multi-Binding**:
+| Skill | Actions | Agents |
+|-------|---------|--------|
+| `pdca` | analyze, iterate, report | gap-detector, pdca-iterator, report-generator |
+| `enterprise` | init, strategy, infra | enterprise-expert, infra-architect |
+| `phase-8-review` | design, code | design-validator, code-analyzer |
 
 ---
 

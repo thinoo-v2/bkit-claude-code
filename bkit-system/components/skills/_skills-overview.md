@@ -1,6 +1,6 @@
 # Skills Overview
 
-> 18 Skills defined in bkit (v1.4.1)
+> 22 Skills defined in bkit (v1.4.4)
 >
 > **v1.4.1**: Added Context Engineering perspective - Domain Knowledge Layer
 > **v1.4.0**: Dual Platform Support (Claude Code + Gemini CLI)
@@ -54,7 +54,15 @@ Skills form bkit's **Domain Knowledge Layer**, designed according to [[../../phi
 | **Code Examples** | Ready-to-apply references | Consistent implementation |
 | **Few-shot Examples** | Conversation/output patterns | Predictable responses |
 
-## Skill List (18)
+## Skill List (22)
+
+### New Skills (v1.4.4)
+| Skill | Purpose | Hooks |
+|-------|---------|-------|
+| [[../../../skills/pdca/SKILL|pdca]] | Unified PDCA cycle management (8 actions) | Stop |
+| [[../../../skills/code-review/SKILL|code-review]] | Code review and quality analysis | Stop |
+| [[../../../skills/claude-code-learning/SKILL|claude-code-learning]] | Claude Code learning guide | Stop |
+| [[../../../skills/github-integration/SKILL|github-integration]] | GitHub statistics and automation | - |
 
 ### Core Skills (2)
 

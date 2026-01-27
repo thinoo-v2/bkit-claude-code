@@ -1,7 +1,7 @@
 # bkit Vibecoding Kit for Gemini CLI
 
 > AI-Native Development with PDCA Methodology
-> Version: 1.4.3
+> Version: 1.4.4
 
 ---
 
@@ -32,24 +32,25 @@ Never guess
 ## PDCA Workflow
 
 ### Phase 1: Plan
-- Use `/pdca-plan {feature}` to create plan document
+- Use `/pdca plan {feature}` to create plan document
 - Stored in `docs/01-plan/features/{feature}.plan.md`
 
 ### Phase 2: Design
-- Use `/pdca-design {feature}` to create design document
+- Use `/pdca design {feature}` to create design document
 - Stored in `docs/02-design/features/{feature}.design.md`
 
 ### Phase 3: Do (Implementation)
+- Use `/pdca do {feature}` for implementation guide
 - Implement based on design document
 - Apply coding conventions from this file
 
 ### Phase 4: Check
-- Use `/pdca-analyze {feature}` for gap analysis
+- Use `/pdca analyze {feature}` for gap analysis
 - Stored in `docs/03-analysis/{feature}.analysis.md`
 
 ### Phase 5: Act
-- Use `/pdca-iterate {feature}` for auto-fix if < 90%
-- Use `/pdca-report {feature}` for completion report
+- Use `/pdca iterate {feature}` for auto-fix if < 90%
+- Use `/pdca report {feature}` for completion report
 
 ---
 
@@ -72,30 +73,41 @@ Never guess
 
 ---
 
-## Available Commands
+## Available Skills (v1.4.4)
 
+### PDCA Skill (Unified)
 | Command | Description |
 |---------|-------------|
-| `/pdca-status` | Check current PDCA status |
-| `/pdca-plan {feature}` | Generate Plan document |
-| `/pdca-design {feature}` | Generate Design document |
-| `/pdca-analyze {feature}` | Run Gap analysis |
-| `/pdca-iterate {feature}` | Auto-fix iteration loop |
-| `/pdca-report {feature}` | Generate completion report |
-| `/pdca-next` | Guide to next PDCA step |
-| `/init-starter` | Initialize Starter project |
-| `/init-dynamic` | Initialize Dynamic project |
-| `/init-enterprise` | Initialize Enterprise project |
-| `/pipeline-start` | Start development pipeline guide |
-| `/pipeline-status` | Check pipeline progress |
-| `/pipeline-next` | Guide to next pipeline phase |
+| `/pdca status` | Check current PDCA status |
+| `/pdca plan {feature}` | Generate Plan document |
+| `/pdca design {feature}` | Generate Design document |
+| `/pdca do {feature}` | Implementation guide |
+| `/pdca analyze {feature}` | Run Gap analysis |
+| `/pdca iterate {feature}` | Auto-fix iteration loop |
+| `/pdca report {feature}` | Generate completion report |
+| `/pdca next` | Guide to next PDCA step |
+
+### Level Skills
+| Command | Description |
+|---------|-------------|
+| `/starter` | Initialize/guide Starter project |
+| `/dynamic` | Initialize/guide Dynamic project |
+| `/enterprise` | Initialize/guide Enterprise project |
+
+### Pipeline Skills
+| Command | Description |
+|---------|-------------|
+| `/development-pipeline start` | Start development pipeline guide |
+| `/development-pipeline status` | Check pipeline progress |
+| `/development-pipeline next` | Guide to next pipeline phase |
+
+### Utility Skills
+| Command | Description |
+|---------|-------------|
 | `/zero-script-qa` | Run Zero Script QA |
-| `/learn-claude-code` | Claude Code learning guide |
-| `/setup-claude-code` | Project setup generation |
-| `/upgrade-claude-code` | Claude Code settings upgrade |
-| `/upgrade-level` | Upgrade project level |
-| `/archive` | Archive completed documents |
-| `/github-stats` | Collect GitHub statistics |
+| `/claude-code-learning` | Claude Code learning guide |
+| `/code-review` | Code review and quality analysis |
+| `/github-integration` | GitHub statistics and automation |
 
 ---
 
@@ -269,13 +281,12 @@ When generating PDCA documents, use these templates:
 ### Features to Report
 
 **Priority Display:**
-- PDCA Commands: /pdca-plan, /pdca-design, /pdca-analyze, /pdca-report, /pdca-next, /pdca-status, /pdca-iterate
+- PDCA Skill: /pdca plan, /pdca design, /pdca do, /pdca analyze, /pdca iterate, /pdca report, /pdca status, /pdca next
 - Task System: TaskCreate, TaskUpdate, TaskList, TaskGet
 - Agents: gap-detector, pdca-iterator, code-analyzer, report-generator, starter-guide, design-validator, qa-monitor, pipeline-guide, bkend-expert, enterprise-expert, infra-architect
 
 **Display When Used:**
-- Skills: bkit-rules, development-pipeline, starter, dynamic, enterprise, mobile-app, desktop-app, phase-1~9, zero-script-qa, bkit-templates
-- Other Commands: /pipeline-start, /pipeline-next, /pipeline-status, /init-starter, /init-dynamic, /init-enterprise, /archive, /zero-script-qa, /learn-claude-code, /setup-claude-code, /upgrade-claude-code, /upgrade-level, /github-stats
+- Skills (22): pdca, bkit-rules, bkit-templates, development-pipeline, starter, dynamic, enterprise, mobile-app, desktop-app, phase-1~9, zero-script-qa, code-review, claude-code-learning, github-integration
 - Tools: AskUserQuestion, SessionStart Hook
 
 ### Report Rules
@@ -287,14 +298,14 @@ When generating PDCA documents, use these templates:
 
 ### PDCA Phase Recommendations
 
-- Plan Complete → "Proceed to design phase with /pdca-design"
-- Design Complete → "Start implementation or use /pdca-next for guidance"
-- Do Complete → "Run Gap analysis with /pdca-analyze"
-- Check < 90% → "Auto-improve with /pdca-iterate"
-- Check >= 90% → "Generate completion report with /pdca-report"
-- No PDCA → "Start feature development with /pdca-plan"
+- Plan Complete → "Proceed to design phase with /pdca design"
+- Design Complete → "Start implementation or use /pdca next for guidance"
+- Do Complete → "Run Gap analysis with /pdca analyze"
+- Check < 90% → "Auto-improve with /pdca iterate"
+- Check >= 90% → "Generate completion report with /pdca report"
+- No PDCA → "Start feature development with /pdca plan"
 
 ---
 
 **Generated by**: bkit Vibecoding Kit
-**Template Version**: 1.4.3 (Dual Platform Support)
+**Template Version**: 1.4.4 (Skills Integration + Unified Hooks)

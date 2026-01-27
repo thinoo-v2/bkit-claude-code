@@ -2,6 +2,7 @@
 
 > Hook events triggered during Claude Code / Gemini CLI operations
 >
+> **v1.4.4**: hooks-json-integration - all hooks centralized in hooks.json with unified handlers
 > **v1.4.3**: Gemini CLI v0.25+ compatibility - `xmlSafeOutput()` applied to hook outputs
 > **v1.4.2**: Added UserPromptSubmit (FR-04) and PreCompact (FR-07) hook events
 > **v1.4.1**: Added Context Engineering perspective - 5-Layer Hook System
@@ -94,7 +95,7 @@ Hooks are the core of bkit's **context injection system**, organized into 5 laye
 
 ## Global Hooks Configuration
 
-Global hooks are defined in `hooks/hooks.json` (v1.4.2 includes 5 hook events):
+Global hooks are defined in `hooks/hooks.json` (v1.4.4 includes 6 hook events with unified handlers):
 
 ```json
 {
