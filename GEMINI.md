@@ -1,7 +1,7 @@
 # bkit Vibecoding Kit for Gemini CLI
 
 > AI-Native Development with PDCA Methodology
-> Version: 1.4.4
+> Version: 1.4.5
 
 ---
 

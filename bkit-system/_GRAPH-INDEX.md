@@ -100,9 +100,9 @@ The following skills were consolidated:
 - [[../agents/pdca-iterator|pdca-iterator]] - Iteration optimizer (Evaluator-Optimizer pattern)
 - [[../agents/report-generator|report-generator]] - Report generation
 
-## Skills - User Invocable (v1.4.4)
+## Skills - User Invocable (v1.4.5)
 
-> **Note**: Commands deprecated in v1.4.4. Use Skills instead.
+> **Note**: Commands deprecated in v1.4.4+. Use Skills instead.
 
 ### PDCA Skill (Unified)
 - `/pdca plan` - Create plan document

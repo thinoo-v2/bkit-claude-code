@@ -1,11 +1,10 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-01-27T14:17:40.889Z",
+  "lastUpdated": "2026-01-27T15:03:27.981Z",
   "activeFeatures": [
-    "korean-to-english-translation",
     "bkit-claude-code"
   ],
-  "primaryFeature": "korean-to-english-translation",
+  "primaryFeature": "bkit-claude-code",
   "features": {
     "pdca-archive-action": {
       "phase": "archived",
@@ -343,7 +342,7 @@
       "documents": {},
       "timestamps": {
         "started": "2026-01-26T03:39:42.049Z",
-        "lastUpdated": "2026-01-27T13:37:22.209Z"
+        "lastUpdated": "2026-01-27T14:58:20.720Z"
       }
     },
     "scripts": {
@@ -360,10 +359,12 @@
       }
     },
     "korean-to-english-translation": {
-      "phase": "plan",
-      "phaseNumber": 1,
-      "matchRate": null,
-      "iterationCount": 0,
+      "phase": "archived",
+      "phaseNumber": 7,
+      "matchRate": 100,
+      "iterationCount": 1,
+      "archivedAt": "2026-01-27T16:45:00.000Z",
+      "archivedTo": "docs/archive/2026-01/korean-to-english-translation",
       "requirements": [
         "FR-01",
         "FR-02",
@@ -374,11 +375,14 @@
         "FR-07"
       ],
       "documents": {
-        "plan": "docs/01-plan/features/korean-to-english-translation.plan.md"
+        "plan": "docs/archive/2026-01/korean-to-english-translation/korean-to-english-translation.plan.md",
+        "design": "docs/archive/2026-01/korean-to-english-translation/korean-to-english-translation.design.md",
+        "report": "docs/archive/2026-01/korean-to-english-translation/korean-to-english-translation.report.md"
       },
       "timestamps": {
         "started": "2026-01-27T15:00:00.000Z",
-        "lastUpdated": "2026-01-27T15:00:00.000Z"
+        "lastUpdated": "2026-01-27T16:45:00.000Z",
+        "completed": "2026-01-27T16:30:00.000Z"
       },
       "targetFiles": {
         "hooks": 1,
@@ -387,6 +391,15 @@
         "templates": 3,
         "bkitSystem": 4,
         "total": 40
+      },
+      "triggerCompletion": {
+        "agentsCompleted": 11,
+        "skillsCompleted": 21,
+        "totalTriggersAdded": 100
+      },
+      "translationScope": {
+        "linesTranslated": 600,
+        "status": "COMPLETED"
       }
     },
     "v1.4.5-namespace-skill-refactoring": {
@@ -429,7 +442,7 @@
   "session": {
     "startedAt": "2026-01-26T12:15:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-01-27T14:17:40.889Z"
+    "lastActivity": "2026-01-27T15:03:27.981Z"
   },
   "history": [
     {
@@ -758,6 +771,84 @@
     },
     {
       "timestamp": "2026-01-27T13:37:22.209Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:31:34.244Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:31:57.883Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:32:09.234Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:32:21.733Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:32:44.262Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:33:00.457Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:33:10.866Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:35:55.211Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:36:07.124Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:36:17.281Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:36:50.180Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:58:20.538Z",
+      "feature": "bkit-claude-code",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-01-27T14:58:20.720Z",
       "feature": "bkit-claude-code",
       "phase": "do",
       "action": "updated"

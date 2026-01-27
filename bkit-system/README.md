@@ -11,6 +11,8 @@
 > **v1.4.3**: Gemini CLI v0.25+ compatibility - `xmlSafeOutput()` for XML wrapping, engines version update
 >
 > **v1.4.4**: Commands deprecated → Skills migration, PDCA Skill integration (8 actions), hooks-json-integration (unified scripts)
+>
+> **v1.4.5**: `/pdca archive` action, 8-language trigger completion (ES/FR/DE/IT), internationalization (KO→EN translation)
 
 ## Purpose of This Document
 

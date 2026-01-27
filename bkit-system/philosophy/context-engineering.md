@@ -9,6 +9,8 @@
 > **v1.4.3**: Gemini CLI v0.25+ compatibility - `xmlSafeOutput()` function for XML special character escaping
 >
 > **v1.4.4**: Skills-Agents multi-binding architecture, PDCA Skill integration (8 actions)
+>
+> **v1.4.5**: `/pdca archive` action, 8-language trigger completion, internationalization (KO→EN)
 
 ## What is Context Engineering?
 
