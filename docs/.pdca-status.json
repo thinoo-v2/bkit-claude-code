@@ -1,10 +1,9 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-01-27T13:39:45.226Z",
+  "lastUpdated": "2026-01-27T13:42:30.977Z",
   "activeFeatures": [
     "v1.4.5-namespace-skill-refactoring",
-    "bkit-claude-code",
-    "scripts"
+    "bkit-claude-code"
   ],
   "primaryFeature": "bkit-claude-code",
   "features": {
@@ -316,21 +315,22 @@
       }
     },
     "scripts": {
-      "phase": "do",
-      "phaseNumber": 3,
+      "phase": "archived",
+      "phaseNumber": 7,
       "matchRate": null,
       "iterationCount": 0,
       "requirements": [],
       "documents": {},
       "timestamps": {
         "started": "2026-01-27T04:31:21.341Z",
-        "lastUpdated": "2026-01-27T08:32:53.782Z"
+        "lastUpdated": "2026-01-27T13:42:00.000Z",
+        "completed": "2026-01-27T13:42:00.000Z"
       }
     },
     "v1.4.5-namespace-skill-refactoring": {
-      "phase": "design",
-      "phaseNumber": 2,
-      "matchRate": null,
+      "phase": "completed",
+      "phaseNumber": 6,
+      "matchRate": 100,
       "iterationCount": 0,
       "requirements": [
         "FR-01",
@@ -341,7 +341,8 @@
       ],
       "documents": {
         "plan": "docs/01-plan/features/v1.4.5-namespace-skill-refactoring.plan.md",
-        "design": "docs/02-design/features/v1.4.5-namespace-skill-refactoring.design.md"
+        "design": "docs/02-design/features/v1.4.5-namespace-skill-refactoring.design.md",
+        "report": "docs/04-report/features/v1.4.5-namespace-skill-refactoring.report.md"
       },
       "timestamps": {
         "started": "2026-01-27T13:30:00.000Z",
@@ -363,7 +364,7 @@
   "session": {
     "startedAt": "2026-01-26T12:15:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-01-27T13:39:45.226Z"
+    "lastActivity": "2026-01-27T13:42:30.977Z"
   },
   "history": [
     {
