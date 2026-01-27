@@ -17,6 +17,11 @@ allowed-tools:
   - Glob
   - WebSearch
 user-invocable: false
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-3-mockup.template.md
+next-skill: phase-4-api
+pdca-phase: design
+task-template: "[Phase-3] {feature}"
 ---
 
 # Phase 3: Mockup Development

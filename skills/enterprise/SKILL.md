@@ -5,14 +5,21 @@ description: |
   Includes AI Native methodology and Monorepo architecture patterns.
   Handles high traffic, high availability, and complex architecture requirements.
 
+  "init enterprise" 또는 "enterprise init"으로 프로젝트 초기화.
+
   Use proactively when user needs high traffic, microservices, custom infrastructure,
   or AI-native development patterns.
 
   Triggers: microservices, kubernetes, terraform, k8s, AWS, monorepo, AI native, 10-day,
+  init enterprise, enterprise init,
   마이크로서비스, 모노레포, マイクロサービス, モノレポ, 微服务, 单仓库
 
   Do NOT use for: simple websites, MVPs, or projects without infrastructure requirements.
-agent: infra-architect
+argument-hint: "[init|guide|help]"
+agents:
+  default: enterprise-expert
+  infra: infra-architect
+  architecture: enterprise-expert
 allowed-tools:
   - Read
   - Write
@@ -21,10 +28,42 @@ allowed-tools:
   - Grep
   - Bash
   - Task
-user-invocable: false
+  - WebSearch
+user-invocable: true
+imports:
+  - ${PLUGIN_ROOT}/templates/design-enterprise.template.md
+next-skill: phase-1-schema
+pdca-phase: plan
+task-template: "[Init-Enterprise] {feature}"
 ---
 
 # Advanced (Enterprise) Skill
+
+## Actions
+
+| Action | Description | Example |
+|--------|-------------|---------|
+| `init` | 프로젝트 초기화 (/init-enterprise 기능) | `/enterprise init my-platform` |
+| `guide` | 개발 가이드 표시 | `/enterprise guide` |
+| `help` | MSA/인프라 도움말 | `/enterprise help` |
+
+### init (프로젝트 초기화)
+1. Turborepo 모노레포 구조 생성
+2. apps/, packages/, services/, infra/ 폴더 구조
+3. CLAUDE.md 생성 (Level: Enterprise 명시)
+4. docs/ 5개 카테고리 구조
+5. infra/terraform/, infra/k8s/ 기본 템플릿
+6. .bkit-memory.json 초기화
+
+### guide (개발 가이드)
+- AI Native 10-Day 개발 사이클
+- 마이크로서비스 아키텍처 패턴
+- Phase 1-9 전체 Pipeline (Enterprise 버전)
+
+### help (인프라 도움말)
+- Kubernetes 기본 개념
+- Terraform IaC 패턴
+- AWS EKS, RDS 설정 가이드
 
 ## Target Audience
 

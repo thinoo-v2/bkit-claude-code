@@ -10,13 +10,10 @@ description: |
 
   Do NOT use for: frontend-only projects, static websites, or Starter level projects.
 imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-4-api.template.md
   - ${PLUGIN_ROOT}/templates/shared/api-patterns.md
   - ${PLUGIN_ROOT}/templates/shared/error-handling-patterns.md
-hooks:
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/phase4-api-stop.js"
+# hooks: Managed by hooks/hooks.json (unified-stop.js) - GitHub #9354 workaround
 agent: qa-monitor
 allowed-tools:
   - Read
@@ -26,6 +23,9 @@ allowed-tools:
   - Grep
   - Bash
 user-invocable: false
+next-skill: phase-5-design-system
+pdca-phase: do
+task-template: "[Phase-4] {feature}"
 ---
 
 # Phase 4: API Design/Implementation + Zero Script QA

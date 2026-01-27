@@ -4,13 +4,17 @@ description: |
   Fullstack development skill using bkend.ai BaaS platform.
   Covers authentication, data storage, API integration for dynamic web apps.
 
+  "init dynamic" 또는 "dynamic init"으로 프로젝트 초기화.
+
   Use proactively when user needs login, database, or backend features without managing servers.
 
   Triggers: fullstack, BaaS, bkend, authentication, login feature, signup, database,
-  web app, SaaS, MVP, 풀스택, 인증, 로그인 기능, 회원가입, 데이터베이스, 웹앱,
+  web app, SaaS, MVP, init dynamic, dynamic init,
+  풀스택, 인증, 로그인 기능, 회원가입, 데이터베이스, 웹앱,
   フルスタック, 認証, ログイン機能, データベース, 全栈, 身份验证, 登录功能
 
   Do NOT use for: static websites, Enterprise-grade systems requiring custom infrastructure.
+argument-hint: "[init|guide|help]"
 agent: bkend-expert
 allowed-tools:
   - Read
@@ -18,11 +22,43 @@ allowed-tools:
   - Edit
   - Glob
   - Grep
+  - Bash
   - mcp__bkend__*
-user-invocable: false
+user-invocable: true
+imports:
+  - ${PLUGIN_ROOT}/templates/design.template.md
+next-skill: phase-1-schema
+pdca-phase: plan
+task-template: "[Init-Dynamic] {feature}"
 ---
 
 # Intermediate (Dynamic) Skill
+
+## Actions
+
+| Action | Description | Example |
+|--------|-------------|---------|
+| `init` | 프로젝트 초기화 (/init-dynamic 기능) | `/dynamic init my-saas` |
+| `guide` | 개발 가이드 표시 | `/dynamic guide` |
+| `help` | BaaS 통합 도움말 | `/dynamic help` |
+
+### init (프로젝트 초기화)
+1. Next.js + Tailwind 프로젝트 구조 생성
+2. bkend.ai MCP 설정 (.mcp.json)
+3. CLAUDE.md 생성 (Level: Dynamic 명시)
+4. docs/ 폴더 구조 생성
+5. src/lib/bkend.ts 클라이언트 템플릿
+6. .bkit-memory.json 초기화
+
+### guide (개발 가이드)
+- bkend.ai 인증/데이터 설정 가이드
+- Phase 1-9 전체 Pipeline 가이드
+- API 통합 패턴 안내
+
+### help (BaaS 도움말)
+- bkend.ai 기본 개념 설명
+- 인증, 데이터베이스, 파일 스토리지 사용법
+- MCP 연동 방법
 
 ## Target Audience
 

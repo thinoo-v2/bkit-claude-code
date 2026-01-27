@@ -24,6 +24,11 @@ description: |
 
   Do NOT use for: initial development, research tasks, design document creation,
   or when user explicitly wants manual control.
+linked-from-skills:
+  - pdca: iterate
+skills_preload:
+  - pdca
+  - bkit-rules
 permissionMode: acceptEdits
 model: sonnet
 tools:
@@ -36,12 +41,7 @@ tools:
   - Task
   - TodoWrite
   - LSP
-hooks:
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/iterator-stop.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (unified-stop.js) - GitHub #9354 workaround
 ---
 
 # PDCA Iterator Agent

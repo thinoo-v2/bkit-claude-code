@@ -12,6 +12,9 @@ description: |
 
   Do NOT use for: simple projects, Starter level tasks, routine CRUD operations,
   minor UI tweaks, or standard bug fixes.
+linked-from-skills:
+  - enterprise: default
+  - enterprise: architecture
 permissionMode: acceptEdits
 model: opus
 tools:

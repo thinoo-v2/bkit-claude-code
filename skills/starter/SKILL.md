@@ -4,13 +4,17 @@ description: |
   Static web development skill for beginners and non-developers.
   Covers HTML/CSS/JavaScript and Next.js App Router basics.
 
+  "init starter" 또는 "starter init"으로 프로젝트 초기화.
+
   Use proactively when user is a beginner or wants a simple static website.
 
   Triggers: static website, portfolio, landing page, HTML CSS, beginner, first website,
-  simple web, personal site, 정적 웹, 포트폴리오, 랜딩페이지, 초보자, 첫 웹사이트, 간단한 웹,
+  simple web, personal site, init starter, starter init,
+  정적 웹, 포트폴리오, 랜딩페이지, 초보자, 첫 웹사이트, 간단한 웹,
   静的サイト, ポートフォリオ, 初心者, 静态网站, 个人网站, 初学者
 
   Do NOT use for: fullstack apps with backend, authentication features, or database needs.
+argument-hint: "[init|guide|help]"
 agent: starter-guide
 allowed-tools:
   - Read
@@ -19,10 +23,41 @@ allowed-tools:
   - Glob
   - Grep
   - WebSearch
-user-invocable: false
+  - WebFetch
+user-invocable: true
+imports:
+  - ${PLUGIN_ROOT}/templates/design-starter.template.md
+next-skill: phase-1-schema
+pdca-phase: plan
+task-template: "[Init-Starter] {feature}"
 ---
 
 # Beginner (Starter) Skill
+
+## Actions
+
+| Action | Description | Example |
+|--------|-------------|---------|
+| `init` | 프로젝트 초기화 (/init-starter 기능) | `/starter init my-portfolio` |
+| `guide` | 개발 가이드 표시 | `/starter guide` |
+| `help` | 초보자 도움말 | `/starter help` |
+
+### init (프로젝트 초기화)
+1. 프로젝트 디렉토리 구조 생성 (HTML/CSS/JS 또는 Next.js)
+2. package.json 생성 (Next.js 선택 시)
+3. CLAUDE.md 생성 (Level: Starter 명시)
+4. docs/ 폴더 구조 생성 (PDCA 문서용)
+5. .bkit-memory.json 초기화
+
+### guide (개발 가이드)
+- 현재 프로젝트 상태 분석
+- Starter 레벨에 맞는 다음 단계 제안
+- Phase 1-3 위주 Pipeline 가이드
+
+### help (초보자 도움말)
+- HTML/CSS/JS 기본 개념 설명
+- 자주 묻는 질문 답변
+- 예제 코드 제공
 
 ## Target Audience
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://geminicli.dev/schemas/extension.json",
   "name": "bkit",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Vibecoding Kit - PDCA methodology + AI-native development for Gemini CLI",
   "author": {
     "name": "POPUP STUDIO PTE. LTD.",
@@ -28,7 +28,9 @@
     "file": "GEMINI.md"
   },
   "commands": {
-    "directory": "commands/gemini"
+    "directory": "commands/gemini",
+    "deprecated": true,
+    "deprecationNotice": "Commands are deprecated in v1.4.4. Use Skills instead. See commands/DEPRECATED.md"
   },
   "agents": {
     "directory": "agents"
@@ -89,8 +91,11 @@
     "directory": "skills",
     "autoActivate": [
       "bkit-rules",
-      "development-pipeline"
-    ]
+      "development-pipeline",
+      "pdca"
+    ],
+    "primary": true,
+    "description": "Skills are the primary interface in v1.4.4+"
   },
   "environment": {
     "BKIT_PLATFORM": "gemini"

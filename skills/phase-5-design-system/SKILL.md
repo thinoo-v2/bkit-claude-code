@@ -9,13 +9,9 @@ description: |
   Triggers: design system, component library, design tokens, shadcn, 디자인 시스템, デザインシステム, 设计系统
 
   Do NOT use for: one-off UI changes, backend development, or simple static sites.
-hooks:
-  PostToolUse:
-    - matcher: "Write"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/phase5-design-post.js"
-          timeout: 5000
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-5-design-system.template.md
+# hooks: Managed by hooks/hooks.json (unified-write-post.js, unified-stop.js) - GitHub #9354 workaround
 agent: pipeline-guide
 allowed-tools:
   - Read
@@ -24,6 +20,9 @@ allowed-tools:
   - Glob
   - Bash
 user-invocable: false
+next-skill: phase-6-ui-integration
+pdca-phase: do
+task-template: "[Phase-5] {feature}"
 ---
 
 # Phase 5: Design System

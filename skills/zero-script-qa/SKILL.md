@@ -11,18 +11,7 @@ description: |
   Do NOT use for: unit testing, static analysis, or projects without Docker setup.
 context: fork
 agent: qa-monitor
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-pre-bash.js"
-          timeout: 5000
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-stop.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (unified-bash-pre.js, unified-stop.js) - GitHub #9354 workaround
 ---
 
 # Zero Script QA Expert Knowledge

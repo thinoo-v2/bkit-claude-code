@@ -9,13 +9,9 @@ description: |
   Triggers: UI implementation, API integration, state management, UI 구현, API連携, 状态管理
 
   Do NOT use for: mockup creation, backend-only development, or design system setup.
-hooks:
-  PostToolUse:
-    - matcher: "Write"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/phase6-ui-post.js"
-          timeout: 5000
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-6-ui.template.md
+# hooks: Managed by hooks/hooks.json (unified-write-post.js, unified-stop.js) - GitHub #9354 workaround
 agent: pipeline-guide
 allowed-tools:
   - Read
@@ -25,6 +21,9 @@ allowed-tools:
   - Grep
   - Bash
 user-invocable: false
+next-skill: phase-7-seo-security
+pdca-phase: do
+task-template: "[Phase-6] {feature}"
 ---
 
 # Phase 6: UI Implementation + API Integration

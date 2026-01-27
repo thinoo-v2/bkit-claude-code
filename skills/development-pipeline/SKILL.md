@@ -20,12 +20,7 @@ allowed-tools:
   - Grep
   - TodoWrite
 user-invocable: true
-hooks:
-  Stop:
-    - matcher: ".*"
-      hooks:
-        - type: command
-          command: "echo '{\"continue\": false}'"
+# hooks: Managed by hooks/hooks.json (unified-stop.js handles development-pipeline) - GitHub #9354 workaround
 ---
 
 # Development Pipeline Skill

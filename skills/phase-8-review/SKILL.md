@@ -11,12 +11,13 @@ description: |
   코드 리뷰, 설계-구현 분석, コードレビュー, ギャップ分析, 代码审查, 差距分析
 
   Do NOT use for: initial development, design phase, or deployment tasks.
-hooks:
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/phase8-review-stop.js"
-agent: code-analyzer
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-8-review.template.md
+# hooks: Managed by hooks/hooks.json (unified-stop.js) - GitHub #9354 workaround
+agents:
+  default: code-analyzer
+  validate: design-validator
+  gap: gap-detector
 allowed-tools:
   - Read
   - Glob
@@ -24,6 +25,9 @@ allowed-tools:
   - LSP
   - Task
 user-invocable: false
+next-skill: phase-9-deployment
+pdca-phase: check
+task-template: "[Phase-8] {feature}"
 ---
 
 # Phase 8: Architecture/Convention Review

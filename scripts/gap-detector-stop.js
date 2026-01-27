@@ -29,7 +29,9 @@ const {
   autoAdvancePdcaPhase,
   // v1.4.0 P2: Requirement Fulfillment Integration
   extractRequirementsFromPlan,
-  calculateRequirementFulfillment
+  calculateRequirementFulfillment,
+  // v1.4.4 FR-07: Task Status Update
+  updatePdcaTaskStatus
 } = require('../lib/common.js');
 
 // Log execution start
@@ -228,6 +230,75 @@ if (matchRate >= threshold) {
 // v1.4.0: Get auto phase advance suggestion
 const phaseAdvance = autoAdvancePdcaPhase(feature, 'check', { matchRate });
 
+// v1.4.4 FR-06/FR-07: Auto-create PDCA Tasks and Update Task Status
+let autoCreatedTasks = [];
+try {
+  const { autoCreatePdcaTask } = require('../lib/common.js');
+
+  // v1.4.4 FR-07: Update Check Task status
+  if (feature) {
+    updatePdcaTaskStatus('check', feature, {
+      matchRate,
+      status: matchRate >= threshold ? 'completed' : 'in_progress',
+      fulfillment: fulfillmentResult
+    });
+    debugLog('Agent:gap-detector:Stop', 'Check Task status updated', {
+      feature, matchRate, threshold
+    });
+  }
+
+  // Auto-create [Check] Task
+  const checkTask = autoCreatePdcaTask({
+    phase: 'check',
+    feature: feature || 'unknown',
+    metadata: {
+      matchRate,
+      fulfillment: fulfillmentResult,
+      analysisDoc: `docs/03-analysis/${feature}.analysis.md`
+    }
+  });
+  if (checkTask) {
+    autoCreatedTasks.push(checkTask);
+    debugLog('Agent:gap-detector:Stop', 'Check Task auto-created', { taskId: checkTask.taskId });
+  }
+
+  // v1.4.4 FR-07: Auto-create [Report] Task if matchRate >= threshold
+  if (matchRate >= threshold) {
+    const reportTask = autoCreatePdcaTask({
+      phase: 'report',
+      feature: feature || 'unknown',
+      metadata: {
+        finalMatchRate: matchRate,
+        completedAt: new Date().toISOString(),
+        blockedBy: checkTask?.taskId
+      }
+    });
+    if (reportTask) {
+      autoCreatedTasks.push(reportTask);
+      debugLog('Agent:gap-detector:Stop', 'Report Task auto-created', { taskId: reportTask.taskId });
+    }
+  }
+  // Auto-create [Act] Task if matchRate < threshold
+  else if (iterCount < maxIterations) {
+    const actTask = autoCreatePdcaTask({
+      phase: 'act',
+      feature: feature || 'unknown',
+      iteration: iterCount + 1,
+      metadata: {
+        matchRateBefore: matchRate,
+        requiredMatchRate: threshold,
+        blockedBy: checkTask?.taskId
+      }
+    });
+    if (actTask) {
+      autoCreatedTasks.push(actTask);
+      debugLog('Agent:gap-detector:Stop', 'Act Task auto-created', { taskId: actTask.taskId });
+    }
+  }
+} catch (e) {
+  debugLog('Agent:gap-detector:Stop', 'Auto-task creation skipped', { error: e.message });
+}
+
 // Add Task System guidance for PDCA workflow (v1.3.1 - FR-04)
 const taskGuidance = matchRate >= 90
   ? generateTaskGuidance('check', feature || 'feature', 'do')
@@ -262,7 +333,9 @@ if (isGeminiCli()) {
       maxIterations,
       threshold,
       nextStep,
-      phaseAdvance: phaseAdvance
+      phaseAdvance: phaseAdvance,
+      // v1.4.4 FR-06: Auto-created tasks
+      autoCreatedTasks: autoCreatedTasks.map(t => t.taskId)
     },
     guidance: guidance,
     taskGuidance: taskGuidance,

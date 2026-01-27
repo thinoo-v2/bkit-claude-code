@@ -12,6 +12,8 @@ description: |
 
   Do NOT use for: implementation code review, gap analysis (use gap-detector instead),
   or initial planning phase.
+linked-from-skills:
+  - phase-8-review: validate
 imports:
   - ${PLUGIN_ROOT}/templates/shared/api-patterns.md
 context: fork
@@ -21,13 +23,7 @@ disallowedTools:
   - Write
   - Edit
   - Bash
-hooks:
-  PreToolUse:
-    - matcher: "Write"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/design-validator-pre.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (pre-write.js blocks Write) - GitHub #9354 workaround
 model: opus
 tools:
   - Read
@@ -35,6 +31,7 @@ tools:
   - Grep
 skills:
   - bkit-templates
+  - phase-8-review
 ---
 
 # Design Validation Agent

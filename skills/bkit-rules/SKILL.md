@@ -12,19 +12,7 @@ description: |
   Do NOT use for: documentation-only tasks, research, or exploration without code changes.
 imports:
   - ${PLUGIN_ROOT}/templates/shared/naming-conventions.md
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/pre-write.js"
-          timeout: 5000
-  PostToolUse:
-    - matcher: "Write"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/pdca-post-write.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (pre-write.js, unified-write-post.js) - GitHub #9354 workaround
 ---
 
 # bkit Core Rules

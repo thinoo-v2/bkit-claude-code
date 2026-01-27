@@ -16,6 +16,12 @@ allowed-tools:
   - Glob
   - Grep
 user-invocable: false
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-1-schema.template.md
+  - ${PLUGIN_ROOT}/templates/shared/naming-conventions.md
+next-skill: phase-2-convention
+pdca-phase: plan
+task-template: "[Phase-1] {feature}"
 ---
 
 # Phase 1: Schema/Terminology Definition

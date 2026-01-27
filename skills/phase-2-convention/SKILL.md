@@ -9,7 +9,6 @@ description: |
   Triggers: convention, coding style, naming rules, 컨벤션, コンベンション, 编码风格
 
   Do NOT use for: existing projects with established conventions, deployment, or testing.
-# Note: Hook functionality merged into bkit-rules/pre-write.js
 agent: pipeline-guide
 allowed-tools:
   - Read
@@ -17,6 +16,12 @@ allowed-tools:
   - Glob
   - Grep
 user-invocable: false
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-2-convention.template.md
+  - ${PLUGIN_ROOT}/templates/shared/naming-conventions.md
+next-skill: phase-3-mockup
+pdca-phase: plan
+task-template: "[Phase-2] {feature}"
 ---
 
 # Phase 2: Coding Convention

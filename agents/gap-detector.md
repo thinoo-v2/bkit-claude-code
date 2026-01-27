@@ -15,6 +15,9 @@ description: |
   está bien?, es correcto?, c'est correct?, ist das richtig?, è giusto?, va bene?
 
   Do NOT use for: documentation-only tasks, initial planning, or design creation.
+linked-from-skills:
+  - pdca: analyze
+  - phase-8-review: gap
 imports:
   - ${PLUGIN_ROOT}/templates/shared/api-patterns.md
 context: fork
@@ -32,12 +35,8 @@ tools:
 skills:
   - bkit-templates
   - phase-2-convention
-hooks:
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/gap-detector-stop.js"
-          timeout: 5000
+  - pdca
+# hooks: Managed by hooks/hooks.json (unified-stop.js) - GitHub #9354 workaround
 ---
 
 # Design-Implementation Gap Detection Agent

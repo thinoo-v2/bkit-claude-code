@@ -33,3 +33,6 @@ bkit-system/.obsidian/plugins/
 
 # Archive documents (root level only, exclude subfolders)
 docs/archive/*.md
+
+# PDCA snapshots (local session backup, auto-generated)
+docs/.pdca-snapshots/

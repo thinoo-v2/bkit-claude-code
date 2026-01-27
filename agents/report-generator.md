@@ -16,6 +16,8 @@ description: |
 
   Do NOT use for: ongoing implementation work, initial planning, or technical analysis
   (use gap-detector or code-analyzer instead).
+linked-from-skills:
+  - pdca: report
 permissionMode: acceptEdits
 disallowedTools:
   - Bash
@@ -27,6 +29,7 @@ tools:
   - Grep
 skills:
   - bkit-templates
+  - pdca
 ---
 
 # Report Generator Agent

@@ -28,7 +28,9 @@ const {
   emitUserPrompt,
   getBkitConfig,
   isGeminiCli,
-  autoAdvancePdcaPhase
+  autoAdvancePdcaPhase,
+  // v1.4.4 FR-07: Task Status Update
+  updatePdcaTaskStatus
 } = require('../lib/common.js');
 
 // Log execution start
@@ -205,6 +207,75 @@ if (completionPattern.test(inputText) || matchRate >= threshold) {
 // v1.4.0: Get auto phase advance suggestion
 const phaseAdvance = autoAdvancePdcaPhase(feature, 'act', { matchRate });
 
+// v1.4.4 FR-06/FR-07: Auto-create PDCA Tasks and trigger re-analyze
+let autoCreatedTasks = [];
+let autoTrigger = null;
+
+try {
+  const { autoCreatePdcaTask } = require('../lib/common.js');
+
+  // v1.4.4 FR-07: Update Act Task status
+  if (feature) {
+    updatePdcaTaskStatus('act', feature, {
+      iteration: currentIteration,
+      matchRate,
+      status: status === 'completed' ? 'completed' : 'in_progress',
+      changedFiles
+    });
+    debugLog('Agent:pdca-iterator:Stop', 'Act Task status updated', {
+      feature, iteration: currentIteration, status
+    });
+  }
+
+  // Auto-create [Act-N] Task for current iteration
+  const actTask = autoCreatePdcaTask({
+    phase: 'act',
+    feature: feature || 'unknown',
+    iteration: currentIteration,
+    metadata: {
+      matchRateBefore: featureStatus?.matchRate || 0,
+      matchRateAfter: matchRate,
+      changedFiles,
+      status
+    }
+  });
+  if (actTask) {
+    autoCreatedTasks.push(actTask);
+    debugLog('Agent:pdca-iterator:Stop', 'Act Task auto-created', { taskId: actTask.taskId });
+  }
+
+  // Auto-create [Report] Task if completed
+  if (status === 'completed' && matchRate >= threshold) {
+    const reportTask = autoCreatePdcaTask({
+      phase: 'report',
+      feature: feature || 'unknown',
+      metadata: {
+        finalMatchRate: matchRate,
+        totalIterations: currentIteration,
+        blockedBy: actTask?.taskId
+      }
+    });
+    if (reportTask) {
+      autoCreatedTasks.push(reportTask);
+      debugLog('Agent:pdca-iterator:Stop', 'Report Task auto-created', { taskId: reportTask.taskId });
+    }
+  }
+
+  // v1.4.4 FR-06: Auto-trigger re-analyze if improved but not complete
+  if (status === 'improved' && matchRate < threshold && currentIteration < maxIterations) {
+    autoTrigger = {
+      agent: 'gap-detector',
+      skill: '/pdca analyze',
+      feature: feature,
+      reason: `Auto re-analyze after iteration (current: ${matchRate}%, target: ${threshold}%)`,
+      delay: 0
+    };
+    debugLog('Agent:pdca-iterator:Stop', 'Auto re-analyze triggered', { matchRate, threshold });
+  }
+} catch (e) {
+  debugLog('Agent:pdca-iterator:Stop', 'Auto-task creation skipped', { error: e.message });
+}
+
 // Update PDCA status
 if (feature) {
   updatePdcaStatus(feature, 'act', {
@@ -251,7 +322,10 @@ if (isGeminiCli()) {
       threshold,
       status,
       changedFiles,
-      phaseAdvance: phaseAdvance
+      phaseAdvance: phaseAdvance,
+      // v1.4.4 FR-06: Auto-trigger flags
+      autoCreatedTasks: autoCreatedTasks.map(t => t.taskId),
+      autoTrigger
     },
     guidance: guidance,
     taskGuidance: taskGuidance,

@@ -15,29 +15,7 @@ description: |
 imports:
   - ${PLUGIN_ROOT}/templates/shared/error-handling-patterns.md
 permissionMode: acceptEdits
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-pre-bash.js"
-          timeout: 5000
-  PostToolUse:
-    - matcher: "Write"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-monitor-post.js"
-          timeout: 5000
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-monitor-post.js"
-          timeout: 5000
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/qa-stop.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (unified-bash-pre.js, unified-write-post.js, unified-bash-post.js, unified-stop.js) - GitHub #9354 workaround
 model: haiku
 tools:
   - Bash

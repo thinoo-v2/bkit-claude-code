@@ -1,15 +1,24 @@
 {
-  "sessionCount": 55,
+  "sessionCount": 88,
   "lastSession": {
-    "startedAt": "2026-01-26T14:25:23.947Z",
+    "startedAt": "2026-01-27T08:40:16.058Z",
     "platform": "claude",
     "level": "Starter"
   },
-  "activePdca": {
-    "feature": "gemini-cli-v026-compatibility",
-    "phase": "plan",
-    "planFile": "docs/01-plan/features/gemini-cli-v026-compatibility.plan.md",
-    "startedAt": "2026-01-26",
-    "description": "Gemini CLI v0.26+ 호환성 및 bkit 고도화"
-  }
+  "activePdca": null,
+  "pdcaHistory": [
+    {
+      "feature": "v1.4.4-skills-agents-commands-enhancement",
+      "completedAt": "2026-01-27",
+      "status": "completed",
+      "matchRate": 100,
+      "iterations": 2,
+      "reportFile": "docs/04-report/features/v1.4.4-skills-agents-commands-enhancement.report.md"
+    },
+    {
+      "feature": "gemini-cli-v026-compatibility",
+      "completedAt": "2026-01-26",
+      "status": "completed"
+    }
+  ]
 }

@@ -16,9 +16,16 @@ description: |
 
   Do NOT use for: design document review (use design-validator), gap analysis
   (use gap-detector), or writing/modifying code (this agent is read-only).
+linked-from-skills:
+  - code-review: default
+  - phase-8-review: default
 imports:
   - ${PLUGIN_ROOT}/templates/shared/error-handling-patterns.md
   - ${PLUGIN_ROOT}/templates/shared/naming-conventions.md
+skills_preload:
+  - phase-2-convention
+  - phase-8-review
+  - code-review
 permissionMode: plan
 model: opus
 tools:
@@ -27,18 +34,7 @@ tools:
   - Grep
   - Task
   - LSP
-hooks:
-  PreToolUse:
-    - matcher: "Write|Edit"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/code-analyzer-pre.js"
-          timeout: 5000
-  Stop:
-    - hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/analysis-stop.js"
-          timeout: 5000
+# hooks: Managed by hooks/hooks.json (pre-write.js blocks Write/Edit, unified-stop.js) - GitHub #9354 workaround
 ---
 
 # Code Analysis Agent

@@ -9,6 +9,8 @@ description: |
   Triggers: SEO, security, meta tags, XSS, CSRF, 보안, セキュリティ, 安全
 
   Do NOT use for: backend-only APIs, internal tools, or basic development setup.
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-7-seo-security.template.md
 agent: code-analyzer
 allowed-tools:
   - Read
@@ -17,6 +19,9 @@ allowed-tools:
   - Grep
   - WebSearch
 user-invocable: false
+next-skill: phase-8-review
+pdca-phase: do
+task-template: "[Phase-7] {feature}"
 ---
 
 # Phase 7: SEO/Security

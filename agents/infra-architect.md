@@ -12,6 +12,8 @@ description: |
 
   Do NOT use for: frontend development, simple deployments (Vercel/Netlify),
   Starter/Dynamic level projects, or non-infrastructure coding tasks.
+linked-from-skills:
+  - enterprise: infra
 permissionMode: acceptEdits
 model: opus
 tools:

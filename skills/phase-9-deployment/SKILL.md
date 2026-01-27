@@ -9,13 +9,9 @@ description: |
   Triggers: deployment, CI/CD, production, Vercel, Kubernetes, Docker, 배포, デプロイ, 部署
 
   Do NOT use for: local development, design phase, or feature implementation.
-hooks:
-  PreToolUse:
-    - matcher: "Bash"
-      hooks:
-        - type: command
-          command: "node ${CLAUDE_PLUGIN_ROOT}/scripts/phase9-deploy-pre.js"
-          timeout: 5000
+imports:
+  - ${PLUGIN_ROOT}/templates/pipeline/phase-9-deployment.template.md
+# hooks: Managed by hooks/hooks.json (unified-bash-pre.js, unified-stop.js) - GitHub #9354 workaround
 agent: infra-architect
 allowed-tools:
   - Read
@@ -25,6 +21,9 @@ allowed-tools:
   - Grep
   - Bash
 user-invocable: false
+next-skill: null
+pdca-phase: act
+task-template: "[Phase-9] {feature}"
 ---
 
 # Phase 9: Deployment
