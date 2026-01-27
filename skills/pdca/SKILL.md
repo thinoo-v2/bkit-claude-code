@@ -26,6 +26,7 @@ allowed-tools:
   - Edit
   - Glob
   - Grep
+  - Bash
   - Task
   - TaskCreate
   - TaskUpdate
@@ -58,6 +59,7 @@ task-template: "[PDCA] {feature}"
 | `analyze [feature]` | Gap 분석 실행 (Check 단계) | `/pdca analyze user-auth` |
 | `iterate [feature]` | 자동 개선 반복 (Act 단계) | `/pdca iterate user-auth` |
 | `report [feature]` | 완료 보고서 생성 | `/pdca report user-auth` |
+| `archive [feature]` | 완료된 PDCA 문서 아카이브 | `/pdca archive user-auth` |
 | `status` | 현재 PDCA 상태 표시 | `/pdca status` |
 | `next` | 다음 단계 가이드 | `/pdca next` |
 
@@ -130,6 +132,29 @@ task-template: "[PDCA] {feature}"
 
 **출력 경로**: `docs/04-report/{feature}.report.md`
 
+### archive (아카이브 단계)
+
+1. Report 완료 상태 확인 (phase = "completed" 또는 matchRate >= 90%)
+2. PDCA 문서 존재 확인 (plan, design, analysis, report)
+3. `docs/archive/YYYY-MM/{feature}/` 폴더 생성
+4. 문서 이동 (원본 위치에서 삭제)
+5. Archive Index 업데이트 (`docs/archive/YYYY-MM/_INDEX.md`)
+6. .pdca-status.json 업데이트: phase = "archived", archivedTo 경로 기록
+7. activeFeatures에서 해당 feature 제거
+
+**출력 경로**: `docs/archive/YYYY-MM/{feature}/`
+
+**아카이브 대상 문서**:
+- `docs/01-plan/features/{feature}.plan.md`
+- `docs/02-design/features/{feature}.design.md`
+- `docs/03-analysis/{feature}.analysis.md`
+- `docs/04-report/features/{feature}.report.md`
+
+**주의사항**:
+- Report 완료 전에는 archive 불가
+- 문서가 이동되면 원본은 삭제됨 (복원 불가)
+- feature 이름은 정확히 일치해야 함
+
 ### status (상태 확인)
 
 1. `.bkit-memory.json` 읽기
@@ -163,6 +188,7 @@ task-template: "[PDCA] {feature}"
 | do | check | `/pdca analyze [feature]` |
 | check (<90%) | act | `/pdca iterate [feature]` |
 | check (>=90%) | report | `/pdca report [feature]` |
+| report | archive | `/pdca archive [feature]` |
 
 ## Template References
 
@@ -196,6 +222,8 @@ Task 생성 패턴:
 │ [Act-N] {feature}                      │
 │   ↓ (Check >= 90%)                     │
 │ [Report] {feature}                     │
+│   ↓ (Report 완료 후)                   │
+│ [Archive] {feature}                    │
 └────────────────────────────────────────┘
 ```
 
@@ -246,6 +274,7 @@ Task 생성 패턴:
 | `/pdca-report` | `/pdca report` |
 | `/pdca-status` | `/pdca status` |
 | `/pdca-next` | `/pdca next` |
+| `/archive` | `/pdca archive` |
 
 ## 자동 트리거
 
@@ -259,3 +288,4 @@ Task 생성 패턴:
 | "검증", "verify", "분석" | analyze |
 | "개선", "improve", "반복" | iterate |
 | "완료", "report", "보고서" | report |
+| "아카이브", "archive", "정리", "보관" | archive |

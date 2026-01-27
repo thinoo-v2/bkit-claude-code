@@ -31,6 +31,7 @@ Display the following help message:
   /pdca analyze <feature>    Gap analysis (design vs implementation)
   /pdca iterate <feature>    Auto-improvement iteration
   /pdca report <feature>     Generate completion report
+  /pdca archive <feature>    Archive completed PDCA documents
   /pdca status               Show current PDCA status
   /pdca next                 Guide to next step
 

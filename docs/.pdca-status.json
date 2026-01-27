@@ -1,12 +1,44 @@
 {
   "version": "2.0",
-  "lastUpdated": "2026-01-27T13:48:50.284Z",
+  "lastUpdated": "2026-01-27T14:17:40.889Z",
   "activeFeatures": [
-    "v1.4.5-namespace-skill-refactoring",
+    "korean-to-english-translation",
     "bkit-claude-code"
   ],
-  "primaryFeature": "bkit-claude-code",
+  "primaryFeature": "korean-to-english-translation",
   "features": {
+    "pdca-archive-action": {
+      "phase": "archived",
+      "phaseNumber": 7,
+      "matchRate": 100,
+      "iterationCount": 1,
+      "archivedAt": "2026-01-27T14:15:00.000Z",
+      "archivedTo": "docs/archive/2026-01/pdca-archive-action",
+      "requirements": [
+        "FR-01",
+        "FR-02",
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07",
+        "FR-08"
+      ],
+      "documents": {
+        "plan": "docs/archive/2026-01/pdca-archive-action/pdca-archive-action.plan.md",
+        "design": "docs/archive/2026-01/pdca-archive-action/pdca-archive-action.design.md",
+        "report": "docs/archive/2026-01/pdca-archive-action/pdca-archive-action.report.md"
+      },
+      "timestamps": {
+        "started": "2026-01-27T14:00:00.000Z",
+        "lastUpdated": "2026-01-27T14:15:00.000Z",
+        "completed": "2026-01-27T14:15:00.000Z"
+      },
+      "implementedFiles": [
+        "skills/pdca/SKILL.md",
+        "commands/functions.md"
+      ]
+    },
     "v1.4.4-comprehensive-test": {
       "phase": "archived",
       "phaseNumber": 7,
@@ -327,11 +359,43 @@
         "completed": "2026-01-27T13:42:00.000Z"
       }
     },
+    "korean-to-english-translation": {
+      "phase": "plan",
+      "phaseNumber": 1,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [
+        "FR-01",
+        "FR-02",
+        "FR-03",
+        "FR-04",
+        "FR-05",
+        "FR-06",
+        "FR-07"
+      ],
+      "documents": {
+        "plan": "docs/01-plan/features/korean-to-english-translation.plan.md"
+      },
+      "timestamps": {
+        "started": "2026-01-27T15:00:00.000Z",
+        "lastUpdated": "2026-01-27T15:00:00.000Z"
+      },
+      "targetFiles": {
+        "hooks": 1,
+        "agents": 11,
+        "skills": 21,
+        "templates": 3,
+        "bkitSystem": 4,
+        "total": 40
+      }
+    },
     "v1.4.5-namespace-skill-refactoring": {
-      "phase": "completed",
-      "phaseNumber": 6,
+      "phase": "archived",
+      "phaseNumber": 7,
       "matchRate": 100,
       "iterationCount": 0,
+      "archivedAt": "2026-01-27T14:20:00.000Z",
+      "archivedTo": "docs/archive/2026-01/v1.4.5-namespace-skill-refactoring",
       "requirements": [
         "FR-01",
         "FR-02",
@@ -340,13 +404,14 @@
         "FR-05"
       ],
       "documents": {
-        "plan": "docs/01-plan/features/v1.4.5-namespace-skill-refactoring.plan.md",
-        "design": "docs/02-design/features/v1.4.5-namespace-skill-refactoring.design.md",
-        "report": "docs/04-report/features/v1.4.5-namespace-skill-refactoring.report.md"
+        "plan": "docs/archive/2026-01/v1.4.5-namespace-skill-refactoring/v1.4.5-namespace-skill-refactoring.plan.md",
+        "design": "docs/archive/2026-01/v1.4.5-namespace-skill-refactoring/v1.4.5-namespace-skill-refactoring.design.md",
+        "report": "docs/archive/2026-01/v1.4.5-namespace-skill-refactoring/v1.4.5-namespace-skill-refactoring.report.md"
       },
       "timestamps": {
         "started": "2026-01-27T13:30:00.000Z",
-        "lastUpdated": "2026-01-27T13:30:00.000Z"
+        "lastUpdated": "2026-01-27T14:20:00.000Z",
+        "completed": "2026-01-27T14:20:00.000Z"
       },
       "targetFiles": [
         "docs/02-design/features/bkit-hub-command.design.md",
@@ -364,7 +429,7 @@
   "session": {
     "startedAt": "2026-01-26T12:15:00.000Z",
     "onboardingCompleted": true,
-    "lastActivity": "2026-01-27T13:48:50.284Z"
+    "lastActivity": "2026-01-27T14:17:40.889Z"
   },
   "history": [
     {
