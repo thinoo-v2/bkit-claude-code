@@ -20,6 +20,8 @@
 | [korean-to-english-translation](./korean-to-english-translation/) | 2026-01-27 | 100% | 3 | ✅ Complete |
 | [v1.4.6-subagent-stability](./v1.4.6-subagent-stability/) | 2026-01-28 | 100% | 4 | ✅ Complete |
 | [bkit-integration-test](./bkit-integration-test/) | 2026-01-29 | 95.4% | 2 | ✅ Complete |
+| [task-bkit-integration](./task-bkit-integration/) | 2026-01-29 | 100% | 4 | ✅ Complete |
+| [bkit-core-modularization](./bkit-core-modularization/) | 2026-01-29 | 100% | 2 | ✅ Complete |
 
 ---
 
@@ -279,6 +281,70 @@
 - 4개 모듈 분리 검증 (core, pdca, intent, task): 132개 함수 export 확인
 - 21 Skills + 11 Agents + 5 Hooks 회귀 테스트 통과
 - 프로덕션 배포 준비 완료 확인
+
+---
+
+### v1.4.7-docs-sync
+
+- **완료일**: 2026-01-29
+- **PDCA Cycle**: #13
+- **최종 매치율**: 100%
+
+**포함 문서:**
+- `v1.4.7-docs-sync.plan.md` - Plan 문서
+- `v1.4.7-docs-sync.analysis.md` - Analysis 문서
+- `v1.4.7-docs-sync.report.md` - Report 문서
+
+**주요 성과:**
+- bkit v1.4.7 버전 문서 동기화 완료
+- 10개 버전 파일 업데이트 (plugin.json, bkit.config.json, 등)
+- CHANGELOG.md, README.md, CUSTOMIZATION-GUIDE.md 업데이트
+- 모듈 로딩 테스트 통과 (135 exports)
+- 하위 호환성 100% 유지
+
+---
+
+### task-bkit-integration
+
+- **완료일**: 2026-01-29
+- **PDCA Cycle**: #14
+- **최종 매치율**: 100%
+
+**포함 문서:**
+- `task-bkit-integration.plan.md` - Plan 문서
+- `task-bkit-integration.design.md` - Design 문서
+- `task-bkit-integration.analysis.md` - Analysis 문서
+- `task-bkit-integration.report.md` - Report 문서
+
+**주요 성과:**
+- Task Management System과 bkit PDCA 연동 설계 및 구현
+- Task ID 영속화 (savePdcaTaskId/getPdcaTaskId) 구현
+- Task 체인 자동 생성 (createPdcaTaskChain) 구현
+- Check↔Act 자동 반복 (triggerNextPdcaAction) 구현
+- blockedBy Task 의존성 관리 구현
+- 12개 FR 요구사항 100% 충족
+
+---
+
+### bkit-core-modularization
+
+- **완료일**: 2026-01-29
+- **PDCA Cycle**: #15
+- **최종 매치율**: 100%
+
+**포함 문서:**
+- `bkit-core-modularization.design.md` - Design 문서
+- `bkit-core-modularization.report.md` - Report 문서
+
+**주요 성과:**
+- lib/common.js (3,722줄) → 4개 모듈로 분리 완료
+  - lib/core/ (7 파일, 40 함수) - 플랫폼, 캐시, 설정, I/O
+  - lib/pdca/ (6 파일, 50 함수) - PDCA 상태, 단계, 자동화
+  - lib/intent/ (4 파일, 19 함수) - 언어 감지, 트리거
+  - lib/task/ (5 파일, 26 함수) - Task 분류, 컨텍스트, 추적
+- Migration Bridge 구현 (lib/common.js)으로 하위 호환성 100% 유지
+- 132개 함수/상수 정상 export 확인
+- 순환 의존성 0개 (단방향 의존성 준수)
 
 ---
 
