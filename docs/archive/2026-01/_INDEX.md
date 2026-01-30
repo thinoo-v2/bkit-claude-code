@@ -22,6 +22,7 @@
 | [bkit-integration-test](./bkit-integration-test/) | 2026-01-29 | 95.4% | 2 | ✅ Complete |
 | [task-bkit-integration](./task-bkit-integration/) | 2026-01-29 | 100% | 4 | ✅ Complete |
 | [bkit-core-modularization](./bkit-core-modularization/) | 2026-01-29 | 100% | 2 | ✅ Complete |
+| [claude-code-2.1.25-compatibility-test](./claude-code-2.1.25-compatibility-test/) | 2026-01-30 | 100% | 2 | ✅ Complete |
 
 ---
 
@@ -348,4 +349,24 @@
 
 ---
 
-*Last updated: 2026-01-29*
+### claude-code-2.1.25-compatibility-test
+
+- **완료일**: 2026-01-30
+- **PDCA Cycle**: #16
+- **최종 매치율**: 100% (58개 테스트 케이스)
+
+**포함 문서:**
+- `claude-code-2.1.25-compatibility-test.plan.md` - Plan 문서
+- `claude-code-2.1.25-compatibility-test.report.md` - Report 문서
+
+**주요 성과:**
+- Claude Code 2.1.23→2.1.25 업그레이드 호환성 검증 완료
+- 58개 테스트 케이스 100% 통과
+- GitHub Issue #21758 (allowed-tools validator) 영향 없음 확인
+- GitHub Issue #21730 (subagent crash) 영향 없음 확인
+- 21 Skills + 11 Agents + 6 Hooks 정상 동작 검증
+- 132개 라이브러리 함수 간접 테스트 완료
+
+---
+
+*Last updated: 2026-01-30*
