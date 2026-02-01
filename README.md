@@ -95,6 +95,8 @@ Layer 5: Scripts (39 modules)    → Actual Node.js execution logic with unified
 
 ## Quick Start
 
+> **Note**: bkit is designed for **Claude Code**. For Gemini CLI, see [bkit-gemini](https://github.com/popup-studio-ai/bkit-gemini).
+
 ### Option 1: Marketplace Installation (Recommended)
 
 The easiest way to install bkit is through the Claude Code marketplace.
