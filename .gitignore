@@ -38,6 +38,7 @@ bkit-system/.obsidian/plugins/
 # Docs folder (too large for plugin distribution)
 docs/.pdca-snapshots/
 docs/archive/
+docs/bkit-Best-Practice.pdf
 
 # Internal skills/commands (company-only, not for public repo)
 skills/github-integration/
