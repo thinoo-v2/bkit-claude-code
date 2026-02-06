@@ -443,6 +443,7 @@ function getTriggerKeywordTable() {
 | analyze, 분석, 分析, 品質, analizar, analyser, analysieren, analizzare | bkit:code-analyzer | Code quality analysis |
 | report, 보고서, 報告, 报告, informe, rapport, Bericht, rapporto | bkit:report-generator | Generate completion report |
 | help, 도움, 助けて, 帮助, ayuda, aide, Hilfe, aiuto | bkit:starter-guide | Beginner guide |
+| bkend, BaaS, backend service, 백엔드 서비스, バックエンドサービス, 后端服务 | bkit:bkend-expert | Backend/BaaS expert |
 
 ### Skill Triggers (Auto-detection)
 | Keywords | Skill | Level |
@@ -555,6 +556,32 @@ let additionalContext = `# bkit Vibecoding Kit v1.5.1 - Session Startup\n\n`;
   additionalContext += `- All bkit agents remember context across sessions automatically\n`;
   additionalContext += `- 9 agents use project scope, 2 agents (starter-guide, pipeline-guide) use user scope\n`;
   additionalContext += `- No configuration needed\n\n`;
+
+  // bkend MCP status check (G-09)
+  if (detectedLevel === 'Dynamic') {
+    try {
+      const mcpJsonPath = path.join(process.cwd(), '.mcp.json');
+      let bkendMcpConnected = false;
+      if (fs.existsSync(mcpJsonPath)) {
+        const mcpContent = fs.readFileSync(mcpJsonPath, 'utf-8');
+        if (mcpContent.includes('bkend') || mcpContent.includes('api.bkend.ai')) {
+          bkendMcpConnected = true;
+        }
+      }
+      if (bkendMcpConnected) {
+        additionalContext += `## bkend.ai MCP Status\n`;
+        additionalContext += `- Status: Connected\n`;
+        additionalContext += `- Use natural language to manage backend (DB, Auth, Storage)\n\n`;
+      } else {
+        additionalContext += `## bkend.ai MCP Status\n`;
+        additionalContext += `- Status: Not configured\n`;
+        additionalContext += `- Setup: \`claude mcp add bkend --transport http https://api.bkend.ai/mcp\`\n`;
+        additionalContext += `- bkend.ai provides Database, Auth, Storage as BaaS\n\n`;
+      }
+    } catch (e) {
+      debugLog('SessionStart', 'bkend MCP check skipped', { error: e.message });
+    }
+  }
 
   additionalContext += `## PDCA Core Rules (Always Apply)\n`;
   additionalContext += `- New feature request → Check/create Plan/Design documents first\n`;
