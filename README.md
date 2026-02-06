@@ -5,7 +5,7 @@
 [![Version](https://img.shields.io/badge/Version-1.5.1-green.svg)](CHANGELOG.md)
 [![Author](https://img.shields.io/badge/Author-POPUP%20STUDIO-orange.svg)](https://popupstudio.ai)
 
-> **PDCA methodology + AI coding assistant mastery for AI-native development**
+> **PDCA methodology + CTO-Led Agent Teams + AI coding assistant mastery for AI-native development**
 
 bkit is a Claude Code plugin that transforms how you build software with AI. It provides structured development workflows, automatic documentation, and intelligent code assistance through the PDCA (Plan-Do-Check-Act) methodology.
 
