@@ -108,3 +108,10 @@ imports:
 - Social account link/unlink
 - Account existence check
 - Account deletion (GDPR compliance)
+
+## Official Documentation (Live Reference)
+
+For the latest authentication documentation, use WebFetch:
+- Full TOC: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/SUMMARY.md
+- Authentication: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/authentication/
+- Security: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/security/

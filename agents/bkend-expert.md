@@ -213,3 +213,18 @@ POST /v1/files/presigned-url -> PUT {url} -> POST /v1/files
 - Skills: dynamic (dev guide), bkend-data, bkend-auth, bkend-storage, bkend-cookbook
 - MCP Guide Tools: 0_get_context ~ 7_code_examples_data
 - Docs: https://github.com/popup-studio-ai/bkend-docs
+
+## Official Documentation (Live Reference)
+
+When you need the latest bkend documentation, use WebFetch with these URLs:
+
+- **Full TOC**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/SUMMARY.md
+- **Auth**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/authentication/
+- **Database**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/database/
+- **Storage**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/storage/
+- **Security**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/security/
+- **AI Tools/MCP**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/ai-tools/
+- **Cookbooks**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/cookbooks/
+- **Troubleshooting**: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/troubleshooting/
+
+**Usage**: Fetch SUMMARY.md first to find the exact page, then fetch that specific page.

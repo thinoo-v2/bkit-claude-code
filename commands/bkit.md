@@ -60,9 +60,10 @@ Learning
   /claude-code-learning          Learn Claude Code
   /claude-code-learning setup    Analyze current project setup
 
-Output Styles (v1.5.1)
+Output Styles (v1.5.3)
   /output-style              Select response style
-  Available: bkit-pdca-guide, bkit-learning, bkit-enterprise
+  /output-style-setup        Install bkit styles to .claude/
+  Available: bkit-learning, bkit-pdca-guide, bkit-enterprise, bkit-pdca-enterprise
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Note: These functions don't have autocomplete in CLI.
@@ -150,13 +151,14 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 /pdca team cleanup
 ```
 
-### Output Styles (3, select via /output-style)
+### Output Styles (4, select via /output-style)
 
 | Style | Best For | Description |
 |-------|----------|-------------|
-| bkit-pdca-guide | Dynamic projects | PDCA badges, gap analysis suggestions, checklists |
-| bkit-learning | Starter projects | Learning points, TODO(learner) markers |
+| bkit-learning | Starter projects | Learning points, educational insights |
+| bkit-pdca-guide | Dynamic projects | PDCA badges, checklists, phase tracking |
 | bkit-enterprise | Enterprise projects | Architecture tradeoffs, cost analysis |
+| bkit-pdca-enterprise | Enterprise projects | PDCA + CTO combined perspective |
 
 ### v1.5.1 Features
 
@@ -167,3 +169,22 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 | Output Styles | `/output-style` | Custom response formatting |
 | TaskCompleted Hook | Automatic | Auto-advance PDCA phases on task completion |
 | TeammateIdle Hook | Automatic | Assign work to idle teammates |
+
+### v1.5.3 Features
+
+| Feature | Activation | Description |
+|---------|-----------|-------------|
+| Output Style Setup | `/output-style-setup` | Install bkit output styles to .claude/ |
+| bkend Docs Reference | Automatic | bkend-expert fetches latest docs via WebFetch |
+| SubagentStart/Stop | Automatic | Track team agent spawn/stop events |
+| Team State Writer | Automatic | Write agent state to .bkit/agent-state.json |
+
+### CLAUDE.md and bkit
+
+bkit does NOT provide a CLAUDE.md file. Reasons:
+- bkit provides dynamic context via Hooks, Skills, Agents, and Output Styles
+- CLAUDE.md is for project-specific rules that the project owner writes
+- bkit's SessionStart hook injects PDCA state, level detection, and trigger tables
+- This is more token-efficient than static CLAUDE.md (injected once vs every turn)
+
+If you need help writing your project's CLAUDE.md, use `/claude-code-learning`.
