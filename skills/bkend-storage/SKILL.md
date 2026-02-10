@@ -101,3 +101,9 @@ images, documents, media, attachments
 3. PUT each part URL with file chunk
 4. POST /v1/files/multipart/complete -> { file }
 ```
+
+## Official Documentation (Live Reference)
+
+For the latest storage documentation, use WebFetch:
+- Full TOC: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/SUMMARY.md
+- Storage: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/storage/

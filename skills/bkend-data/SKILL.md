@@ -112,3 +112,10 @@ imports:
 - Single/compound index creation
 - Manage via MCP `backend_index_manage`
 - Essential for query performance optimization
+
+## Official Documentation (Live Reference)
+
+For the latest database documentation, use WebFetch:
+- Full TOC: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/SUMMARY.md
+- Database: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/database/
+- Guides: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/guides/

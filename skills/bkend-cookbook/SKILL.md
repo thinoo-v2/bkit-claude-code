@@ -91,3 +91,10 @@ imports:
 | File upload fails | Verify size limits (image 10MB, video 100MB) |
 | Slow queries | Add indexes via backend_index_manage |
 | Data not syncing | Check x-environment header matches |
+
+## Official Documentation (Live Reference)
+
+For the latest cookbook and troubleshooting, use WebFetch:
+- Full TOC: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/SUMMARY.md
+- Cookbooks: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/cookbooks/
+- Troubleshooting: https://raw.githubusercontent.com/popup-studio-ai/bkend-docs/main/src/troubleshooting/
